@@ -1,6 +1,6 @@
 /**
  * @file main.cpp
- * @author @warning Fill in your full name
+ * @author Alumno1 José David Rico Días Alumno2 Jorge Marín Sánchez
  * @note To be implemented by students either completely or by giving them
  * key functions prototipes to guide the implementation
  */
@@ -54,7 +54,7 @@ int main() {
     /// word to result ... result = result + word +" - ";
     count = 0 ;
 
-     //cout << "BAG : " << toUTF(bag.to_string()) << endl;   
+    //cout << "BAG : " << toUTF(bag.to_string()) << endl;   
     
     do{
         word = bag.extract(BAG_LENGTH); 
@@ -63,7 +63,7 @@ int main() {
             cout << " *** ";            
             result.append(word + "*");
         }  
-    } while(bag.size() > 0);
+    } while(bag.size() > 0 );
     
     
     /// @warning Finish when the bag is empty and show results

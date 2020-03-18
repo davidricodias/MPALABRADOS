@@ -1,20 +1,16 @@
 /**
  * @file bag.cpp
- * @author DECSAI
+ * @author Alumno1 José David Rico Días Alumno2 Jorge Marín Sánchez
  * @note To be implemented by students except function shuffle()
  */
-#include <cassert>      //Implementa la funcion assert, ¿Para debugging?. En clase no se ha mencionado así que no la uso
+#include <cassert>      //Implementa la funcion assert, ¿Para debugging?. En clase no se ha mencionado así que no la usamos
 #include <random>
-#include <algorithm>
+#include <algorithm>    //shuffle
 #include <cstring>
-#include <fstream>
-#include <random>
 
 #include "bag.h"
 #include "language.h"
 
-
-///@warning Fill missing #include
 
 using namespace std;
 
@@ -135,7 +131,7 @@ void shuffleVector(char* s, int n, int id) {
 
     //Copia el vector
     for (int i=0; i<n; i++)
-        s[i] = aux[i];    
+        s[i] = aux[i] ;    
 }
 
 void removeVector(char* s, int & n, int p){
