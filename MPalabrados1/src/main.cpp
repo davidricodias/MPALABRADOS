@@ -9,6 +9,7 @@
 #include "bag.h"
 #include "language.h"
 ///@warning Fill missing #include
+#include <string>
 
 using namespace std;
 
@@ -29,26 +30,35 @@ void HallOfFame(const Language &l, int random, const Bag &b,
  * @return 
  */
 int main() {
-
+    const int BAG_LEGTH = 5;
     Bag bag;
     string word, lang, result="";
     int random, count;
     
-    cout << "TYPE LANGUAGE: ";
+    cout << "TYPE LANGUAGE(es/en): ";
     cin >> lang;               ///  Read language
     Language language(lang);
     cout << "ALLOWED LETTERS: " << toUTF(language.getLetterSet()) <<endl; /// Show allowed letters
     cout << "TYPE SEED (<0 RANDOM): ";
+    // Do while
     cin >> random; /// @warning Read random and define bag
     if (random >= 0)
         bag.setRandom(random);
     
     /// @warning  define bag 
-
+    bag.define(lang);
+    
     /// @warning Extract a 5-letter word from the bag
     /// check whether it is in the dictionary or not
     /// if it is, count a new word, and aggregate the 
     /// word to result ... result = result + word +" - ";
+    do{
+        word = toISO(bag.extract(random)); 
+        if(language.query(word)){
+            result.append(word + "*");
+        }  
+    }while(bag.size() >= BAG_LEGTH);
+    
     
     /// @warning Finish when the bag is empty and show results
     /// thru HallOfFame(...))
@@ -63,5 +73,4 @@ void HallOfFame(const Language &l, int random, const Bag &b,
     cout << nwords << " words found "<<endl << 
             toUTF(result) << endl;    
 }
-
 
