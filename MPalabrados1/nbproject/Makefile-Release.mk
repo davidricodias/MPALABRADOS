@@ -34,7 +34,9 @@ include MPalabrados1-Makefile.mk
 OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
-OBJECTFILES=
+OBJECTFILES= \
+	${OBJECTDIR}/src/bag.o \
+	${OBJECTDIR}/src/main.o
 
 
 # C Compiler Flags
@@ -59,7 +61,17 @@ LDLIBSOPTIONS=
 
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/mpalabrados1: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
-	${LINK.c} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/mpalabrados1 ${OBJECTFILES} ${LDLIBSOPTIONS}
+	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/mpalabrados1 ${OBJECTFILES} ${LDLIBSOPTIONS}
+
+${OBJECTDIR}/src/bag.o: src/bag.cpp
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/bag.o src/bag.cpp
+
+${OBJECTDIR}/src/main.o: src/main.cpp
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/main.o src/main.cpp
 
 # Subprojects
 .build-subprojects:

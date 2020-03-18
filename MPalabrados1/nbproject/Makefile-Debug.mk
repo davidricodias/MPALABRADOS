@@ -34,7 +34,9 @@ include MPalabrados1-Makefile.mk
 OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
-OBJECTFILES=
+OBJECTFILES= \
+	${OBJECTDIR}/src/bag.o \
+	${OBJECTDIR}/src/main.o
 
 
 # C Compiler Flags
@@ -51,15 +53,31 @@ FFLAGS=
 ASFLAGS=
 
 # Link Libraries and Options
-LDLIBSOPTIONS=
+LDLIBSOPTIONS=../local/lib/libansiterminal.a ../local/lib/liblanguage.a ../local/lib/libwordlist.a
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
 	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/mpalabrados1
 
+${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/mpalabrados1: ../local/lib/libansiterminal.a
+
+${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/mpalabrados1: ../local/lib/liblanguage.a
+
+${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/mpalabrados1: ../local/lib/libwordlist.a
+
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/mpalabrados1: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
-	${LINK.c} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/mpalabrados1 ${OBJECTFILES} ${LDLIBSOPTIONS}
+	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/mpalabrados1 ${OBJECTFILES} ${LDLIBSOPTIONS}
+
+${OBJECTDIR}/src/bag.o: src/bag.cpp
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Wall -Iinclude -I../local/include -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/bag.o src/bag.cpp
+
+${OBJECTDIR}/src/main.o: src/main.cpp
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Wall -Iinclude -I../local/include -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/main.o src/main.cpp
 
 # Subprojects
 .build-subprojects:
