@@ -30,7 +30,7 @@ void HallOfFame(const Language &l, int random, const Bag &b,
  * @return 
  */
 int main() {
-    const int BAG_LEGTH = 5;
+    const int BAG_LENGTH = 5;
     Bag bag;
     string word, lang, result="";
     int random, count;
@@ -52,12 +52,18 @@ int main() {
     /// check whether it is in the dictionary or not
     /// if it is, count a new word, and aggregate the 
     /// word to result ... result = result + word +" - ";
+    count = 0 ;
+
+     //cout << "BAG : " << toUTF(bag.to_string()) << endl;   
+    
     do{
-        word = toISO(bag.extract(random)); 
-        if(language.query(word)){
+        word = bag.extract(BAG_LENGTH); 
+        if( language.query(word) ){
+            count++ ;
+            cout << " *** ";            
             result.append(word + "*");
         }  
-    }while(bag.size() >= BAG_LEGTH);
+    } while(bag.size() > 0);
     
     
     /// @warning Finish when the bag is empty and show results
