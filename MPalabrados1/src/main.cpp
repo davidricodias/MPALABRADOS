@@ -7,10 +7,12 @@
 
 #include <string>
 #include <iostream>
+#include <stdexcept>
 #include "language.h"
 #include "bag.h"
 #include "player.h"
 ///@warning complete missing #includes
+
 
 using namespace std;
 /**
@@ -31,16 +33,92 @@ void HallOfFame(const Language &l, int random, const Bag &b, const Player &p,
  * @return 
  */
 int main() {
-    int Id;             /// To be used in bag.setRandom())
+    
+    //No se modifican las declaraciones
+    int id;             /// To be used in bag.setRandom())
     Bag bag;            /// Bag of letters
     Player player;      /// Player set of letters
     Language language;  /// Language to be loaded from disk
     string result;      /// String that contains all the words found
-    int nletters,          /// Number of letters found
-        nwords;          /// Number of words found
+    int nletters = 0 ;  /// Number of letters found
+    int nwords = 0 ;    /// Number of words found
     
-    /// @warning; complete code
-    HallOfFame(language,Id,bag,player, nwords, nletters, result);
+    //Lectura según UTF-8
+    string lang ;
+    cout << endl << "TYPE LANGUAGE: ";
+    cin >> lang ;
+    //Mejora de condiciones: búsqueda de idiomas disponibles.
+    while( lang.length() == 0 || lang != "ES" || lang != "EN" ) {
+        cout << endl << "Entrada inválida" ;
+        cout << endl << "TYPE LANGUAGE: " << endl;
+        cin >> lang ;
+    }
+
+    //Inicializa Language esgún ISO
+    language.setLanguage( toISO(lang) ) ;
+    
+    //Muestra el conjunto de caracteres permitidos
+    cout << "ALLOWED LETTERS: "
+         << toUTF( language.getLetterSet() ) ;
+    
+    //Pide número entero. Un simple try, por si acaso
+    bool is_ovflw ;
+    do {
+        try {
+            is_ovflw = false ;
+            cout << endl << "TYPE SEED (<0 RANDOM): " ;
+            cin >> id ;
+        } catch ( overflow_error ) {
+            is_ovflw = true ;
+        }
+    } while( is_ovflw ) ;
+    
+    //Inicializa la semilla si se cumple la cond.
+    if( id >= 0 ) {
+        bag.setRandom( id ) ;
+    }
+    
+    //Define el lenguaje de la bolsa
+    bag.define( language );
+    
+    //Muestra bag. En la práctica no lo pide, pero en la ejecución de prueba sí
+    //se muestra.
+    cout << "BAG(" << id << "-" << bag.size() << "): "
+         << toUTF( bag.to_string() ) ;
+    
+    string word ;
+    
+    do {
+        //Llena la bolsa de Player
+        player.add( toUTF( bag.extract(MAXPLAYER) ) ) ;
+    
+        //Muestra la bolsa del Player
+        cout << endl << "PLAYER: " << player.to_string() << " BAG("
+             << bag.size() << ")" ;
+        cout << endl << "INPUT A WORD: " ;
+        cin >> word ;
+
+        //Si es una palabra contenida en la bolsa del Player
+        if( player.isValid( word ) ) {
+            
+            //Si la palabra está en el diccionario
+            if( language.query( toISO(word) ) ) {
+                cout << endl << endl << word << " FOUND!" << endl ;
+                nwords++ ;                  //Añade las palabras
+                nletters += word.length() ; //Añade las letras
+            } else {
+                cout << endl << endl << word << " NOT REGISTERED!" << endl ;
+            }
+        } else {
+            cout << endl << endl << word << " INVALID!" << endl ;
+        }
+        
+    } while( word.length() < 2 ) ;
+    
+            
+    HallOfFame(language,id,bag,player, nwords, nletters, result);
+    
+    
     return 0;
 }
 
