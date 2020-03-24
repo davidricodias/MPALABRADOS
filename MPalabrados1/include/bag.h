@@ -27,8 +27,8 @@
 class Bag {
 private:
 	char letters[MAXBAG];		/// Set of letters of the game
-	int nletters;			/// Number of available letters
-	int id;				/// Seed
+	int nletters;					/// Number of available letters
+	int id;							/// Aleatorio para el juego
 	/**
 	 * @brief Returns the position p of the bag
 	 * @param p The positon requested
@@ -49,7 +49,7 @@ public:
 	 */
 	Bag();
 	/**
-	 * @brief Defines the random seed
+	 * 
 	 */
 	void setRandom(int id);
 	/**
@@ -85,4 +85,7 @@ public:
 	std::string extract(int n);
 };
 
+
+
 #endif /* BAG_H */
+

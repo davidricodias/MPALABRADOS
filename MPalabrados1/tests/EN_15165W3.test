@@ -1,0 +1,9 @@
+EN 15165
+
+%%%CALL < tests/EN_15165W3.test
+%%%OUTPUT
+LANGUAGE: EN ID: 15165
+BAG (0): 
+3 words found 
+DIRGE - SATIN - AIN - 
+
