@@ -81,8 +81,8 @@ Métodos públicos</h2></td></tr>
 <tr class="memitem:a749e428f99881d5fa88978a471b13cb7"><td class="memItemLeft" align="right" valign="top"><a id="a749e428f99881d5fa88978a471b13cb7"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setRandom</b> (int id)</td></tr>
 <tr class="separator:a749e428f99881d5fa88978a471b13cb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad380d36f2628b3ffe0ca19cfe53d7c19"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBag.html#ad380d36f2628b3ffe0ca19cfe53d7c19">define</a> (const Language &amp;l)</td></tr>
-<tr class="memdesc:ad380d36f2628b3ffe0ca19cfe53d7c19"><td class="mdescLeft">&#160;</td><td class="mdescRight">Define the content of the bag of letters according to the rules of the language. See language.h for more details on how to arrange this set of letters.  <a href="#ad380d36f2628b3ffe0ca19cfe53d7c19">Más...</a><br /></td></tr>
+<tr class="memitem:ad380d36f2628b3ffe0ca19cfe53d7c19"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBag.html#ad380d36f2628b3ffe0ca19cfe53d7c19">define</a> (const <a class="el" href="classLanguage.html">Language</a> &amp;l)</td></tr>
+<tr class="memdesc:ad380d36f2628b3ffe0ca19cfe53d7c19"><td class="mdescLeft">&#160;</td><td class="mdescRight">Define the content of the bag of letters according to the rules of the language. See <a class="el" href="language_8h.html" title="Fully functional static library to handle languages, which are represented as a full list of allowed ...">language.h</a> for more details on how to arrange this set of letters.  <a href="#ad380d36f2628b3ffe0ca19cfe53d7c19">Más...</a><br /></td></tr>
 <tr class="separator:ad380d36f2628b3ffe0ca19cfe53d7c19"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a32652be363a0f5d189b029ed863e5bf2"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBag.html#a32652be363a0f5d189b029ed863e5bf2">size</a> () const</td></tr>
 <tr class="memdesc:a32652be363a0f5d189b029ed863e5bf2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Size of the letters set that remain in the bag.  <a href="#a32652be363a0f5d189b029ed863e5bf2">Más...</a><br /></td></tr>
@@ -114,16 +114,16 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setRandom</b> (int id
         <tr>
           <td class="memname">void Bag::define </td>
           <td>(</td>
-          <td class="paramtype">const Language &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classLanguage.html">Language</a> &amp;&#160;</td>
           <td class="paramname"><em>l</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Define the content of the bag of letters according to the rules of the language. See language.h for more details on how to arrange this set of letters. </p>
+<p>Define the content of the bag of letters according to the rules of the language. See <a class="el" href="language_8h.html" title="Fully functional static library to handle languages, which are represented as a full list of allowed ...">language.h</a> for more details on how to arrange this set of letters. </p>
 <ul>
-<li>Language::getLetterSet() returns the set of letters of a given Language</li>
+<li><a class="el" href="classLanguage.html#ad72e0fe4a285a849d217a1b9251c79f1" title="Query the full set of available letters (without repetitions) in a given language. ">Language::getLetterSet()</a> returns the set of letters of a given <a class="el" href="classLanguage.html" title="Class fully implemented. It is used to store and manage all the details concerning a given language...">Language</a></li>
 <li>Language::getFrequency(char letter) returns the frequency of a letter, that is, the number of times that each letter appears in the bag <dl class="params"><dt>Parámetros</dt><dd>
   <table class="params">
     <tr><td class="paramname">l</td><td>The chosen language </td></tr>
@@ -134,8 +134,16 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setRandom</b> (int id
 </ul>
 
 <p class="definition">Definición en la línea <a class="el" href="bag_8cpp_source.html#l00048">48</a> del archivo <a class="el" href="bag_8cpp_source.html">bag.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;                                  {</div><div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keywordtype">string</span> forletters = l.getLetterSet();</div><div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    nletters = 0;</div><div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; forletters.size(); i++)</div><div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        nletters += l.getFrequency(forletters[i]);  </div><div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    assert(nletters &lt;= MAXBAG); <span class="comment">// para comprobar que hay espacio en el vector, sino excepción!</span></div><div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> k = 0, i = 0; i &lt; forletters.size(); i++)</div><div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; l.getFrequency(forletters[i]); j++)</div><div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            <span class="keyword">set</span>(k++, forletters[i]);</div><div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <a class="code" href="bag_8cpp.html#a93c24c436157bf4f753bd36d1e1d2e4a">shuffleVector</a>(letters, nletters, <span class="keywordtype">id</span>);</div><div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;}</div><div class="ttc" id="bag_8cpp_html_a93c24c436157bf4f753bd36d1e1d2e4a"><div class="ttname"><a href="bag_8cpp.html#a93c24c436157bf4f753bd36d1e1d2e4a">shuffleVector</a></div><div class="ttdeci">void shuffleVector(char *s, int n, int id)</div><div class="ttdoc">USING mi_random class. Randomly reorders a vector of char. </div><div class="ttdef"><b>Definition:</b> <a href="bag_8cpp_source.html#l00113">bag.cpp:113</a></div></div>
-</div><!-- fragment -->
+<div class="fragment"><div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;                                  {</div><div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keywordtype">string</span> forletters = l.<a class="code" href="classLanguage.html#ad72e0fe4a285a849d217a1b9251c79f1">getLetterSet</a>();</div><div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    nletters = 0;</div><div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; forletters.size(); i++)</div><div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        nletters += l.<a class="code" href="classLanguage.html#ac727ac60a054ecd36e526fe93de8fc7f">getFrequency</a>(forletters[i]);  </div><div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    assert(nletters &lt;= MAXBAG); <span class="comment">// para comprobar que hay espacio en el vector, sino excepción!</span></div><div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> k = 0, i = 0; i &lt; forletters.size(); i++)</div><div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; l.<a class="code" href="classLanguage.html#ac727ac60a054ecd36e526fe93de8fc7f">getFrequency</a>(forletters[i]); j++)</div><div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            <span class="keyword">set</span>(k++, forletters[i]);</div><div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <a class="code" href="bag_8cpp.html#a93c24c436157bf4f753bd36d1e1d2e4a">shuffleVector</a>(letters, nletters, <span class="keywordtype">id</span>);</div><div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;}</div><div class="ttc" id="bag_8cpp_html_a93c24c436157bf4f753bd36d1e1d2e4a"><div class="ttname"><a href="bag_8cpp.html#a93c24c436157bf4f753bd36d1e1d2e4a">shuffleVector</a></div><div class="ttdeci">void shuffleVector(char *s, int n, int id)</div><div class="ttdoc">USING mi_random class. Randomly reorders a vector of char. </div><div class="ttdef"><b>Definition:</b> <a href="bag_8cpp_source.html#l00113">bag.cpp:113</a></div></div>
+<div class="ttc" id="classLanguage_html_ad72e0fe4a285a849d217a1b9251c79f1"><div class="ttname"><a href="classLanguage.html#ad72e0fe4a285a849d217a1b9251c79f1">Language::getLetterSet</a></div><div class="ttdeci">std::string getLetterSet() const</div><div class="ttdoc">Query the full set of available letters (without repetitions) in a given language. </div></div>
+<div class="ttc" id="classLanguage_html_ac727ac60a054ecd36e526fe93de8fc7f"><div class="ttname"><a href="classLanguage.html#ac727ac60a054ecd36e526fe93de8fc7f">Language::getFrequency</a></div><div class="ttdeci">int getFrequency(char letter) const</div><div class="ttdoc">Query the frecuency of appearance in Scrabble of the given letter, according to the chosen language...</div></div>
+</div><!-- fragment --><div class="dynheader">
+Gráfico de llamadas para esta función:</div>
+<div class="dyncontent">
+<div class="center"><img src="classBag_ad380d36f2628b3ffe0ca19cfe53d7c19_cgraph.png" border="0" usemap="#classBag_ad380d36f2628b3ffe0ca19cfe53d7c19_cgraph" alt=""/></div>
+<!-- MAP 0 -->
+</div>
+
 </div>
 </div>
 <a id="ac75abe2b7626e50109a1add3382978af"></a>
@@ -169,7 +177,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setRandom</b> (int id
 Gráfico de llamadas para esta función:</div>
 <div class="dyncontent">
 <div class="center"><img src="classBag_ac75abe2b7626e50109a1add3382978af_cgraph.png" border="0" usemap="#classBag_ac75abe2b7626e50109a1add3382978af_cgraph" alt=""/></div>
-<!-- MAP 0 -->
+<!-- MAP 1 -->
 </div>
 
 </div>

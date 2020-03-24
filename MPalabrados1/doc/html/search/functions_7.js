@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['main',['main',['../main_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4',1,'main.cpp']]]
+  ['isvalid',['isValid',['../classPlayer.html#a77e7a96403c899054e633eb88c2997c5',1,'Player']]]
 ];

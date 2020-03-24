@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['player',['Player',['../classPlayer.html#affe0cc3cb714f6deb4e62f0c0d3f1fd8',1,'Player']]]
+  ['language',['Language',['../classLanguage.html#a09448361f9188bceaaeebc5576cd6896',1,'Language::Language()'],['../classLanguage.html#ad7c92d28e44058ef4c7ea1b413a4b269',1,'Language::Language(std::string language)']]]
 ];

@@ -1,0 +1,301 @@
+\hypertarget{AnsiTerminal_8h}{}\section{Referencia del Archivo include/\+Ansi\+Terminal.h}
+\label{AnsiTerminal_8h}\index{include/\+Ansi\+Terminal.\+h@{include/\+Ansi\+Terminal.\+h}}
+
+
+Full functional static library of tools to use a coloured terminal (4 bits per pixel), manage cursor position, resize the terminal window according to standard A\+N\+SI escape codes. See \href{https://en.wikipedia.org/wiki/ANSI_escape_code}{\tt https\+://en.\+wikipedia.\+org/wiki/\+A\+N\+S\+I\+\_\+escape\+\_\+code} for further details.  
+
+
+\subsection*{defines}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{AnsiTerminal_8h_a4af1b6159e447ba72652bb7fcdfa726e}\label{AnsiTerminal_8h_a4af1b6159e447ba72652bb7fcdfa726e}} 
+\#define {\bfseries E\+SC}~(string) \char`\"{}\textbackslash{}033\char`\"{}
+\item 
+\mbox{\Hypertarget{AnsiTerminal_8h_ac28df5fb2095879dde9f0798fea73623}\label{AnsiTerminal_8h_ac28df5fb2095879dde9f0798fea73623}} 
+\#define {\bfseries black}~\hyperlink{AnsiTerminal_8h_a7c09f34699646be8e54ea7fd805c3d66}{set\+Color}(0,0,0)
+\item 
+\mbox{\Hypertarget{AnsiTerminal_8h_ab435487e41a1d42d4379464e35f873b4}\label{AnsiTerminal_8h_ab435487e41a1d42d4379464e35f873b4}} 
+\#define {\bfseries red}~\hyperlink{AnsiTerminal_8h_a7c09f34699646be8e54ea7fd805c3d66}{set\+Color}(0.\+5,0,0)
+\item 
+\mbox{\Hypertarget{AnsiTerminal_8h_a7027592d032f7d20b38a1304ae3da2a2}\label{AnsiTerminal_8h_a7027592d032f7d20b38a1304ae3da2a2}} 
+\#define {\bfseries green}~\hyperlink{AnsiTerminal_8h_a7c09f34699646be8e54ea7fd805c3d66}{set\+Color}(0,0.\+5,0)
+\item 
+\mbox{\Hypertarget{AnsiTerminal_8h_a958b53fedb555522aa3a3927915f2a55}\label{AnsiTerminal_8h_a958b53fedb555522aa3a3927915f2a55}} 
+\#define {\bfseries brown}~\hyperlink{AnsiTerminal_8h_a7c09f34699646be8e54ea7fd805c3d66}{set\+Color}(0.\+5,0.\+5,0)
+\item 
+\mbox{\Hypertarget{AnsiTerminal_8h_a679c8f05bd397c3b2ad08274a1e5e752}\label{AnsiTerminal_8h_a679c8f05bd397c3b2ad08274a1e5e752}} 
+\#define {\bfseries blue}~\hyperlink{AnsiTerminal_8h_a7c09f34699646be8e54ea7fd805c3d66}{set\+Color}(0,0,0.\+5)
+\item 
+\mbox{\Hypertarget{AnsiTerminal_8h_aec378d18c614bc816f159b45a6e11f14}\label{AnsiTerminal_8h_aec378d18c614bc816f159b45a6e11f14}} 
+\#define {\bfseries magenta}~\hyperlink{AnsiTerminal_8h_a7c09f34699646be8e54ea7fd805c3d66}{set\+Color}(0.\+5,0,0.\+5)
+\item 
+\mbox{\Hypertarget{AnsiTerminal_8h_aee63ed202c647f085cfc57577055a531}\label{AnsiTerminal_8h_aee63ed202c647f085cfc57577055a531}} 
+\#define {\bfseries cyan}~\hyperlink{AnsiTerminal_8h_a7c09f34699646be8e54ea7fd805c3d66}{set\+Color}(0,0.\+5,0.\+5)
+\item 
+\mbox{\Hypertarget{AnsiTerminal_8h_aedfcdb6062c4b7ae552ab7889043f8e2}\label{AnsiTerminal_8h_aedfcdb6062c4b7ae552ab7889043f8e2}} 
+\#define {\bfseries gray}~\hyperlink{AnsiTerminal_8h_a7c09f34699646be8e54ea7fd805c3d66}{set\+Color}(0.\+5,0.\+5,0.\+5)
+\item 
+\mbox{\Hypertarget{AnsiTerminal_8h_ace9dea5b0fcc645c8c702886c943deba}\label{AnsiTerminal_8h_ace9dea5b0fcc645c8c702886c943deba}} 
+\#define {\bfseries lightred}~\hyperlink{AnsiTerminal_8h_a7c09f34699646be8e54ea7fd805c3d66}{set\+Color}(1,0,0)
+\item 
+\mbox{\Hypertarget{AnsiTerminal_8h_ac2a22a5ad518025321a9b827d233c2be}\label{AnsiTerminal_8h_ac2a22a5ad518025321a9b827d233c2be}} 
+\#define {\bfseries lightgreen}~\hyperlink{AnsiTerminal_8h_a7c09f34699646be8e54ea7fd805c3d66}{set\+Color}(0,1,0)
+\item 
+\mbox{\Hypertarget{AnsiTerminal_8h_aaa509be08a5019c968f558d628a2a540}\label{AnsiTerminal_8h_aaa509be08a5019c968f558d628a2a540}} 
+\#define {\bfseries yellow}~\hyperlink{AnsiTerminal_8h_a7c09f34699646be8e54ea7fd805c3d66}{set\+Color}(1,1,0)
+\item 
+\mbox{\Hypertarget{AnsiTerminal_8h_a0d2fe93d0aba177103c4ce92e139a1dd}\label{AnsiTerminal_8h_a0d2fe93d0aba177103c4ce92e139a1dd}} 
+\#define {\bfseries lightblue}~\hyperlink{AnsiTerminal_8h_a7c09f34699646be8e54ea7fd805c3d66}{set\+Color}(0,0,1)
+\item 
+\mbox{\Hypertarget{AnsiTerminal_8h_a2c10c59d8554a1629e65e6048631366c}\label{AnsiTerminal_8h_a2c10c59d8554a1629e65e6048631366c}} 
+\#define {\bfseries lightmagenta}~\hyperlink{AnsiTerminal_8h_a7c09f34699646be8e54ea7fd805c3d66}{set\+Color}(1,0,1)
+\item 
+\mbox{\Hypertarget{AnsiTerminal_8h_a5637a35267a3ea3293e439edb7d73893}\label{AnsiTerminal_8h_a5637a35267a3ea3293e439edb7d73893}} 
+\#define {\bfseries lightcyan}~\hyperlink{AnsiTerminal_8h_a7c09f34699646be8e54ea7fd805c3d66}{set\+Color}(0,1,1)
+\item 
+\mbox{\Hypertarget{AnsiTerminal_8h_a85bd03e30e523319b5e069e7a8a0f81d}\label{AnsiTerminal_8h_a85bd03e30e523319b5e069e7a8a0f81d}} 
+\#define {\bfseries white}~\hyperlink{AnsiTerminal_8h_a7c09f34699646be8e54ea7fd805c3d66}{set\+Color}(1,1,1)
+\end{DoxyCompactItemize}
+\subsection*{Funciones}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{AnsiTerminal_8h_a7c09f34699646be8e54ea7fd805c3d66}{set\+Color} (double r, double g, double b)
+\begin{DoxyCompactList}\small\item\em Encodes a R\+GB color as an integer value with 4 bits per pixel. Each R\+GB value is specified as a real number in the range from 0 (darker) to 1 (brighter). \end{DoxyCompactList}\item 
+double \hyperlink{AnsiTerminal_8h_ae80f2e831b0846d38c3901a009dae8ae}{get\+Red} (int color)
+\begin{DoxyCompactList}\small\item\em Given an integer value which encodes a color, it returns its Red component. \end{DoxyCompactList}\item 
+double \hyperlink{AnsiTerminal_8h_a77637528826faae2ef33308719d98dd7}{get\+Green} (int color)
+\begin{DoxyCompactList}\small\item\em Given an integer value which encodes a color, it returns its Green component. \end{DoxyCompactList}\item 
+double \hyperlink{AnsiTerminal_8h_a334e1b2fd6f1a548cf4df7fa3e0c0614}{get\+Blue} (int color)
+\begin{DoxyCompactList}\small\item\em Given an integer value which encodes a color, it returns its Blue component. \end{DoxyCompactList}\item 
+int \hyperlink{AnsiTerminal_8h_a807f25b5820cfcad523a7a8cb7aa22fe}{get\+Text} ()
+\begin{DoxyCompactList}\small\item\em Returns the current color of text as an encoded color (4 bpp) \end{DoxyCompactList}\item 
+int \hyperlink{AnsiTerminal_8h_a4b66deb9841f783dbdbc02c8641fe984}{get\+Background} ()
+\begin{DoxyCompactList}\small\item\em Returns the current color of the background as an encoded color (4 bpp) \end{DoxyCompactList}\item 
+void \hyperlink{AnsiTerminal_8h_aba673fd56570a074aba10fa059524b96}{set\+Background} (int color)
+\begin{DoxyCompactList}\small\item\em Defines the color of the background. \end{DoxyCompactList}\item 
+void \hyperlink{AnsiTerminal_8h_a0f55c16c2a484a789686d5cacb9373d5}{set\+Text} (int color)
+\begin{DoxyCompactList}\small\item\em Defines the color of the text in the terminal. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{AnsiTerminal_8h_a9d7e8af417b6d543da691e9c0e2f6f9f}\label{AnsiTerminal_8h_a9d7e8af417b6d543da691e9c0e2f6f9f}} 
+void \hyperlink{AnsiTerminal_8h_a9d7e8af417b6d543da691e9c0e2f6f9f}{clear\+Screen} ()
+\begin{DoxyCompactList}\small\item\em Clears the screen with the existing background color. \end{DoxyCompactList}\item 
+void \hyperlink{AnsiTerminal_8h_a9e067ab8cc7d321b8f7fe50aa9030e49}{set\+Cursor\+XY} (int x, int y)
+\begin{DoxyCompactList}\small\item\em Locates the cursor, and therfore any further cout operation, in a position of the screen of the terminal given by {\ttfamily x} and {\ttfamily y}. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{AnsiTerminal_8h_a06b5359df00aa59eb96c943e34ee2d49}\label{AnsiTerminal_8h_a06b5359df00aa59eb96c943e34ee2d49}} 
+void \hyperlink{AnsiTerminal_8h_a06b5359df00aa59eb96c943e34ee2d49}{set\+Cursor\+On} ()
+\begin{DoxyCompactList}\small\item\em Shows the cursor in the screen. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{AnsiTerminal_8h_a7052e05e6d375180d8c1d389596b19bd}\label{AnsiTerminal_8h_a7052e05e6d375180d8c1d389596b19bd}} 
+void \hyperlink{AnsiTerminal_8h_a7052e05e6d375180d8c1d389596b19bd}{set\+Cursor\+Off} ()
+\begin{DoxyCompactList}\small\item\em Hides the cursor in the screen. \end{DoxyCompactList}\item 
+void \hyperlink{AnsiTerminal_8h_aef341b33f558009bddd518f12a4c98f7}{do\+Rectangle} (int x, int y, int w, int h, int color)
+\begin{DoxyCompactList}\small\item\em Fills a rectangle in the screen. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{AnsiTerminal_8h_af668a0ac331d255872fee3a072de08a7}\label{AnsiTerminal_8h_af668a0ac331d255872fee3a072de08a7}} 
+void \hyperlink{AnsiTerminal_8h_af668a0ac331d255872fee3a072de08a7}{press\+Return} ()
+\begin{DoxyCompactList}\small\item\em Waits until R\+E\+T\+U\+RN is pressed and does not leave any trail in cin. \end{DoxyCompactList}\item 
+void \hyperlink{AnsiTerminal_8h_ad5007041baf42d6f6d6e9ab2500930a7}{set\+Size} (int r, int c)
+\begin{DoxyCompactList}\small\item\em Fixes the size of the terminal. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Descripción detallada}
+Full functional static library of tools to use a coloured terminal (4 bits per pixel), manage cursor position, resize the terminal window according to standard A\+N\+SI escape codes. See \href{https://en.wikipedia.org/wiki/ANSI_escape_code}{\tt https\+://en.\+wikipedia.\+org/wiki/\+A\+N\+S\+I\+\_\+escape\+\_\+code} for further details. 
+
+\begin{DoxyAuthor}{Autor}
+D\+E\+C\+S\+AI 
+\end{DoxyAuthor}
+\begin{DoxyNote}{Nota}
+Fully implemented. No further implementation required. 
+\end{DoxyNote}
+
+
+\subsection{Documentación de las funciones}
+\mbox{\Hypertarget{AnsiTerminal_8h_aef341b33f558009bddd518f12a4c98f7}\label{AnsiTerminal_8h_aef341b33f558009bddd518f12a4c98f7}} 
+\index{Ansi\+Terminal.\+h@{Ansi\+Terminal.\+h}!do\+Rectangle@{do\+Rectangle}}
+\index{do\+Rectangle@{do\+Rectangle}!Ansi\+Terminal.\+h@{Ansi\+Terminal.\+h}}
+\subsubsection{\texorpdfstring{do\+Rectangle()}{doRectangle()}}
+{\footnotesize\ttfamily void do\+Rectangle (\begin{DoxyParamCaption}\item[{int}]{x,  }\item[{int}]{y,  }\item[{int}]{w,  }\item[{int}]{h,  }\item[{int}]{color }\end{DoxyParamCaption})}
+
+
+
+Fills a rectangle in the screen. 
+
+
+\begin{DoxyParams}{Parámetros}
+{\em x} & Top ledt \\
+\hline
+{\em y} & Top left \\
+\hline
+{\em w} & Width of the rectangle, specified as text-\/columns in the terminal \\
+\hline
+{\em h} & Height of the rectangle, specified as text-\/rows in the terminal \\
+\hline
+{\em color} & Filling color \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{AnsiTerminal_8h_a4b66deb9841f783dbdbc02c8641fe984}\label{AnsiTerminal_8h_a4b66deb9841f783dbdbc02c8641fe984}} 
+\index{Ansi\+Terminal.\+h@{Ansi\+Terminal.\+h}!get\+Background@{get\+Background}}
+\index{get\+Background@{get\+Background}!Ansi\+Terminal.\+h@{Ansi\+Terminal.\+h}}
+\subsubsection{\texorpdfstring{get\+Background()}{getBackground()}}
+{\footnotesize\ttfamily int get\+Background (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Returns the current color of the background as an encoded color (4 bpp) 
+
+\begin{DoxyReturn}{Devuelve}
+An integer that encodes the R\+GB color with 4 bits per pixel 
+\end{DoxyReturn}
+\mbox{\Hypertarget{AnsiTerminal_8h_a334e1b2fd6f1a548cf4df7fa3e0c0614}\label{AnsiTerminal_8h_a334e1b2fd6f1a548cf4df7fa3e0c0614}} 
+\index{Ansi\+Terminal.\+h@{Ansi\+Terminal.\+h}!get\+Blue@{get\+Blue}}
+\index{get\+Blue@{get\+Blue}!Ansi\+Terminal.\+h@{Ansi\+Terminal.\+h}}
+\subsubsection{\texorpdfstring{get\+Blue()}{getBlue()}}
+{\footnotesize\ttfamily double get\+Blue (\begin{DoxyParamCaption}\item[{int}]{color }\end{DoxyParamCaption})}
+
+
+
+Given an integer value which encodes a color, it returns its Blue component. 
+
+
+\begin{DoxyParams}{Parámetros}
+{\em color} & Encoding a 4bpp R\+GB color \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Devuelve}
+A real number in the range from 0 (darker) to 1 (brighter) 
+\end{DoxyReturn}
+\mbox{\Hypertarget{AnsiTerminal_8h_a77637528826faae2ef33308719d98dd7}\label{AnsiTerminal_8h_a77637528826faae2ef33308719d98dd7}} 
+\index{Ansi\+Terminal.\+h@{Ansi\+Terminal.\+h}!get\+Green@{get\+Green}}
+\index{get\+Green@{get\+Green}!Ansi\+Terminal.\+h@{Ansi\+Terminal.\+h}}
+\subsubsection{\texorpdfstring{get\+Green()}{getGreen()}}
+{\footnotesize\ttfamily double get\+Green (\begin{DoxyParamCaption}\item[{int}]{color }\end{DoxyParamCaption})}
+
+
+
+Given an integer value which encodes a color, it returns its Green component. 
+
+
+\begin{DoxyParams}{Parámetros}
+{\em color} & Encoding a 4bpp R\+GB color \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Devuelve}
+A real number in the range from 0 (darker) to 1 (brighter) 
+\end{DoxyReturn}
+\mbox{\Hypertarget{AnsiTerminal_8h_ae80f2e831b0846d38c3901a009dae8ae}\label{AnsiTerminal_8h_ae80f2e831b0846d38c3901a009dae8ae}} 
+\index{Ansi\+Terminal.\+h@{Ansi\+Terminal.\+h}!get\+Red@{get\+Red}}
+\index{get\+Red@{get\+Red}!Ansi\+Terminal.\+h@{Ansi\+Terminal.\+h}}
+\subsubsection{\texorpdfstring{get\+Red()}{getRed()}}
+{\footnotesize\ttfamily double get\+Red (\begin{DoxyParamCaption}\item[{int}]{color }\end{DoxyParamCaption})}
+
+
+
+Given an integer value which encodes a color, it returns its Red component. 
+
+
+\begin{DoxyParams}{Parámetros}
+{\em color} & Encoding a 4bpp R\+GB color \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Devuelve}
+A real number in the range from 0 (darker) to 1 (brighter) 
+\end{DoxyReturn}
+\mbox{\Hypertarget{AnsiTerminal_8h_a807f25b5820cfcad523a7a8cb7aa22fe}\label{AnsiTerminal_8h_a807f25b5820cfcad523a7a8cb7aa22fe}} 
+\index{Ansi\+Terminal.\+h@{Ansi\+Terminal.\+h}!get\+Text@{get\+Text}}
+\index{get\+Text@{get\+Text}!Ansi\+Terminal.\+h@{Ansi\+Terminal.\+h}}
+\subsubsection{\texorpdfstring{get\+Text()}{getText()}}
+{\footnotesize\ttfamily int get\+Text (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Returns the current color of text as an encoded color (4 bpp) 
+
+\begin{DoxyReturn}{Devuelve}
+An integer that encodes the R\+GB color with 4 bits per pixel 
+\end{DoxyReturn}
+\mbox{\Hypertarget{AnsiTerminal_8h_aba673fd56570a074aba10fa059524b96}\label{AnsiTerminal_8h_aba673fd56570a074aba10fa059524b96}} 
+\index{Ansi\+Terminal.\+h@{Ansi\+Terminal.\+h}!set\+Background@{set\+Background}}
+\index{set\+Background@{set\+Background}!Ansi\+Terminal.\+h@{Ansi\+Terminal.\+h}}
+\subsubsection{\texorpdfstring{set\+Background()}{setBackground()}}
+{\footnotesize\ttfamily void set\+Background (\begin{DoxyParamCaption}\item[{int}]{color }\end{DoxyParamCaption})}
+
+
+
+Defines the color of the background. 
+
+
+\begin{DoxyParams}{Parámetros}
+{\em color} & To be assigned to the background of the terminal \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{AnsiTerminal_8h_a7c09f34699646be8e54ea7fd805c3d66}\label{AnsiTerminal_8h_a7c09f34699646be8e54ea7fd805c3d66}} 
+\index{Ansi\+Terminal.\+h@{Ansi\+Terminal.\+h}!set\+Color@{set\+Color}}
+\index{set\+Color@{set\+Color}!Ansi\+Terminal.\+h@{Ansi\+Terminal.\+h}}
+\subsubsection{\texorpdfstring{set\+Color()}{setColor()}}
+{\footnotesize\ttfamily int set\+Color (\begin{DoxyParamCaption}\item[{double}]{r,  }\item[{double}]{g,  }\item[{double}]{b }\end{DoxyParamCaption})}
+
+
+
+Encodes a R\+GB color as an integer value with 4 bits per pixel. Each R\+GB value is specified as a real number in the range from 0 (darker) to 1 (brighter). 
+
+
+\begin{DoxyParams}{Parámetros}
+{\em r} & Red value \\
+\hline
+{\em g} & Green Value \\
+\hline
+{\em b} & Blue Value \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Devuelve}
+An integer value which can be used to reference the color 
+\end{DoxyReturn}
+\begin{DoxyWarning}{Atención}
+Since only 4 bpp are used, that is, 16 possible values for each R\+GB, rounding differences might appear. 
+\end{DoxyWarning}
+\mbox{\Hypertarget{AnsiTerminal_8h_a9e067ab8cc7d321b8f7fe50aa9030e49}\label{AnsiTerminal_8h_a9e067ab8cc7d321b8f7fe50aa9030e49}} 
+\index{Ansi\+Terminal.\+h@{Ansi\+Terminal.\+h}!set\+Cursor\+XY@{set\+Cursor\+XY}}
+\index{set\+Cursor\+XY@{set\+Cursor\+XY}!Ansi\+Terminal.\+h@{Ansi\+Terminal.\+h}}
+\subsubsection{\texorpdfstring{set\+Cursor\+X\+Y()}{setCursorXY()}}
+{\footnotesize\ttfamily void set\+Cursor\+XY (\begin{DoxyParamCaption}\item[{int}]{x,  }\item[{int}]{y }\end{DoxyParamCaption})}
+
+
+
+Locates the cursor, and therfore any further cout operation, in a position of the screen of the terminal given by {\ttfamily x} and {\ttfamily y}. 
+
+
+\begin{DoxyParams}{Parámetros}
+{\em x} & Horizontal coordinate from top-\/left corner, which is x=1 \\
+\hline
+{\em y} & vertical coordinate from top-\/left corner, which is y=1 \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{AnsiTerminal_8h_ad5007041baf42d6f6d6e9ab2500930a7}\label{AnsiTerminal_8h_ad5007041baf42d6f6d6e9ab2500930a7}} 
+\index{Ansi\+Terminal.\+h@{Ansi\+Terminal.\+h}!set\+Size@{set\+Size}}
+\index{set\+Size@{set\+Size}!Ansi\+Terminal.\+h@{Ansi\+Terminal.\+h}}
+\subsubsection{\texorpdfstring{set\+Size()}{setSize()}}
+{\footnotesize\ttfamily void set\+Size (\begin{DoxyParamCaption}\item[{int}]{r,  }\item[{int}]{c }\end{DoxyParamCaption})}
+
+
+
+Fixes the size of the terminal. 
+
+
+\begin{DoxyParams}{Parámetros}
+{\em r} & Number of rows \\
+\hline
+{\em c} & Number of columns \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{AnsiTerminal_8h_a0f55c16c2a484a789686d5cacb9373d5}\label{AnsiTerminal_8h_a0f55c16c2a484a789686d5cacb9373d5}} 
+\index{Ansi\+Terminal.\+h@{Ansi\+Terminal.\+h}!set\+Text@{set\+Text}}
+\index{set\+Text@{set\+Text}!Ansi\+Terminal.\+h@{Ansi\+Terminal.\+h}}
+\subsubsection{\texorpdfstring{set\+Text()}{setText()}}
+{\footnotesize\ttfamily void set\+Text (\begin{DoxyParamCaption}\item[{int}]{color }\end{DoxyParamCaption})}
+
+
+
+Defines the color of the text in the terminal. 
+
+
+\begin{DoxyParams}{Parámetros}
+{\em color} & The color to be assigned to the text \\
+\hline
+\end{DoxyParams}

@@ -10,12 +10,12 @@ Dependencia gráfica adjunta para main.\+cpp\+:
 \subsection*{Funciones}
 \begin{DoxyCompactItemize}
 \item 
-void \hyperlink{main_8cpp_a1748be51e193301aa726a8ac722a91e8}{Hall\+Of\+Fame} (const Language \&l, int random, const \hyperlink{classBag}{Bag} \&b, const \hyperlink{classPlayer}{Player} \&p, int nwords, int score, const string \&result)
+void \hyperlink{main_8cpp_a1748be51e193301aa726a8ac722a91e8}{Hall\+Of\+Fame} (const \hyperlink{classLanguage}{Language} \&l, int random, const \hyperlink{classBag}{Bag} \&b, const \hyperlink{classPlayer}{Player} \&p, int nwords, int score, const string \&result)
 \begin{DoxyCompactList}\small\item\em Shows final data. \end{DoxyCompactList}\item 
 int \hyperlink{main_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}{main} ()
 \begin{DoxyCompactList}\small\item\em Main function. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{main_8cpp_a5e856ec6a7e7150e58f0a8a4744e106f}\label{main_8cpp_a5e856ec6a7e7150e58f0a8a4744e106f}} 
-string {\bfseries best\+Advice} (const string \&s, const Language \&l)
+string {\bfseries best\+Advice} (const string \&s, const \hyperlink{classLanguage}{Language} \&l)
 \end{DoxyCompactItemize}
 
 
@@ -33,7 +33,7 @@ To be implemented by students either completely or by giving them key functions 
 \index{main.\+cpp@{main.\+cpp}!Hall\+Of\+Fame@{Hall\+Of\+Fame}}
 \index{Hall\+Of\+Fame@{Hall\+Of\+Fame}!main.\+cpp@{main.\+cpp}}
 \subsubsection{\texorpdfstring{Hall\+Of\+Fame()}{HallOfFame()}}
-{\footnotesize\ttfamily void Hall\+Of\+Fame (\begin{DoxyParamCaption}\item[{const Language \&}]{l,  }\item[{int}]{random,  }\item[{const \hyperlink{classBag}{Bag} \&}]{b,  }\item[{const \hyperlink{classPlayer}{Player} \&}]{p,  }\item[{int}]{nwords,  }\item[{int}]{score,  }\item[{const string \&}]{result }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void Hall\+Of\+Fame (\begin{DoxyParamCaption}\item[{const \hyperlink{classLanguage}{Language} \&}]{l,  }\item[{int}]{random,  }\item[{const \hyperlink{classBag}{Bag} \&}]{b,  }\item[{const \hyperlink{classPlayer}{Player} \&}]{p,  }\item[{int}]{nwords,  }\item[{int}]{score,  }\item[{const string \&}]{result }\end{DoxyParamCaption})}
 
 
 
@@ -41,7 +41,7 @@ Shows final data.
 
 
 \begin{DoxyParams}{Parámetros}
-{\em l} & Language \\
+{\em l} & \hyperlink{classLanguage}{Language} \\
 \hline
 {\em random} & Random seed \\
 \hline
@@ -63,7 +63,7 @@ Definición en la línea 51 del archivo main.\+cpp.
 
 \begin{DoxyCode}
 52                                                      \{
-53     cout << endl << \textcolor{stringliteral}{"LANGUAGE: "}<<l.getLanguage()<< \textcolor{stringliteral}{" ID: "} << random << endl;
+53     cout << endl << \textcolor{stringliteral}{"LANGUAGE: "}<<l.\hyperlink{classLanguage_ae601aeb3adba71b80ca3eb25310bed58}{getLanguage}()<< \textcolor{stringliteral}{" ID: "} << random << endl;
 54     cout << \textcolor{stringliteral}{"BAG ("}<<b.\hyperlink{classBag_a32652be363a0f5d189b029ed863e5bf2}{size}()<<\textcolor{stringliteral}{"): "} << toUTF(b.\hyperlink{classBag_ac63bdc8c3ceed6d86db66b9d399764ab}{to\_string}()) << endl;
 55     cout << \textcolor{stringliteral}{"PLAYER ("} <<p.\hyperlink{classPlayer_a706f8e7eb9f430881ce2c96e6f525b62}{size}() << \textcolor{stringliteral}{"): "} << toUTF(p.\hyperlink{classPlayer_a07c689d9000618e4d596ef47140f94fd}{to\_string}())<<endl;
 56     cout << nwords << \textcolor{stringliteral}{" words and "} << score << \textcolor{stringliteral}{" letters "}<<endl << 
@@ -91,7 +91,7 @@ To be used in bag.\+set\+Random())
 
 \hyperlink{classPlayer}{Player} set of letters
 
-Language to be loaded from disk
+\hyperlink{classLanguage}{Language} to be loaded from disk
 
 String that contains all the words found
 
@@ -112,7 +112,7 @@ Definición en la línea 33 del archivo main.\+cpp.
 34     \textcolor{keywordtype}{int} Id;             
 35     \hyperlink{classBag}{Bag} bag;            
 36     \hyperlink{classPlayer}{Player} player;      
-37     Language language;  
+37     \hyperlink{classLanguage}{Language} language;  
 38     \textcolor{keywordtype}{string} result;      
 39     \textcolor{keywordtype}{int} nletters,          
 40         nwords;          

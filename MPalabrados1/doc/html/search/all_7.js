@@ -1,6 +1,4 @@
 var searchData=
 [
-  ['main',['main',['../main_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4',1,'main.cpp']]],
-  ['main_2ecpp',['main.cpp',['../main_8cpp.html',1,'']]],
-  ['mi_5frandom',['mi_random',['../classmi__random.html',1,'']]]
+  ['isvalid',['isValid',['../classPlayer.html#a77e7a96403c899054e633eb88c2997c5',1,'Player']]]
 ];

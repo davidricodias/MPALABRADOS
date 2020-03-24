@@ -8,6 +8,7 @@
         <itemPath>../local/include/AnsiTerminal.h</itemPath>
         <itemPath>include/bag.h</itemPath>
         <itemPath>../local/include/language.h</itemPath>
+        <itemPath>include/mi_random.h</itemPath>
         <itemPath>../local/include/wordlist.h</itemPath>
       </logicalFolder>
     </logicalFolder>
@@ -23,6 +24,7 @@
       <logicalFolder name="src" displayName="src" projectFiles="true">
         <itemPath>src/bag.cpp</itemPath>
         <itemPath>src/main.cpp</itemPath>
+        <itemPath>src/player.cpp</itemPath>
       </logicalFolder>
     </logicalFolder>
     <logicalFolder name="TestFiles"
@@ -75,9 +77,13 @@
       </item>
       <item path="include/bag.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="include/mi_random.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="src/bag.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/player.cpp" ex="false" tool="1" flavor2="0">
       </item>
     </conf>
     <conf name="Release" type="1">
@@ -108,9 +114,13 @@
       </item>
       <item path="include/bag.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="include/mi_random.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="src/bag.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/player.cpp" ex="false" tool="1" flavor2="0">
       </item>
     </conf>
   </confs>

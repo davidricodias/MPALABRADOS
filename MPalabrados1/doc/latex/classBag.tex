@@ -18,8 +18,8 @@ Class to represent the full set of letters of the Scrabble. The number of letter
 \mbox{\Hypertarget{classBag_a749e428f99881d5fa88978a471b13cb7}\label{classBag_a749e428f99881d5fa88978a471b13cb7}} 
 void {\bfseries set\+Random} (int id)
 \item 
-void \hyperlink{classBag_ad380d36f2628b3ffe0ca19cfe53d7c19}{define} (const Language \&l)
-\begin{DoxyCompactList}\small\item\em Define the content of the bag of letters according to the rules of the language. See language.\+h for more details on how to arrange this set of letters. \end{DoxyCompactList}\item 
+void \hyperlink{classBag_ad380d36f2628b3ffe0ca19cfe53d7c19}{define} (const \hyperlink{classLanguage}{Language} \&l)
+\begin{DoxyCompactList}\small\item\em Define the content of the bag of letters according to the rules of the language. See \hyperlink{language_8h}{language.\+h} for more details on how to arrange this set of letters. \end{DoxyCompactList}\item 
 int \hyperlink{classBag_a32652be363a0f5d189b029ed863e5bf2}{size} () const
 \begin{DoxyCompactList}\small\item\em Size of the letters set that remain in the bag. \end{DoxyCompactList}\item 
 std\+::string \hyperlink{classBag_ac63bdc8c3ceed6d86db66b9d399764ab}{to\+\_\+string} () const
@@ -49,15 +49,15 @@ Definición en la línea 27 del archivo bag.\+h.
 \index{Bag@{Bag}!define@{define}}
 \index{define@{define}!Bag@{Bag}}
 \subsubsection{\texorpdfstring{define()}{define()}}
-{\footnotesize\ttfamily void Bag\+::define (\begin{DoxyParamCaption}\item[{const Language \&}]{l }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void Bag\+::define (\begin{DoxyParamCaption}\item[{const \hyperlink{classLanguage}{Language} \&}]{l }\end{DoxyParamCaption})}
 
 
 
-Define the content of the bag of letters according to the rules of the language. See language.\+h for more details on how to arrange this set of letters. 
+Define the content of the bag of letters according to the rules of the language. See \hyperlink{language_8h}{language.\+h} for more details on how to arrange this set of letters. 
 
 
 \begin{DoxyItemize}
-\item Language\+::get\+Letter\+Set() returns the set of letters of a given Language
+\item \hyperlink{classLanguage_ad72e0fe4a285a849d217a1b9251c79f1}{Language\+::get\+Letter\+Set()} returns the set of letters of a given \hyperlink{classLanguage}{Language}
 \item Language\+::get\+Frequency(char letter) returns the frequency of a letter, that is, the number of times that each letter appears in the bag 
 \begin{DoxyParams}{Parámetros}
 {\em l} & The chosen language \\
@@ -71,17 +71,19 @@ Definición en la línea 48 del archivo bag.\+cpp.
 
 \begin{DoxyCode}
 48                                   \{
-49     \textcolor{keywordtype}{string} forletters = l.getLetterSet();
+49     \textcolor{keywordtype}{string} forletters = l.\hyperlink{classLanguage_ad72e0fe4a285a849d217a1b9251c79f1}{getLetterSet}();
 50     nletters = 0;
 51     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} i = 0; i < forletters.size(); i++)
-52         nletters += l.getFrequency(forletters[i]);  
+52         nletters += l.\hyperlink{classLanguage_ac727ac60a054ecd36e526fe93de8fc7f}{getFrequency}(forletters[i]);  
 53     assert(nletters <= MAXBAG); \textcolor{comment}{// para comprobar que hay espacio en el vector, sino excepción!}
 54     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} k = 0, i = 0; i < forletters.size(); i++)
-55         \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} j = 0; j < l.getFrequency(forletters[i]); j++)
+55         \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} j = 0; j < l.\hyperlink{classLanguage_ac727ac60a054ecd36e526fe93de8fc7f}{getFrequency}(forletters[i]); j++)
 56             \textcolor{keyword}{set}(k++, forletters[i]);
 57     \hyperlink{bag_8cpp_a93c24c436157bf4f753bd36d1e1d2e4a}{shuffleVector}(letters, nletters, \textcolor{keywordtype}{id});
 58 \}
 \end{DoxyCode}
+Gráfico de llamadas para esta función\+:
+% FIG 0
 \mbox{\Hypertarget{classBag_ac75abe2b7626e50109a1add3382978af}\label{classBag_ac75abe2b7626e50109a1add3382978af}} 
 \index{Bag@{Bag}!extract@{extract}}
 \index{extract@{extract}!Bag@{Bag}}
@@ -118,7 +120,7 @@ Definición en la línea 80 del archivo bag.\+cpp.
 89 \}
 \end{DoxyCode}
 Gráfico de llamadas para esta función\+:
-% FIG 0
+% FIG 1
 \mbox{\Hypertarget{classBag_a3de5aa1629a7fdd40630d140adde2757}\label{classBag_a3de5aa1629a7fdd40630d140adde2757}} 
 \index{Bag@{Bag}!set@{set}}
 \index{set@{set}!Bag@{Bag}}
