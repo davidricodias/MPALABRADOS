@@ -77,7 +77,7 @@ $(function() {
 <code>#include &lt;algorithm&gt;</code><br />
 <code>#include &quot;<a class="el" href="bag_8h_source.html">bag.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="language_8h_source.html">language.h</a>&quot;</code><br />
-<code>#include &quot;mi_random.h&quot;</code><br />
+<code>#include &quot;<a class="el" href="mi__random_8h_source.html">mi_random.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Dependencia gráfica adjunta para bag.cpp:</div>
 <div class="dyncontent">
@@ -201,7 +201,7 @@ Funciones</h2></td></tr>
 <dl class="section author"><dt>Autor</dt><dd>DECSAI </dd></dl>
 
 <p class="definition">Definición en la línea <a class="el" href="bag_8cpp_source.html#l00113">113</a> del archivo <a class="el" href="bag_8cpp_source.html">bag.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;                                           {</div><div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    vector &lt;char&gt; aux(s, s+n);</div><div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    <span class="comment">//std::shuffle(aux.begin(), aux.end(), std::default_random_engine(id));</span></div><div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    shuffle(aux.begin(), aux.end(), <a class="code" href="classmi__random.html">mi_random</a>(<span class="keywordtype">id</span>));</div><div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i=0; i&lt;n; i++)</div><div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        s[i] = aux[i];    </div><div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;}</div><div class="ttc" id="classmi__random_html"><div class="ttname"><a href="classmi__random.html">mi_random</a></div><div class="ttdef"><b>Definition:</b> <a href="mi__random_8h_source.html#l00017">mi_random.h:17</a></div></div>
+<div class="fragment"><div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;                                           {</div><div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    vector &lt;char&gt; aux(s, s+n);</div><div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    <span class="comment">//std::shuffle(aux.begin(), aux.end(), std::default_random_engine(id));</span></div><div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    shuffle(aux.begin(), aux.end(), <a class="code" href="classmi__random.html">mi_random</a>(<span class="keywordtype">id</span>));</div><div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i=0; i&lt;n; i++)</div><div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        s[i] = aux[i];    </div><div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;}</div><div class="ttc" id="classmi__random_html"><div class="ttname"><a href="classmi__random.html">mi_random</a></div><div class="ttdef"><b>Definition:</b> <a href="mi__random_8h_source.html#l00010">mi_random.h:10</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

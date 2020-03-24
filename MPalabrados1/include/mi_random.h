@@ -1,14 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/* 
- * File:   mi_random.h
- * Author: acid
+/** 
+ * @file mi_random.h
+ * @author acid
  *
- * Created on 9 de marzo de 2020, 9:47
  */
 
 #ifndef MI_RANDOM_H
