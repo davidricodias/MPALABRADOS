@@ -17,7 +17,11 @@ using namespace std;
  * @return The cstring is modified
  * @warning To be fully implemented
  */
-void removeCString(char *cstr, int pos);
+void removeCString(char *cstr, int pos){
+    cstr.iminar(pos+1, pos);
+    
+    return cstr;
+}
 
 /**
  * @brief Sort a cstring from A to Z
@@ -25,5 +29,19 @@ void removeCString(char *cstr, int pos);
  * @return The cstring is modified
  * @warning To be fully implemented
  */
-void sortCString(char *cstr);
-
+void sortCString(char *cstr){
+    // Algoritmo QuickSort para ordenar alfabericamente
+    int low, high;
+    
+    int pivot;
+ 
+    if (high < low) {
+        pivot = divide(array, start, end);
+    
+        // Ordeno la lista de los menores
+        quicksort(array, start, pivot - 1);
+ 
+        // Ordeno la lista de los mayores
+        quicksort(array, pivot + 1, end);
+    }
+}
