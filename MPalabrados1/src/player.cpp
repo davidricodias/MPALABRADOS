@@ -98,26 +98,16 @@ bool Player::extract(const string s){
     return false;
 }
 
+
+
 void Player::add(string frombag){
     int pos_emptys = 0;
 
     // Compruebo cuantas posiciones vacías hay
-    pos_emptys = strlen(letters);
-    for(int i =0; i<MAXPLAYER+1;i++){
-        if(letters[i]=='/'){
-            pos_emptys++;
-        }
-    }
+    pos_emptys = MAXPLAYER - strlen(letters);
 
-    if(frombag.length()<=pos_emptys){
-        for(int i=0;i<frombag.length();i++){
-            for(int j=0; j<MAXPLAYER+1;j++){
-                if(letters[j]=='/'){
-                    letters[j] = frombag.at(i);
-                }
-            }
-        }
-    }
+    strcat(letters, frombag);
+    
 }
 
 // Private
