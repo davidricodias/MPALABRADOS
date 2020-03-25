@@ -108,6 +108,10 @@ int main() {
                 cout << endl << word << " FOUND!" << endl ;
                 nwords++ ;                  //Añade las palabras
                 nletters += word.length() ; //Añade las letras
+                
+                player.extract(word) ;
+                
+                player.add( bag.extract(MAXPLAYER) ) ;
             } else {
                 cout << endl << word << " NOT REGISTERED!" << endl ;
             }

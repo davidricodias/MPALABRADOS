@@ -82,8 +82,8 @@ bool Player::extract(const string s){
     if(isValid(s)){
         for(int i=0;i<s.length();i++) {
             for(int j=0;letters[j]!='\0';j++){
-                if(s.at(i)==letters[j]){
-                    //removeCString
+                if(s[i] == letters[j]){
+                    removeCString(letters, j) ;
                 }
             }
         }
