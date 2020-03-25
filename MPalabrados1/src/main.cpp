@@ -99,7 +99,7 @@ int main() {
         cin >> word ;
 
         //Si es una palabra contenida en la bolsa del Player
-        if( player.isValid( word ) ) {
+        if( player.isValid( toISO(word) ) ) {
             
             //Si la palabra está en el diccionario
             if( language.query( toISO(word) ) ) {

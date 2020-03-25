@@ -4,9 +4,9 @@
  * @note To be implemented by students
  */
 
+#include <algorithm>
 #include <string>
 #include <cstring>
-#include <algorithm>
 #include "player.h"
 ///@warning complete missing #includes
 /// See http://www.cplusplus.com/reference/cstring/ for details about cstrings
@@ -33,8 +33,6 @@ void sortCString(char *cstr);
 */
 Player::Player(){}
 
-
-
 /**
 * @brief Returns the number of letters stored.
 * @return The number of letters
@@ -49,15 +47,14 @@ int Player::size() const{
 * @return The set of letters
 */
 string Player::to_string() const{
-    string letters_str = letters;
-        
-    return letters_str;
+    string letters_str = letters ;
+    return letters_str ;
 }
-    
+
 void Player::clear(){
     letters[0]='\0';
 }
-    
+
 bool Player::isValid(const string s) const{
     const int alphabet_length = 26;
     const int a_position = 97; // Posición de la letra a en la tabla ASCII
@@ -90,7 +87,7 @@ bool Player::isValid(const string s) const{
 
 bool Player::extract(const string s){
     if(isValid(s)){
-        for(int i=0;i<s.length();i++){
+        for(int i=0;i<s.length();i++) {
             for(int j=0;letters[j]!='\0';j++){
                 if(s.at(i)==letters[j]){
                     //removeCString
