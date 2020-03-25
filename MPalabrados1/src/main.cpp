@@ -111,7 +111,7 @@ int main() {
                 
                 player.extract(word) ;
                 
-                player.add( bag.extract(MAXPLAYER) ) ;
+                player.add( bag.extract(word.length()) ) ;
             } else {
                 cout << endl << word << " NOT REGISTERED!" << endl ;
             }
