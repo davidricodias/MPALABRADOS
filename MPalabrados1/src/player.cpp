@@ -4,11 +4,9 @@
  * @note To be implemented by students
  */
 
-#include <algorithm>
 #include <string>
 #include <cstring>
 #include "player.h"
-
 ///@warning complete missing #includes
 /// See http://www.cplusplus.com/reference/cstring/ for details about cstrings
 using namespace std;
@@ -57,31 +55,33 @@ void Player::clear(){
 }
 
 bool Player::isValid(const string s) const{
-    
-    bool is_valid = true ;
-    
-    char aux[MAXPLAYER+1] ;
-    
-    strcpy(aux,letters) ;
-    
-    char comp ;
-    
-    for( int i=0  ; i < s.length() && is_valid ; i++ ) {
-        comp = s[i] ;
-        
-        bool encontrado_comp = false ;
-        for( int j=0 ; aux[j] != '\0' && is_valid && !encontrado_comp; j++ ) {
-            if(aux[j] == comp) {
-                encontrado_comp = true ;
-                removeCString(aux, j) ;
-            }
-        }
-        if( !encontrado_comp )
-            is_valid = false ;
+    const int alphabet_length = 26;
+    const int a_position = 97; // Posición de la letra a en la tabla ASCII
+
+    int s_count[alphabet_length] = {0}; // Numero de veces que aparece cada letra;
+    int letters_count[alphabet_length] = {0}; // Numero de veces que aparece cada letra;
+
+    int length_letters = size();
+    int length_s = s.length(); // Tamanio del string
+
+    // Relleno el vector letters_count
+    for (int i=0;i<length_letters;i++){
+        letters_count[letters[i]- a_position]++;
     }
 
-    return is_valid ;
-    
+    // Relleno el vector s_count
+    for (int i=0;i<length_s;i++){
+        s_count[s.at(i)- a_position]++;
+    }
+
+    // Los comparo
+    for (int i=0;i<length_s;i++){
+        if(!(s_count[i] <= letters_count[i])){
+            return false;
+        }
+    }
+    return true;
+
 }
 
 bool Player::extract(const string s){
@@ -98,16 +98,15 @@ bool Player::extract(const string s){
     return false;
 }
 
-
-
 void Player::add(string frombag){
     int pos_emptys = 0;
 
     // Compruebo cuantas posiciones vacías hay
     pos_emptys = MAXPLAYER - strlen(letters);
 
-    strcat(letters, &frombag[0]);
-    
+    if(frombag.length()<=pos_emptys){
+        strcat(letters, &frombag[0]);
+    }
 }
 
 // Private
@@ -138,7 +137,25 @@ void removeCString(char *cstr, int pos){
  */
 void sortCString(char *cstr){
     int TAM = strlen(cstr);
-    sort(cstr[0], cstr[TAM]);
+    char aux= cstr[0];
+    
+    //sort(cstr[0], cstr[TAM]);
+    int i, j, first, temp;
+    int numLength = strlen(cstr);
+    for (i= numLength - 1; i > 0; i--){
+        first = 0; 
+        for (j=1; j<=i; j++){
+            if (cstr[j] < cstr[first]){
+                first = j;
+            }
+        }
+        temp = cstr[first]; 
+        cstr[first] = cstr[i];
+        cstr[i] = temp;
+     }
+    
                 
 }
+
+
 
