@@ -11,6 +11,12 @@
 /// See http://www.cplusplus.com/reference/cstring/ for details about cstrings
 using namespace std;
 
+
+/**
+* @brief Basic constructor and initializer. 
+*/
+Player::Player(){}
+
 /**
  * @brief Removes a position from a cstring
  * @param cstr The cstring
@@ -31,39 +37,50 @@ void removeCString(char *cstr, int pos){
  * @warning To be fully implemented
  */
 void sortCString(char *cstr){
-    // Algoritmo QuickSort para ordenar alfabericamente
-    int low, high;
+    // Algoritmo Sort para ordenar alfabericamente
+    int TAM = srtlen(cstr);
+    char aux;
     
-    int pivot;
- 
-    if (high < low) {
-        pivot = divide(array, start, end);
-    
-        // Ordeno la lista de los menores
-        quicksort(array, start, pivot - 1);
- 
-        // Ordeno la lista de los mayores
-        quicksort(array, pivot + 1, end);
+    for (i=1; i<TAM; i++){
+        for (j=0 ; j<TAM - 1; j++){
+            if (cstr[j] > cstr[j+1]){
+                aux = cstr[j];
+                cstr[j] = cstr[j+1];
+                cstr[j+1] = aux;
+            }
+        }
     }
-    
-    int size() const{
-        return strlen(letters);
-    }
+    // DEBUG
+    cout << "sortCString: " << cstr << endl;
+                
 }
-    
-string to_string() const{
+
+/**
+* @brief Returns the number of letters stored.
+* @return The number of letters
+*/
+int Player::size() const{
+    return crtlen(letters);
+}
+
+
+/**
+* @brief Returns the number of letters stored. Although internally this set is stored in a CSTRING, the return value must be a STRING 
+* @return The set of letters
+*/
+string Player::to_string() const{
     string sizeVector = to_string(size)); //strlen lo trata como un CString
         
     return sizeVector;
 }
     
-void clear(){
+void Player::clear(){
     for(int i=0; i<MAXPLAYER+1;i++){
         letters[i]='/';
     }
 }
     
-bool isValid(const string s) const{
+bool Player::isValid(const string s) const{
     const int alphabet_length = 26;
     const int a_position = 97; // Posición de la letra a en la tabla ASCII
 
@@ -93,7 +110,7 @@ bool isValid(const string s) const{
 
 }
 
-bool extract(const string s) const{
+bool Player::extract(const string s) const{
     if(isValid(s)){
         for(int i=0;i<s.length();i++){
             for(int j=0;j<MAXPLAYER+1;j++){
@@ -107,7 +124,7 @@ bool extract(const string s) const{
     return false;
 }
 
-void add(string frombag){
+void Player::add(string frombag){
     int pos_emptys = 0;
 
     // Compruebo cuantas posiciones vacías hay
@@ -130,3 +147,5 @@ void add(string frombag){
         cout << "Error add() fuera de rango"
     }
 }
+
+
