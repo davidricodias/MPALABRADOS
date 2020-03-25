@@ -71,8 +71,10 @@ bool Player::isValid(const string s) const{
         
         bool encontrado_comp = false ;
         for( int j=0 ; aux[j] != '\0' && is_valid && !encontrado_comp; j++ ) {
-            if(aux[j] == comp)
+            if(aux[j] == comp) {
                 encontrado_comp = true ;
+                removeCString(aux, j) ;
+            }
         }
         if( !encontrado_comp )
             is_valid = false ;
