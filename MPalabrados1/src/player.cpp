@@ -106,7 +106,7 @@ void Player::add(string frombag){
     // Compruebo cuantas posiciones vacías hay
     pos_emptys = MAXPLAYER - strlen(letters);
 
-    strcat(letters, frombag);
+    strcat(letters, &frombag[0]);
     
 }
 
