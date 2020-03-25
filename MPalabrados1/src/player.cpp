@@ -55,32 +55,26 @@ void Player::clear(){
 }
 
 bool Player::isValid(const string s) const{
-    const int alphabet_length = 26;
-    const int a_position = 97; // Posición de la letra a en la tabla ASCII
+    bool is_valid = true ;
 
-    int s_count[alphabet_length] = {0}; // Numero de veces que aparece cada letra;
-    int letters_count[alphabet_length] = {0}; // Numero de veces que aparece cada letra;
+    char aux[MAXPLAYER+1] ;
 
-    int length_letters = size();
-    int length_s = s.length(); // Tamanio del string
+    strcpy(aux,letters) ;
 
-    // Relleno el vector letters_count
-    for (int i=0;i<length_letters;i++){
-        letters_count[letters[i]- a_position]++;
-    }
+    char comp ;
 
-    // Relleno el vector s_count
-    for (int i=0;i<length_s;i++){
-        s_count[s.at(i)- a_position]++;
-    }
+    for( int i=0  ; i < s.length() && is_valid ; i++ ) {
+        comp = s[i] ;
 
-    // Los comparo
-    for (int i=0;i<length_s;i++){
-        if(!(s_count[i] <= letters_count[i])){
-            return false;
+        bool encontrado_comp = false ;
+        for( int j=0 ; aux[j] != '\0' && is_valid && !encontrado_comp; j++ ) {
+            if(aux[j] == comp)
+                encontrado_comp = true ;
         }
+        if( !encontrado_comp )
+            is_valid = false ;
     }
-    return true;
+        return is_valid ;
 
 }
 
@@ -89,7 +83,7 @@ bool Player::extract(const string s){
         for(int i=0;i<s.length();i++) {
             for(int j=0;letters[j]!='\0';j++){
                 if(s.at(i)==letters[j]){
-                    removeCString(letters, j);
+                    //removeCString
                 }
             }
         }
@@ -138,13 +132,12 @@ void removeCString(char *cstr, int pos){
 void sortCString(char *cstr){
     int TAM = strlen(cstr);
     char aux= cstr[0];
-    
-    //sort(cstr[0], cstr[TAM]);
-    int i, j, first, temp;
+   
+    int first, temp;
     int numLength = strlen(cstr);
-    for (i= numLength - 1; i > 0; i--){
+    for (int i= numLength - 1; i > 0; i--){
         first = 0; 
-        for (j=1; j<=i; j++){
+        for (int j=1; j<=i; j++){
             if (cstr[j] < cstr[first]){
                 first = j;
             }
@@ -154,8 +147,39 @@ void sortCString(char *cstr){
         cstr[i] = temp;
      }
     
+    // Colocación de la ñ
+    // Busco la letra anterior a la ñ y mas proxima a ella
+    int prox_position; // Posición del más próximo
+    char prox= cstr[0]; // Letra más proxima
+    
+    //¿Cuantas ñ's hay?
+    int count=0;
+    int n_enies=0; // Numero de eñes
+    for(int i=0;cstr[i]!='ñ';i++){
+        count++;
+    }
+    n_enies=TAM-count;
+    
+    if(cstr[0]>'n'){ // Compruebo si la primera letra es posterior a la ñ
+        // Colocar en primer lugar
+    }else{
+        for(int i=1; prox<'n' | i<count;i++){
+            if(cstr[i]>=prox){
+                prox=cstr[i];
+                prox_position = i;
+            }
+        }
+        
+        // Ordenamos
+        for(int i=TAM;i>prox_position+1;i--){
+            cstr[i+n_enies]=cstr[i];
+        }
+        
+        // Rellenamos de eñes
+        for(int i=prox_position;i<n_enies;i++){
+            cstr[prox_position+1] = 'ñ';
+        }
+    }
+    
                 
 }
-
-
-
