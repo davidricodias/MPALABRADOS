@@ -8,6 +8,7 @@
 #include <string>
 #include <cstring>
 #include "player.h"
+
 ///@warning complete missing #includes
 /// See http://www.cplusplus.com/reference/cstring/ for details about cstrings
 using namespace std;
@@ -56,33 +57,29 @@ void Player::clear(){
 }
 
 bool Player::isValid(const string s) const{
-    const int alphabet_length = 26;
-    const int a_position = 97; // Posición de la letra a en la tabla ASCII
-
-    int s_count[alphabet_length] = {0}; // Numero de veces que aparece cada letra;
-    int letters_count[alphabet_length] = {0}; // Numero de veces que aparece cada letra;
-
-    int length_letters = size();
-    int length_s = s.length(); // Tamanio del string
-
-    // Relleno el vector letters_count
-    for (int i=0;i<length_letters;i++){
-        letters_count[letters[i]- a_position]++;
-    }
-
-    // Relleno el vector s_count
-    for (int i=0;i<length_s;i++){
-        s_count[s.at(i)- a_position]++;
-    }
-
-    // Los comparo
-    for (int i=0;i<length_s;i++){
-        if(!(s_count[i] <= letters_count[i])){
-            return false;
+    
+    bool is_valid = true ;
+    
+    char aux[MAXPLAYER+1] ;
+    
+    strcpy(aux,letters) ;
+    
+    char comp ;
+    
+    for( int i=0  ; i < s.length() && is_valid ; i++ ) {
+        comp = s[i] ;
+        
+        bool encontrado_comp = false ;
+        for( int j=0 ; aux[j] != '\0' && is_valid && !encontrado_comp; j++ ) {
+            if(aux[j] == comp)
+                encontrado_comp = true ;
         }
+        if( !encontrado_comp )
+            is_valid = false ;
     }
-    return true;
 
+    return is_valid ;
+    
 }
 
 bool Player::extract(const string s){

@@ -90,7 +90,7 @@ int main() {
     
     do {
         //Llena la bolsa de Player
-        player.add( toUTF( bag.extract(MAXPLAYER) ) ) ;
+        player.add( bag.extract(MAXPLAYER) ) ;
     
         //Muestra la bolsa del Player
         cout << endl << "PLAYER: " << player.to_string() << " BAG("
