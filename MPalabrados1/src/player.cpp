@@ -4,18 +4,13 @@
  * @note To be implemented by students
  */
 
-#include <cstring>
 #include <string>
+#include <cstring>
+#include <algorithm>
 #include "player.h"
 ///@warning complete missing #includes
 /// See http://www.cplusplus.com/reference/cstring/ for details about cstrings
 using namespace std;
-
-
-/**
-* @brief Basic constructor and initializer. 
-*/
-Player::Player(){}
 
 /**
  * @brief Removes a position from a cstring
@@ -24,43 +19,28 @@ Player::Player(){}
  * @return The cstring is modified
  * @warning To be fully implemented
  */
-void removeCString(char *cstr, int pos){
-    cstr.iminar(pos+1, pos);
-    
-    return cstr;
-}
-
+void removeCString(char *cstr, int pos);
 /**
  * @brief Sort a cstring from A to Z
  * @param cstr The cstring
  * @return The cstring is modified
  * @warning To be fully implemented
  */
-void sortCString(char *cstr){
-    // Algoritmo Sort para ordenar alfabericamente
-    int TAM = srtlen(cstr);
-    char aux;
-    
-    for (i=1; i<TAM; i++){
-        for (j=0 ; j<TAM - 1; j++){
-            if (cstr[j] > cstr[j+1]){
-                aux = cstr[j];
-                cstr[j] = cstr[j+1];
-                cstr[j+1] = aux;
-            }
-        }
-    }
-    // DEBUG
-    cout << "sortCString: " << cstr << endl;
-                
-}
+void sortCString(char *cstr);
+
+/**
+* @brief Basic constructor and initializer. 
+*/
+Player::Player(){}
+
+
 
 /**
 * @brief Returns the number of letters stored.
 * @return The number of letters
 */
 int Player::size() const{
-    return crtlen(letters);
+    return strlen(letters);
 }
 
 
@@ -69,15 +49,13 @@ int Player::size() const{
 * @return The set of letters
 */
 string Player::to_string() const{
-    string sizeVector = to_string(size)); //strlen lo trata como un CString
+    string letters_str = letters;
         
-    return sizeVector;
+    return letters_str;
 }
     
 void Player::clear(){
-    for(int i=0; i<MAXPLAYER+1;i++){
-        letters[i]='/';
-    }
+    letters[0]='\0';
 }
     
 bool Player::isValid(const string s) const{
@@ -88,7 +66,7 @@ bool Player::isValid(const string s) const{
     int letters_count[alphabet_length] = {0}; // Numero de veces que aparece cada letra;
 
     int length_letters = size();
-    int length_s = strlen(s); // Tamanio del string
+    int length_s = s.length(); // Tamanio del string
 
     // Relleno el vector letters_count
     for (int i=0;i<length_letters;i++){
@@ -102,7 +80,7 @@ bool Player::isValid(const string s) const{
 
     // Los comparo
     for (int i=0;i<length_s;i++){
-        if(!(s_count[i] =< letters_count[i])){
+        if(!(s_count[i] <= letters_count[i])){
             return false;
         }
     }
@@ -110,12 +88,12 @@ bool Player::isValid(const string s) const{
 
 }
 
-bool Player::extract(const string s) const{
+bool Player::extract(const string s){
     if(isValid(s)){
         for(int i=0;i<s.length();i++){
-            for(int j=0;j<MAXPLAYER+1;j++){
+            for(int j=0;letters[j]!='\0';j++){
                 if(s.at(i)==letters[j]){
-                    letters[j] = '/';// Elemento nulo
+                    //removeCString
                 }
             }
         }
@@ -128,6 +106,7 @@ void Player::add(string frombag){
     int pos_emptys = 0;
 
     // Compruebo cuantas posiciones vacías hay
+    pos_emptys = strlen(letters);
     for(int i =0; i<MAXPLAYER+1;i++){
         if(letters[i]=='/'){
             pos_emptys++;
@@ -143,9 +122,37 @@ void Player::add(string frombag){
             }
         }
     }
-    }else{
-        cout << "Error add() fuera de rango"
-    }
 }
 
+// Private
+/**
+ * @brief Removes a position from a cstring
+ * @param cstr The cstring
+ * @param pos The position
+ * @return The cstring is modified
+ * @warning To be fully implemented
+ */
+void removeCString(char *cstr, int pos){
+    // Copiamos el contenido de pos+1 en pos donde pos es la posicion
+    // que vamos a remplazar
+    
+    int TAM = strlen(cstr); // Tamanio
+    
+    for(int i=pos; i<TAM; i++){
+        cstr[i]=cstr[i+1];
+    }
+    
+}
+
+/**
+ * @brief Sort a cstring from A to Z
+ * @param cstr The cstring
+ * @return The cstring is modified
+ * @warning To be fully implemented
+ */
+void sortCString(char *cstr){
+    int TAM = strlen(cstr);
+    sort(cstr[0], cstr[TAM]);
+                
+}
 
