@@ -48,9 +48,9 @@ int main() {
     cout << endl << "TYPE LANGUAGE: ";
     cin >> lang ;
     //Mejora de condiciones: búsqueda de idiomas disponibles.
-    while( lang.length() == 0 || lang != "ES" || lang != "EN" ) {
-        cout << endl << "Entrada inválida" ;
-        cout << endl << "TYPE LANGUAGE: " << endl;
+    while( lang.length() == 0  || (lang != "ES" && lang != "EN" )) {
+        cout << endl << "Entrada inválida" << endl ;
+        cout << endl << "TYPE LANGUAGE: ";
         cin >> lang ;
     }
 
@@ -88,36 +88,43 @@ int main() {
     
     string word ;
     
-    do {
-        //Llena la bolsa de Player
-        player.add( bag.extract(MAXPLAYER) ) ;
     
-        //Muestra la bolsa del Player
-        cout << endl << "PLAYER: " << player.to_string() << " BAG("
-             << bag.size() << ")" ;
-        cout << endl << "INPUT A WORD: " ;
-        cin >> word ;
+    //Llena la bolsa de Player
+    player.add( bag.extract(MAXPLAYER) ) ;
 
+    //Muestra la bolsa del Player
+    cout << endl << "PLAYER: " << toUTF(player.to_string()) << " BAG("
+         << bag.size() << ")" ;
+    cout << endl << "INPUT A WORD: " ;
+    cin >> word ;
+
+    while( word.length() > 2 ) {
+    
         //Si es una palabra contenida en la bolsa del Player
         if( player.isValid( toISO(word) ) ) {
             
             //Si la palabra está en el diccionario
             if( language.query( toISO(word) ) ) {
-                cout << endl << endl << word << " FOUND!" << endl ;
+                cout << endl << word << " FOUND!" << endl ;
                 nwords++ ;                  //Añade las palabras
                 nletters += word.length() ; //Añade las letras
             } else {
-                cout << endl << endl << word << " NOT REGISTERED!" << endl ;
+                cout << endl << word << " NOT REGISTERED!" << endl ;
             }
         } else {
             cout << endl << endl << word << " INVALID!" << endl ;
         }
         
-    } while( word.length() < 2 ) ;
+        //Muestra la bolsa del Player
+        cout << endl << "PLAYER: " << toUTF(player.to_string()) << " BAG("
+             << bag.size() << ")" ;
+        cout << endl << "INPUT A WORD: " ;
+        cin >> word ;
+
+    }
     
             
     HallOfFame(language,id,bag,player, nwords, nletters, result);
-    
     
     return 0;
 }
