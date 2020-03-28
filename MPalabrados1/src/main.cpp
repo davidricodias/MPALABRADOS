@@ -8,6 +8,7 @@
 #include <string>
 #include <iostream>
 #include <stdexcept>
+
 #include "language.h"
 #include "bag.h"
 #include "player.h"
@@ -45,14 +46,12 @@ int main() {
     
     //Lectura según UTF-8
     string lang ;
-    cout << endl << "TYPE LANGUAGE: ";
-    cin >> lang ;
+    
     //Mejora de condiciones: búsqueda de idiomas disponibles.
-    while( lang.length() == 0  || (lang != "ES" && lang != "EN" )) {
-        cout << endl << "Entrada inválida" << endl ;
-        cout << endl << "TYPE LANGUAGE: ";
+    do {
+        cout << "TYPE LANGUAGE: ";
         cin >> lang ;
-    }
+    } while( lang.length() == 0  || (lang != "ES" && lang != "EN" && lang != "FR" )) ;
 
     //Inicializa Language esgún ISO
     language.setLanguage( toISO(lang) ) ;
@@ -98,7 +97,7 @@ int main() {
     cout << endl << "INPUT A WORD: " ;
     cin >> word ;
 
-    while( word.length() > 2 ) {
+    while( word.length() > 1 ) {
     
         //Si es una palabra contenida en la bolsa del Player
         if( player.isValid( toISO(word) ) ) {
@@ -109,12 +108,15 @@ int main() {
                 nwords++ ;                  //Añade las palabras
                 nletters += word.length() ; //Añade las letras
                 
-                player.extract(word) ;
-                
-                player.add( bag.extract(word.length()) ) ;
+
             } else {
                 cout << endl << word << " NOT REGISTERED!" << endl ;
             }
+            
+            //Si la palabra esta permitida, pero no se encuentra en el dicc.
+            player.extract(word) ;
+            player.add( bag.extract( MAXPLAYER-player.size() ) ) ;    
+            
         } else {
             cout << endl << endl << word << " INVALID!" << endl ;
         }
@@ -126,8 +128,8 @@ int main() {
         cin >> word ;
 
     }
-    
-            
+
+
     HallOfFame(language,id,bag,player, nwords, nletters, result);
     
     return 0;
