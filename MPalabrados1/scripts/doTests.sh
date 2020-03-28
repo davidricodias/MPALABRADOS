@@ -1,4 +1,4 @@
-#!/bin/bash
+#!  /bin/bash
 # Author: Luis Castillo Vidal L.Castillo@decsai.ugr.es
 VERSION=1.0
 # Load configuration & moves to the project root folder
@@ -107,7 +107,7 @@ do
     k=$[k + 1]
 done 
 printf "${WHITE}\n"
-if [ "$FAILED_TESTS" == "YES" ]
+if [ "$FAILED_TESTS" == "YES" ] && [ "$DO_REPORT" == "YES" ]
 then 
     echo "Press [y] for SHORT REPORTS, [f] for LONG REPORTS, other to skip"
     read REVIEW

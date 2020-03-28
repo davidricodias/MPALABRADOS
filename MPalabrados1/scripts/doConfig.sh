@@ -79,6 +79,8 @@ GRAY='\033[1;30m'
 WHITE='\033[1;37m'
 # Use of memory leak detector
 USE_VALGRIND=NO
+# Prints explanations of failed tests?
+DO_REPORT=NO
 # Forces the name of the ZIP. If left empty, the zip uses the name of the root foder
 ZIP_NAME=$PROJECT_NAME
 #ZIP_NAME="MPPractica"
