@@ -37,6 +37,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 OBJECTFILES= \
 	${OBJECTDIR}/src/bag.o \
 	${OBJECTDIR}/src/main.o \
+	${OBJECTDIR}/src/move.o \
 	${OBJECTDIR}/src/player.o
 
 
@@ -73,6 +74,11 @@ ${OBJECTDIR}/src/main.o: src/main.cpp
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/main.o src/main.cpp
+
+${OBJECTDIR}/src/move.o: src/move.cpp
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/move.o src/move.cpp
 
 ${OBJECTDIR}/src/player.o: src/player.cpp
 	${MKDIR} -p ${OBJECTDIR}/src
