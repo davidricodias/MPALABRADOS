@@ -6,12 +6,30 @@
  */
 
 #include <iostream>
+#include <cstring>
+#include <fstream>
+#include <string>
+#include <cstdlib>
+
+#include "language.h"
+#include "bag.h"
+#include "player.h"
+#include "move.h"
+
 using namespace std;
 
 
 #define ERROR_ARGUMENTS 1
 #define ERROR_OPEN 2
 #define ERROR_DATA 3
+
+#define NUM_MAX_ARGS 4
+#define NUM_MIN_ARGS 1
+const string lang_flag = "-l" ;
+const string file_flag = "-i" ;
+const string random_flag = "-r" ;
+const string bag_flag = "-b" ;
+
 /**
  * @brief Reports an important error and exits the program
  * @param errorcode An integer representing the error detected, which is represented
@@ -20,7 +38,7 @@ using namespace std;
  * errors parsing the arguments to main() and, for the case of errors opening or 
  * reading/writing data, the name of the file thas has failed.
  */
-void errorBreak(int errorcode, const string & errorinfo);       //Y una excepción?...
+void errorBreak(int errorcode, const string & errorinfo="");       //Y una excepción?...
 
 /**
  * @brief Shows final data
@@ -35,20 +53,69 @@ void errorBreak(int errorcode, const string & errorinfo);       //Y una excepci�
 void HallOfFame(const Language &l, int random, const Bag &b, const Player &p, 
         int nwords, int score, const string &result);
 
+//Guarda un comando
+struct Command{
+    string flag ;
+    string attribute ;
+};
+
+bool assignAttribute(const Command commands[], int &n_commands, const string &flag, string &attribute){
+    unsigned short count_command  = 0;  //Por si se introduce más de una vez la misma flag
+    for( int i=0 ; i < n_commands ; i++ ) {
+        if( commands[i].flag == flag ) {
+            attribute = commands[i].attribute ;
+            count_command++ ;
+        }
+    }
+    
+    //Si el comando se repite
+    if(count_command > 1)
+        errorBreak( ERROR_ARGUMENTS ) ;
+    
+    if( count_command==0 )
+        return false ;
+    else
+        return true ;   //Se ha contado una vez la flag
+}
+
+bool assignAttribute(const Command commands[], int &n_commands, const string &flag, int &attribute){
+    unsigned short count_command  = 0;  //Por si se introduce más de una vez la misma flag
+    for( int i=0 ; i < n_commands ; i++ ) {
+        if( commands[i].flag == flag ) {
+            attribute = atoi(commands[i].attribute.c_str()) ;   //Transforma string a cstring para poder aplicar atoi
+            count_command++ ;
+        }
+    }
+    
+    //Si el comando se repite
+    if(count_command > 1)
+        errorBreak( ERROR_ARGUMENTS ) ;
+    
+    if( count_command==0 )
+        return false ;
+    else
+        return true ;   //Se ha contado una vez la flag
+}
 
 /**
  * @brief Main function. 
  * @return 
  */
-int main(int nargs, char * args[]) {
+int main(int nargs, char *args[]) {
     Bag bag;
     Player player;
     Language language;
     Move move;
     string word, lang="", goodmoves="", badmoves="", ifilename="", ofilename="";
     int random=-1, nwords=0, score=0;
+    
+    // I/O streams
     ifstream ifile; ofstream ofile;
     istream *input; ostream *output;
+    
+    //By deafult cin
+    input = &cin ;
+    
     /// @warning: Declare more vars when needed
     
     /// @warning: Check arguments
@@ -113,6 +180,79 @@ int main(int nargs, char * args[]) {
 	y parar el programa.
 	*/
 
+    
+    // Número de argumentos
+    if( nargs % 2 != 0 && 2*NUM_MIN_ARGS+1 <= nargs && nargs <= 2*NUM_MAX_ARGS+1 ) {
+    
+        // Guarda todos los comandos que se han introducido para su análisis
+        int n_commands = 0 ;            // Numero de comandos
+        Command commands[20] ;          // !!! Posible overflow. Mejor con vector<Command>
+        
+        for( int i=0 ; i < nargs ; i+=2 ) {
+            commands[i/2].flag = args[2*i+1] ;
+            commands[i/2].attribute = args[2*i+2] ;
+            n_commands++ ;
+        }
+        
+        //Se analizan los comandos
+        
+        //Se ha introducido un lang
+        if(assignAttribute(commands, n_commands, lang_flag, lang))
+        
+        
+        if( lang!="ES" || lang!="EN" || lang!="FR")
+            errorBreak( ERROR_ARGUMENTS ) ;
+        
+        
+        language.setLanguage(lang) ;
+        
+        cout << "LANGUAGE: " << lang << endl ;
+        cout << "ALLOWED LETTERS: " << toUTF(language.getLetterSet()) << endl ;
+
+        
+        bag.define(language) ;
+        
+        //Si se ha encontrado la flag, se asiga
+        if(assignAttribute(commands, n_commands, random_flag, random)) {
+            bag.setRandom(random) ;
+        }
+        cout << "SEED: " << random  << endl ;
+        
+        
+        //Se ha introducido una semilla para random
+        
+        
+    } else {
+        errorBreak( ERROR_ARGUMENTS ) ;
+    }
+
+
+        // PUNTO 5
+        
+        player.clear() ;
+        player.add( bag.extract(MAXPLAYER) ) ;
+        
+        if( input != &cin )
+            cout << "Reading from " << ifilename << endl ;
+        
+        do{
+            
+            cout << "PLAYER: " << player.to_string() ;
+            
+            // Lectura
+            (*input) >>  word  ;
+            word=normalizeWord(word) ;
+            
+        } while ( word.find('@') == -1 ) ;
+        
+    } else {
+        
+    }
+    
+    
+    if( input != &cin )
+        ifile.close() ;
+    
     /// @warning: final report
     HallOfFame(language, random, bag, player, nwords, score, goodmoves);
     return 0;
@@ -137,9 +277,45 @@ void errorBreak(int errorcode, const string &errordata) {
             cerr<<"Error opening file "<<errordata << endl;
             break;
         case ERROR_DATA:
-            cerr<<"Data error in file "<<errordata << endl;
+            cerr<<"Data errors in file "<<errordata << endl;
             break;
     }
     std::exit(1);
 }
 
+//bool getAttribute( const char c1[],char const *c2[], int n_c2) {
+//    bool inside = false ;
+//    for( int i=0 ; i<n_c2 && !inside; i++ ) {
+//        //strcpm devuelve 0 si son iguales
+//        if( strcmp(c1, c2[i] ) == 0 )
+//            inside = true ;
+//    }
+//    return inside ;
+//}
+//
+//void getAttribute( const char c1[],char const* c2[], const int n_c2, string &attribute ) {
+//    
+//    bool inside = false ;
+//    for( int i=0 ; i<n_c2 && !inside; i++ ) {
+//        //strcpm devuelve 0 si son iguales
+//        if( strcmp(c1, c2[i] ) == 0 ) {
+//            inside = true ;
+//            //Usando & se copia el contenido de c2[i+1] directamente al string
+//            strcpy(&attribute[0], c2[i+1]) ;       //Guarda el atributo asociado a la flag
+//        }
+//    }
+//}
+//
+//
+//bool isIn(const string &cad, const char &ch) {
+//    
+//    bool isin = false ;
+//    
+//    for( int i=0 ; i<cad.length() && !isin ; i++ ) {
+//        if( cad[i] == ch )
+//            isin = true ;
+//    }
+//    
+//    return isin ;
+//}
+//

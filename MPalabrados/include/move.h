@@ -27,7 +27,7 @@ public:
 	/**
 	 * @brief Basic constructor e initializator
 	 */
-	Move()const;
+	Move() ;
 	/**
 	 * @brief Sets the main data of the class 
 	 * @param r row
@@ -35,27 +35,27 @@ public:
 	 * @param h 'H' horizontal or 'V' vertical
 	 * @param l letters
 	 */
-	void set(int &r, int &c, char &h, const std::string  &l)const;
+	void set(int &r, int &c, char &h, const std::string  &l) ;
 	/**
 	 * @brief Sets the main data of the class 
 	 * @param r row
 	 */
-	void setRow(int &r) const;
+	void setRow(int &r) ;
 	/**
 	 * @brief Sets the main data of the class 
 	 * @param c Column
 	 */
-	void setCol(int &c)const;
+	void setCol(int &c);
 	/**
 	 * @brief Sets the main data of the class 
 	 * @param h 'H' horizontal or 'V' vertical
 	 */
-	void setHorizontal(char &h)const;
+	void setHorizontal(char &h);
 	/**
 	 * @brief Sets the main data of the class 
 	 * @param l Letters
 	 */
-	void setLetters(const std::string &l)const;
+	void setLetters(const std::string &l);
 	/**
 	 * @brief Calculates the value of the movement by adding the value 
 	 * each letter according to the chosen language. If the word contained in 
@@ -69,7 +69,7 @@ public:
 	 * @brief Sets the value of the movement which have been calculated elsewhere 
 	 * @param s The value of the movement
 	 */
-	void setScore(int &s)const;
+	void setScore(int &s);
 	/**
 	 * @brief Query data stored in the class
 	 * @return The value stored
@@ -99,10 +99,10 @@ public:
 	/**
 	 * @brief Shows the values stored in the screen, except score 
 	 */
-	void print(const std::ostream &os) const;
+	void print( std::ostream &os=std::cout) const;
 	/**
 	 * @brief Reads from keyboard the values of the class, except score 
 	 */
-	void read(const std::istream &is) const;
+	void read( std::istream &is=std::cin);
 };
 #endif /* MOVE_H */

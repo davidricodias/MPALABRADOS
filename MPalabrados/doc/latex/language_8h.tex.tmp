@@ -1,0 +1,29 @@
+\hypertarget{language_8h}{}\section{Referencia del Archivo /home/jdrd/\+Net\+Beans\+Projects/\+M\+P\+A\+L\+A\+B\+R\+A\+D\+O\+S/local/include/language.h}
+\label{language_8h}\index{/home/jdrd/\+Net\+Beans\+Projects/\+M\+P\+A\+L\+A\+B\+R\+A\+D\+O\+S/local/include/language.\+h@{/home/jdrd/\+Net\+Beans\+Projects/\+M\+P\+A\+L\+A\+B\+R\+A\+D\+O\+S/local/include/language.\+h}}
+
+
+Fully functional static library to handle languages, which are represented as a full list of allowed words, stored as a tree to make search efficient O(n) being n the number of letters in the word to be loocked up.  
+
+
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include \char`\"{}wordlist.\+h\char`\"{}}\newline
+Dependencia gráfica adjunta para language.\+h\+:
+% FIG 0
+Gráfico de los archivos que directa o indirectamente incluyen a este archivo\+:
+% FIG 1
+\subsection*{Clases}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classLanguage}{Language}
+\begin{DoxyCompactList}\small\item\em Class fully implemented. It is used to store and manage all the details concerning a given language. It includes and make it publicily available some functions in \hyperlink{wordlist_8h_source}{wordlist.\+h} like those to change the encoding of characters. {\bfseries All the characters stored in memory use the I\+S\+O8859 standard} but characters read from keyboard might follow the U\+TF standard. These functions allow to change from one to another. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Descripción detallada}
+Fully functional static library to handle languages, which are represented as a full list of allowed words, stored as a tree to make search efficient O(n) being n the number of letters in the word to be loocked up. 
+
+\begin{DoxyAuthor}{Autor}
+D\+E\+C\+S\+AI 
+\end{DoxyAuthor}
+\begin{DoxyNote}{Nota}
+Fully implemented. No further implementation required. 
+\end{DoxyNote}

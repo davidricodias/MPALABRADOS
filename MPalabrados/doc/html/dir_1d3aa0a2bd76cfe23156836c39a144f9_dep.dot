@@ -1,0 +1,8 @@
+digraph "include" {
+  compound=true
+  node [ fontsize="10", fontname="Helvetica"];
+  edge [ labelfontsize="10", labelfontname="Helvetica"];
+  dir_1d3aa0a2bd76cfe23156836c39a144f9 [shape=box, label="include", style="filled", fillcolor="#eeeeff", pencolor="black", URL="dir_1d3aa0a2bd76cfe23156836c39a144f9.html"];
+  dir_0bca257b6f7866ff5362718e8319fe13 [shape=box label="local" fillcolor="white" style="filled" color="red" URL="dir_0bca257b6f7866ff5362718e8319fe13.html"];
+  dir_1d3aa0a2bd76cfe23156836c39a144f9->dir_0bca257b6f7866ff5362718e8319fe13 [headlabel="2", labeldistance=1.5 headhref="dir_000002_000000.html"];
+}

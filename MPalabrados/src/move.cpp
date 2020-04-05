@@ -4,49 +4,34 @@
  * @note To be implemented by students
  */
 #include <string>
+#include <iostream>
 #include "move.h"
 
-using namespace std;
 
-void Move::setLetters(const string &l){
-    letters = normalizeWord(l);
-}
-
-void Move::read(std::istream &is) {
-
-  //@warning reading
-  //@ set the others fields of move
-
-    letters = normalizeWord(letters);
+Move::Move(){
     
 }
 
-
-Move::Move()const{
-    
-}
-
-void Move::set(int &r, int &c, char &h, const std::string  &l)const{
+void Move::set(int &r, int &c, char &h, const std::string  &l){
     row = r;
     column = c;
     h=='H' ? ishorizontal=true : ishorizontal=false;
     letters = l;
-    
 }
 
-void Move::setRow(int &r) const{
+void Move::setRow(int &r) {
     row = r;
 }
 
-void Move::setCol(int &c) const{
+void Move::setCol(int &c) {
     column = c;
 }
 
-void Move::setHorizontal(char &h)const{
+void Move::setHorizontal(char &h){
     h=='H' ? ishorizontal=true : ishorizontal=false;
 }
 
-void Move::setLetters(const std::string &l)const{
+void Move::setLetters(const std::string &l){
     letters = l;
 }
 
@@ -64,7 +49,7 @@ int Move::findScore(const Language &l)const{
 
 }
 
-void Move::setScore(int &s)const{
+void Move::setScore(int &s){
     score = s;
 }
 
@@ -84,14 +69,14 @@ bool Move::isHorizontal() const{
     return ishorizontal;
 }
 
-string Move::getLetters() const{
+std::string Move::getLetters() const{
     return letters;
 }
 
-void print(const std::ostream &os) const{
-    cout << os << endl;
+void Move::print( std::ostream &os) const{
+    os << letters << " ";
 }
 
-void read(const std::istream &is) const{
-    getline(is, cin);
+void Move::read( std::istream &is) {
+    is >> letters ;
 }
