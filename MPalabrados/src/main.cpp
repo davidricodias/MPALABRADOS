@@ -187,8 +187,8 @@ int main(int nargs, char *args[]) {
 	*/
 
     
-    // Número de argumentos
-    if( nargs % 2 != 0 && 2*NUM_MIN_CMMDS+1 <= nargs && nargs <= 2*NUM_MAX_CMMDS+1 ) {
+    // Número de argumentos // && 2*NUM_MIN_CMMDS+1 <= nargs && nargs <= 2*NUM_MAX_CMMDS+1
+    if( nargs % 2 != 0  ) {
     
         // Guarda todos los comandos que se han introducido para su análisis
         int n_commands = 0 ;            // Número de comandos
@@ -203,7 +203,7 @@ int main(int nargs, char *args[]) {
         //Si no se ha introducido un lang o se ha introducido un lang incorrecto
         if( !assignAttribute(commands, n_commands, lang_flag, lang) )
             errorBreak( ERROR_ARGUMENTS ) ;
-        if( lang!="ES" || lang!="EN" || lang!="FR")
+        if( lang!="ES" && lang!="EN" && lang!="FR")
             errorBreak( ERROR_ARGUMENTS ) ;
         
         // Punto 3
@@ -260,7 +260,7 @@ int main(int nargs, char *args[]) {
             
             move.read(*input) ;
             
-            
+            cout << "OK" << endl ;
             
         } while ( move.getLetters().find('@') == -1 ) ; //Si no encuentra un @, sigue
         
