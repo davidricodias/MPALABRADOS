@@ -23,10 +23,10 @@ using namespace std;
 #define ERROR_OPEN 2
 #define ERROR_DATA 3
 
-#define NUM_MAX_ARGS 4
-#define NUM_MIN_ARGS 1
+#define NUM_MAX_CMMDS 4
+#define NUM_MIN_CMMDS 1
 const string lang_flag = "-l" ;
-const string file_flag = "-i" ;
+const string input_flag = "-i" ;
 const string random_flag = "-r" ;
 const string bag_flag = "-b" ;
 
@@ -53,12 +53,18 @@ void errorBreak(int errorcode, const string & errorinfo="");       //Y una excep
 void HallOfFame(const Language &l, int random, const Bag &b, const Player &p, 
         int nwords, int score, const string &result);
 
-//Guarda un comando
+/**
+ * @brief Guarda un comando, para ello se considera que cada comando está formado
+ * por una @p flag como @c -l o @c -r, y un @p attribute. Se usa junto a un contador
+ * de comandos en forma de array.
+ */
 struct Command{
     string flag ;
     string attribute ;
 };
 
+
+//Busca en la lista de comandos una flag, y si la encuentra le asigna al atributo
 bool assignAttribute(const Command commands[], int &n_commands, const string &flag, string &attribute){
     unsigned short count_command  = 0;  //Por si se introduce más de una vez la misma flag
     for( int i=0 ; i < n_commands ; i++ ) {
@@ -182,76 +188,91 @@ int main(int nargs, char *args[]) {
 
     
     // Número de argumentos
-    if( nargs % 2 != 0 && 2*NUM_MIN_ARGS+1 <= nargs && nargs <= 2*NUM_MAX_ARGS+1 ) {
+    if( nargs % 2 != 0 && 2*NUM_MIN_CMMDS+1 <= nargs && nargs <= 2*NUM_MAX_CMMDS+1 ) {
     
         // Guarda todos los comandos que se han introducido para su análisis
-        int n_commands = 0 ;            // Numero de comandos
-        Command commands[20] ;          // !!! Posible overflow. Mejor con vector<Command>
+        int n_commands = 0 ;            // Número de comandos
+        Command commands[NUM_MAX_CMMDS] ;          // Mejor con vector<Command>...
         
-        for( int i=0 ; i < nargs ; i+=2 ) {
-            commands[i/2].flag = args[2*i+1] ;
-            commands[i/2].attribute = args[2*i+2] ;
+        for( int i=0 ; i < nargs/2 ; i++ ) {
+            commands[i].flag = args[2*i+1] ;
+            commands[i].attribute = args[2*i+2] ;
             n_commands++ ;
         }
         
-        //Se analizan los comandos
-        
-        //Se ha introducido un lang
-        if(assignAttribute(commands, n_commands, lang_flag, lang))
-        
-        
+        //Si no se ha introducido un lang o se ha introducido un lang incorrecto
+        if( !assignAttribute(commands, n_commands, lang_flag, lang) )
+            errorBreak( ERROR_ARGUMENTS ) ;
         if( lang!="ES" || lang!="EN" || lang!="FR")
             errorBreak( ERROR_ARGUMENTS ) ;
         
+        // Punto 3
         
         language.setLanguage(lang) ;
         
         cout << "LANGUAGE: " << lang << endl ;
         cout << "ALLOWED LETTERS: " << toUTF(language.getLetterSet()) << endl ;
 
+        // Punto 4
         
-        bag.define(language) ;
-        
-        //Si se ha encontrado la flag, se asiga
+        //Si se ha encontrado la flag de random, se asigna
         if(assignAttribute(commands, n_commands, random_flag, random)) {
             bag.setRandom(random) ;
         }
+        
+        bag.define(language) ;
+        
+        
+        // Aunque se define la bolsa de forma aleatoria, se sobreescribe
+        string bag_arg = "" ;
+        if( assignAttribute(commands, n_commands, bag_flag, bag_arg) )
+            bag.set( bag_arg ) ;
+        
         cout << "SEED: " << random  << endl ;
         
         
-        //Se ha introducido una semilla para random
-        
-        
-    } else {
-        errorBreak( ERROR_ARGUMENTS ) ;
-    }
-
-
         // PUNTO 5
         
         player.clear() ;
         player.add( bag.extract(MAXPLAYER) ) ;
+
         
-        if( input != &cin )
+        //Comprueba -i
+        if( assignAttribute(commands, n_commands, input_flag, ifilename) ) {
+            ifile.open( ifilename ) ;
+            if( !ifile ) {
+                errorBreak( ERROR_OPEN, ifilename ) ;
+                
+            }
+            input = &ifile ;
             cout << "Reading from " << ifilename << endl ;
+        }
+
+        
+        
+        // Punto 6
         
         do{
             
-            cout << "PLAYER: " << player.to_string() ;
+            cout << "PLAYER: " << toUTF(player.to_string()) ;
             
             // Lectura
-            (*input) >>  word  ;
-            word=normalizeWord(word) ;
             
-        } while ( word.find('@') == -1 ) ;
+            move.read(*input) ;
+            
+            
+            
+        } while ( move.getLetters().find('@') == -1 ) ; //Si no encuentra un @, sigue
+        
+        
+        if( input == &ifile )
+            ifile.close() ;
         
     } else {
-        
+        errorBreak( ERROR_ARGUMENTS ) ;
     }
     
-    
-    if( input != &cin )
-        ifile.close() ;
+    // Punto 7
     
     /// @warning: final report
     HallOfFame(language, random, bag, player, nwords, score, goodmoves);
@@ -277,12 +298,15 @@ void errorBreak(int errorcode, const string &errordata) {
             cerr<<"Error opening file "<<errordata << endl;
             break;
         case ERROR_DATA:
-            cerr<<"Data errors in file "<<errordata << endl;
+            //Modificado string, estaba "errors", se comprueba en test "error"
+            cerr<<"Data error in file "<<errordata << endl;
             break;
     }
     std::exit(1);
 }
 
+
+// Probably trash
 //bool getAttribute( const char c1[],char const *c2[], int n_c2) {
 //    bool inside = false ;
 //    for( int i=0 ; i<n_c2 && !inside; i++ ) {
@@ -318,4 +342,3 @@ void errorBreak(int errorcode, const string &errordata) {
 //    
 //    return isin ;
 //}
-//

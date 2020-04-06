@@ -74,9 +74,20 @@ std::string Move::getLetters() const{
 }
 
 void Move::print( std::ostream &os) const{
-    os << letters << " ";
+    if( ishorizontal )
+        os << 'H' << " " ;
+    else
+        os << 'V' << " " ;
+    
+    os << row << " " << column << " " << letters << " ";
 }
 
 void Move::read( std::istream &is) {
-    is >> letters ;
+    char h_v ; std::string input ;
+    
+    is >> h_v >> row >> column >> input ;
+    
+    letters = normalizeWord( input ) ;
+
+    setHorizontal( h_v ) ;
 }
