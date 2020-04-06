@@ -9,7 +9,9 @@
 #include <cstring>
 #include <fstream>
 #include <string>
-#include <cstdlib>
+#include <cstdlib>  
+#include <vector>           // Gestión de comandos
+
 
 #include "language.h"
 #include "bag.h"
@@ -53,55 +55,96 @@ void errorBreak(int errorcode, const string & errorinfo="");       //Y una excep
 void HallOfFame(const Language &l, int random, const Bag &b, const Player &p, 
         int nwords, int score, const string &result);
 
-/**
- * @brief Guarda un comando, para ello se considera que cada comando está formado
- * por una @p flag como @c -l o @c -r, y un @p attribute. Se usa junto a un contador
- * de comandos en forma de array.
- */
+
+// Comando
 struct Command{
-    string flag ;
-    string attribute ;
-};
+        string flag ;
+        string attribute ;
+} ;
 
+// Clase auxiliar para el manejo de comandos. ¿Mejor usando herencia?
+class Commands{ //public: Command
 
-//Busca en la lista de comandos una flag, y si la encuentra le asigna al atributo
-bool assignAttribute(const Command commands[], int &n_commands, const string &flag, string &attribute){
-    unsigned short count_command  = 0;  //Por si se introduce más de una vez la misma flag
-    for( int i=0 ; i < n_commands ; i++ ) {
-        if( commands[i].flag == flag ) {
-            attribute = commands[i].attribute ;
-            count_command++ ;
+private:
+    
+    //Comandos posibles
+    string possible_cmmds[NUM_MAX_CMMDS] ;
+    int num_possible_cmmds = 0 ;
+    
+    //Comandos introducidos
+    Command cmmds[NUM_MAX_CMMDS] ;    
+    int num_used_cmmds = 0 ;
+
+public:
+    
+    //Comprueba si una flag esta en los comandos
+    bool isIn(const string &s) const{
+        bool found = false;
+        for( int i=0 ; i < num_used_cmmds && !found ; i++ ) {
+            if(cmmds[i].flag==s)
+                found = true ;
         }
+        return found ;
     }
     
-    //Si el comando se repite
-    if(count_command > 1)
-        errorBreak( ERROR_ARGUMENTS ) ;
-    
-    if( count_command==0 )
-        return false ;
-    else
-        return true ;   //Se ha contado una vez la flag
-}
-
-bool assignAttribute(const Command commands[], int &n_commands, const string &flag, int &attribute){
-    unsigned short count_command  = 0;  //Por si se introduce más de una vez la misma flag
-    for( int i=0 ; i < n_commands ; i++ ) {
-        if( commands[i].flag == flag ) {
-            attribute = atoi(commands[i].attribute.c_str()) ;   //Transforma string a cstring para poder aplicar atoi
-            count_command++ ;
+    //Comprueba si una flag esta en los posibles comandos
+    bool isPossible(const string &flag) {
+        bool found = false;
+        for( int i=0 ; i < num_possible_cmmds && !found ; i++ ) {
+            if(possible_cmmds[i]==flag)
+                found = true ;
         }
+        return found ;
     }
     
-    //Si el comando se repite
-    if(count_command > 1)
-        errorBreak( ERROR_ARGUMENTS ) ;
+    //Añade un posible comando
+    void addPossible(const string &s) {
+        possible_cmmds[num_possible_cmmds] = s ;
+        num_possible_cmmds++ ;
+    }
+
+    //Añade un comando
+    void add(const string &flag, const string &attribute) {
+
+        if( isPossible(flag) ) {
+            cmmds[num_used_cmmds].flag = flag ;
+            cmmds[num_used_cmmds].attribute = attribute ;
+            num_used_cmmds++ ;
+        } else{
+            errorBreak( ERROR_ARGUMENTS ) ;
+        }
+    }
+
     
-    if( count_command==0 )
-        return false ;
-    else
-        return true ;   //Se ha contado una vez la flag
-}
+    //Devuelve el atributo asociado a una flag. Debe usarse junto a isIn
+    string getAttribute(const string &flag) const{
+        string s = "" ;
+        bool found = false ;
+        for( int i=0 ; i < num_used_cmmds && !found ; i++ ) {
+            if( cmmds[i].flag==flag ) {
+                s = cmmds[i].attribute;
+                found = true ;
+            }
+        }
+        return s ;
+    }
+    
+    //Devuelve la cantidad de posibles comandos
+    int numPossibleCmmds( void ){
+        return num_possible_cmmds ;
+    }
+    
+    //Devuelve los comandos actuales
+    int numUsedCmmds( void ){
+        return num_used_cmmds ;
+    }
+    
+} ;
+
+
+
+
+
 
 /**
  * @brief Main function. 
@@ -187,22 +230,31 @@ int main(int nargs, char *args[]) {
 	*/
 
     
-    // Número de argumentos // && 2*NUM_MIN_CMMDS+1 <= nargs && nargs <= 2*NUM_MAX_CMMDS+1
-    if( nargs % 2 != 0  ) {
+    // Número de argumentos
+    if( nargs % 2 != 0 && 2*NUM_MIN_CMMDS+1 <= nargs && nargs <= 2*NUM_MAX_CMMDS+1) {
     
-        // Guarda todos los comandos que se han introducido para su análisis
-        int n_commands = 0 ;            // Número de comandos
-        Command commands[NUM_MAX_CMMDS] ;          // Mejor con vector<Command>...
+        
+        // Comandos a introducir
+        Commands comandos ;
+        
+        // Posibles comandos
+        comandos.addPossible(lang_flag) ;
+        comandos.addPossible(input_flag) ;
+        comandos.addPossible(random_flag) ;
+        comandos.addPossible(bag_flag) ;
+        
+        //Añade los comandos introducidos por args
         
         for( int i=0 ; i < nargs/2 ; i++ ) {
-            commands[i].flag = args[2*i+1] ;
-            commands[i].attribute = args[2*i+2] ;
-            n_commands++ ;
+            comandos.add(args[2*i+1], args[2*i+2] );
         }
         
         //Si no se ha introducido un lang o se ha introducido un lang incorrecto
-        if( !assignAttribute(commands, n_commands, lang_flag, lang) )
+        if( ! comandos.isIn(lang_flag) )
             errorBreak( ERROR_ARGUMENTS ) ;
+        else
+            lang = comandos.getAttribute(lang_flag) ;
+        
         if( lang!="ES" && lang!="EN" && lang!="FR")
             errorBreak( ERROR_ARGUMENTS ) ;
         
@@ -216,17 +268,16 @@ int main(int nargs, char *args[]) {
         // Punto 4
         
         //Si se ha encontrado la flag de random, se asigna
-        if(assignAttribute(commands, n_commands, random_flag, random)) {
-            bag.setRandom(random) ;
+        if(comandos.isIn( random_flag ) ) {
+            bag.setRandom( stoi(comandos.getAttribute( random_flag )) ) ;
         }
         
         bag.define(language) ;
         
         
         // Aunque se define la bolsa de forma aleatoria, se sobreescribe
-        string bag_arg = "" ;
-        if( assignAttribute(commands, n_commands, bag_flag, bag_arg) )
-            bag.set( bag_arg ) ;
+        if( comandos.isIn( bag_flag ) )
+            bag.set( comandos.getAttribute( bag_flag ) ) ;
         
         cout << "SEED: " << random  << endl ;
         
@@ -238,11 +289,11 @@ int main(int nargs, char *args[]) {
 
         
         //Comprueba -i
-        if( assignAttribute(commands, n_commands, input_flag, ifilename) ) {
+        if( comandos.isIn( input_flag ) ) {
+            ifilename = comandos.getAttribute( input_flag ) ;
             ifile.open( ifilename ) ;
             if( !ifile ) {
                 errorBreak( ERROR_OPEN, ifilename ) ;
-                
             }
             input = &ifile ;
             cout << "Reading from " << ifilename << endl ;
@@ -306,7 +357,7 @@ void errorBreak(int errorcode, const string &errordata) {
 }
 
 
-// Probably trash
+// Basura. Mejor y más bonito en la clase Commands
 //bool getAttribute( const char c1[],char const *c2[], int n_c2) {
 //    bool inside = false ;
 //    for( int i=0 ; i<n_c2 && !inside; i++ ) {
@@ -341,4 +392,42 @@ void errorBreak(int errorcode, const string &errordata) {
 //    }
 //    
 //    return isin ;
+//}
+//Busca en la lista de comandos una flag, y si la encuentra le asigna al atributo
+//bool assignAttribute(const Command commands[], int &n_commands, const string &flag, string &attribute){
+//    unsigned short count_command  = 0;  //Por si se introduce más de una vez la misma flag
+//    for( int i=0 ; i < n_commands ; i++ ) {
+//        if( commands[i].flag == flag ) {
+//            attribute = commands[i].attribute ;
+//            count_command++ ;
+//        }
+//    }
+//    
+//    //Si el comando se repite
+//    if(count_command > 1)
+//        errorBreak( ERROR_ARGUMENTS ) ;
+//    
+//    if( count_command==0 )
+//        return false ;
+//    else
+//        return true ;   //Se ha contado una vez la flag
+//}
+//
+//bool assignAttribute(const Command commands[], int &n_commands, const string &flag, int &attribute){
+//    unsigned short count_command  = 0;  //Por si se introduce más de una vez la misma flag
+//    for( int i=0 ; i < n_commands ; i++ ) {
+//        if( commands[i].flag == flag ) {
+//            attribute = atoi(commands[i].attribute.c_str()) ;   //Transforma string a cstring para poder aplicar atoi
+//            count_command++ ;
+//        }
+//    }
+//    
+//    //Si el comando se repite
+//    if(count_command > 1)
+//        errorBreak( ERROR_ARGUMENTS ) ;
+//    
+//    if( count_command==0 )
+//        return false ;
+//    else
+//        return true ;   //Se ha contado una vez la flag
 //}
