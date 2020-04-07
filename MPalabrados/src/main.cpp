@@ -269,7 +269,8 @@ int main(int nargs, char *args[]) {
         
         //Si se ha encontrado la flag de random, se asigna
         if(comandos.isIn( random_flag ) ) {
-            bag.setRandom( stoi(comandos.getAttribute( random_flag )) ) ;
+            random = stoi(comandos.getAttribute( random_flag )) ;
+            bag.setRandom( random ) ;
         }
         
         bag.define(language) ;
@@ -281,14 +282,15 @@ int main(int nargs, char *args[]) {
         
         cout << "SEED: " << random  << endl ;
         
+        cout << "BAG (" << bag.size() << ") : " << toUTF(bag.to_string()) ;
+        
         
         // PUNTO 5
         
         player.clear() ;
         player.add( bag.extract(MAXPLAYER) ) ;
 
-        
-        //Comprueba -i
+        //Comprueba el tipo de input
         if( comandos.isIn( input_flag ) ) {
             ifilename = comandos.getAttribute( input_flag ) ;
             ifile.open( ifilename ) ;
@@ -300,22 +302,53 @@ int main(int nargs, char *args[]) {
         }
 
         
-        
         // Punto 6
         
-        do{
+        // Lectura anticipada
             
-            cout << "PLAYER: " << toUTF(player.to_string()) ;
-            
-            // Lectura
-            
-            move.read(*input) ;
-            
-            cout << "OK" << endl ;
-            
-        } while ( move.getLetters().find('@') == -1 ) ; //Si no encuentra un @, sigue
+        cout << endl << "PLAYER: " << toUTF(player.to_string()) ;
+
+        // Lectura
+
+        move.read(*input) ;
         
+        word = move.getLetters() ;
         
+        // TERMINAR
+        while( true ) {
+            
+            
+            if( (*input).eof() )
+                errorBreak( ERROR_DATA ) ;
+        }
+        
+        // SOLUCION DO-WHILE MPALABRADOS 2
+        do {
+            player.add(bag.extract(7-player.size()));
+            cout << endl << "PLAYER: "<<toUTF(player.to_string())<<" BAG("<<bag.size()<<")"<<endl;
+            cout << "INPUT A WORD: ";
+            cin >> word;
+            word = toISO(word);
+            if (word.length()>1) {
+                cout << endl << toUTF(word);
+                if (player.isValid(word))  {
+                    if (language.query(word)) {
+                        nwords++;
+                        nletters += word.length();
+                        result += word+" - ";
+                        cout <<" FOUND!";
+                    } else {
+                        cout << " NOT REGISTERED!";
+                    }
+                    cout << endl<<endl;
+                    player.extract(word);
+                } else
+                    cout << " INVALID!" << endl;
+            }
+        }while (word.length()>1);
+                
+        
+        // Cierra el archivo
         if( input == &ifile )
             ifile.close() ;
         
