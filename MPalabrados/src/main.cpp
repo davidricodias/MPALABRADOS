@@ -316,15 +316,15 @@ int main(int nargs, char *args[]) {
         if( (*input).eof() )
                 errorBreak( ERROR_DATA, ifilename ) ;
         
-        word = toUTF(move.getLetters()) ;
+        word = move.getLetters() ;
         
         cout << endl << "THE WORD IS " << word << endl;
+
         
         while( word[0] != '@'  ) {
             
             if ( word.length() > 1 ) {
                 
-                   
                     nwords++;
 
                     score += move.findScore( language ) ;

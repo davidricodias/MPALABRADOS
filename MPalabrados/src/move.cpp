@@ -85,9 +85,7 @@ void Move::print( std::ostream &os) const{
 void Move::read( std::istream &is) {
     char h_v ; std::string input ;
     
-    is >> h_v >> row >> column >> input ;
+    is >> h_v >> row >> column >> letters ;
     
-    letters = normalizeWord( input ) ;
-
     setHorizontal( h_v ) ;
 }
