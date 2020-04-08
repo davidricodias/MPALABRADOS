@@ -30,8 +30,9 @@
           <runcommandpicklistitem>"${OUTPUT_PATH} -l ES"</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" -l ES</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" -l ES -r 50</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" -r 35 -l EN -b IEAIYWIEGQWOSTNCFNREEOTDOXCTVIAEHZEENIRGNSISGTAOALIEPMRHALIJNFUDYIBLAEANDROOVPDBEMEESLOATATOUUKRUR </runcommandpicklistitem>
         </runcommandpicklist>
-        <runcommand>"${OUTPUT_PATH}" -l ES -r 50</runcommand>
+        <runcommand>"${OUTPUT_PATH}" -r 35 -l EN -b IEAIYWIEGQWOSTNCFNREEOTDOXCTVIAEHZEENIRGNSISGTAOALIEPMRHALIJNFUDYIBLAEANDROOVPDBEMEESLOATATOUUKRUR</runcommand>
         <rundir></rundir>
         <buildfirst>true</buildfirst>
         <terminal-type>0</terminal-type>

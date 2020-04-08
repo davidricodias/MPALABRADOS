@@ -301,7 +301,6 @@ int main(int nargs, char *args[]) {
             cout << "Reading from " << ifilename << endl ;
         }
 
-        
         // Punto 6
         
         // Lectura anticipada
@@ -310,42 +309,82 @@ int main(int nargs, char *args[]) {
 
         // Lectura
 
+        cout << endl << "READ: " ;
+        
         move.read(*input) ;
+
+        if( (*input).eof() )
+                errorBreak( ERROR_DATA, ifilename ) ;
         
-        word = move.getLetters() ;
+        word = toUTF(move.getLetters()) ;
         
-        // TERMINAR
-        while( true ) {
+        cout << endl << "THE WORD IS " << word << endl;
+        
+        while( word[0] != '@'  ) {
             
+            if ( word.length() > 1 ) {
+                
+                   
+                    nwords++;
+
+                    score += move.findScore( language ) ;
+                    
+                    goodmoves += word + " - " ;
+
+                    cout << " FOUND!" << move.findScore( language ) << " points" ;
+                    
+                    // Se limpia y se vuelve a rellenar
+                    player.clear() ;
+                    
+                    player.add(bag.extract(MAXPLAYER-player.size())) ;
+
+            } else {
+                
+                cout << " INVALID!" << endl;
             
+            }
+            
+
+            
+            cout << endl << "PLAYER: " << toUTF(player.to_string()) ;
+
+            // Lectura
+
+            cout << endl << "READ: " ;
+            
+            move.read(*input) ;
+
             if( (*input).eof() )
-                errorBreak( ERROR_DATA ) ;
+                errorBreak( ERROR_DATA, ifilename ) ;
+
+            word = move.getLetters() ;
+            
         }
         
-        // SOLUCION DO-WHILE MPALABRADOS 2
-        do {
-            player.add(bag.extract(7-player.size()));
-            cout << endl << "PLAYER: "<<toUTF(player.to_string())<<" BAG("<<bag.size()<<")"<<endl;
-            cout << "INPUT A WORD: ";
-            cin >> word;
-            word = toISO(word);
-            if (word.length()>1) {
-                cout << endl << toUTF(word);
-                if (player.isValid(word))  {
-                    if (language.query(word)) {
-                        nwords++;
-                        nletters += word.length();
-                        result += word+" - ";
-                        cout <<" FOUND!";
-                    } else {
-                        cout << " NOT REGISTERED!";
-                    }
-                    cout << endl<<endl;
-                    player.extract(word);
-                } else
-                    cout << " INVALID!" << endl;
-            }
-        }while (word.length()>1);
+//        // SOLUCION DO-WHILE MPALABRADOS 2
+//        do {
+//            player.add(bag.extract(7-player.size()));
+//            cout << endl << "PLAYER: "<<toUTF(player.to_string())<<" BAG("<<bag.size()<<")"<<endl;
+//            cout << "INPUT A WORD: ";
+//            cin >> word;
+//            word = toISO(word);
+//            if (word.length()>1) {
+//                cout << endl << toUTF(word);
+//                if (player.isValid(word))  {
+//                    if (language.query(word)) {
+//                        nwords++;
+//                        nletters += word.length();
+//                        result += word+" - ";
+//                        cout <<" FOUND!";
+//                    } else {
+//                        cout << " NOT REGISTERED!";
+//                    }
+//                    cout << endl<<endl;
+//                    player.extract(word);
+//                } else
+//                    cout << " INVALID!" << endl;
+//            }
+//        }while (word.length()>1);
                 
         
         // Cierra el archivo

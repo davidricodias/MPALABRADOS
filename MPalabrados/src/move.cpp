@@ -28,14 +28,14 @@ void Move::setCol(int &c) {
 }
 
 void Move::setHorizontal(char &h){
-    h=='H' ? ishorizontal=true : ishorizontal=false;
+    h=='H' || h=='h' ? ishorizontal=true : ishorizontal=false;
 }
 
 void Move::setLetters(const std::string &l){
     letters = l;
 }
 
-int Move::findScore(const Language &l)const{
+    int Move::findScore(const Language &l)const{
     // Recorre el string y le pasa cada letra que contiene a 
     // language.getScore que irá sumando en "sum" el valor retornado
     
@@ -44,7 +44,7 @@ int Move::findScore(const Language &l)const{
     for(int i = 0;i<length_str;i++){
         sum +=l.getScore(letters[i]);
     }
-    
+
     return sum;
 
 }
@@ -75,9 +75,9 @@ std::string Move::getLetters() const{
 
 void Move::print( std::ostream &os) const{
     if( ishorizontal )
-        os << 'H' << " " ;
+        os << 'h' << " " ;
     else
-        os << 'V' << " " ;
+        os << 'v' << " " ;
     
     os << row << " " << column << " " << letters << " ";
 }
