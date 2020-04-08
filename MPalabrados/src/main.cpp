@@ -317,8 +317,6 @@ int main(int nargs, char *args[]) {
                 errorBreak( ERROR_DATA, ifilename ) ;
         
         word = move.getLetters() ;
-        
-        cout << endl << "THE WORD IS " << word << endl;
 
         
         while( word[0] != '@'  ) {
@@ -331,10 +329,11 @@ int main(int nargs, char *args[]) {
                     
                     goodmoves += word + " - " ;
 
-                    cout << " FOUND!" << move.findScore( language ) << " points" ;
-                    
+                    cout << " FOUND! " << move.findScore( language ) << " points" ;
+
                     // Se limpia y se vuelve a rellenar
-                    player.clear() ;
+                    
+                    player.extract(normalizeWord(word)) ;
                     
                     player.add(bag.extract(MAXPLAYER-player.size())) ;
 
@@ -342,8 +341,7 @@ int main(int nargs, char *args[]) {
                 
                 cout << " INVALID!" << endl;
             
-            }
-            
+            }     
 
             
             cout << endl << "PLAYER: " << toUTF(player.to_string()) ;
@@ -360,33 +358,7 @@ int main(int nargs, char *args[]) {
             word = move.getLetters() ;
             
         }
-        
-//        // SOLUCION DO-WHILE MPALABRADOS 2
-//        do {
-//            player.add(bag.extract(7-player.size()));
-//            cout << endl << "PLAYER: "<<toUTF(player.to_string())<<" BAG("<<bag.size()<<")"<<endl;
-//            cout << "INPUT A WORD: ";
-//            cin >> word;
-//            word = toISO(word);
-//            if (word.length()>1) {
-//                cout << endl << toUTF(word);
-//                if (player.isValid(word))  {
-//                    if (language.query(word)) {
-//                        nwords++;
-//                        nletters += word.length();
-//                        result += word+" - ";
-//                        cout <<" FOUND!";
-//                    } else {
-//                        cout << " NOT REGISTERED!";
-//                    }
-//                    cout << endl<<endl;
-//                    player.extract(word);
-//                } else
-//                    cout << " INVALID!" << endl;
-//            }
-//        }while (word.length()>1);
-                
-        
+               
         // Cierra el archivo
         if( input == &ifile )
             ifile.close() ;
