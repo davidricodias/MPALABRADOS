@@ -1,4 +1,4 @@
 # MPALABRADOS
 
 ## Descripción
-   Maravilloso proyecto de MP; una delicia.
+   Maravilloso proyecto de MP.
