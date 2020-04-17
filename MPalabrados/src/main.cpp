@@ -278,7 +278,7 @@ int main(int nargs, char *args[]) {
         
         // Aunque se define la bolsa de forma aleatoria, se sobreescribe
         if( comandos.isIn( bag_flag ) )
-            bag.set( comandos.getAttribute( bag_flag ) ) ;
+            bag.set( toISO(comandos.getAttribute( bag_flag ) ) ) ;
         
         cout << "SEED: " << random  << endl ;
         
@@ -335,11 +335,11 @@ int main(int nargs, char *args[]) {
                     
                     player.extract(normalizeWord(word)) ;
                     
-                    player.add(bag.extract(MAXPLAYER-player.size())) ;
+                    player.add( bag.extract( MAXPLAYER-player.size() ) ) ;
 
             } else {
                 
-                cout << " INVALID!" << endl;
+                cout << " INVALID!" << endl ;
             
             }     
 
@@ -399,79 +399,3 @@ void errorBreak(int errorcode, const string &errordata) {
     }
     std::exit(1);
 }
-
-
-// Basura. Mejor y más bonito en la clase Commands
-//bool getAttribute( const char c1[],char const *c2[], int n_c2) {
-//    bool inside = false ;
-//    for( int i=0 ; i<n_c2 && !inside; i++ ) {
-//        //strcpm devuelve 0 si son iguales
-//        if( strcmp(c1, c2[i] ) == 0 )
-//            inside = true ;
-//    }
-//    return inside ;
-//}
-//
-//void getAttribute( const char c1[],char const* c2[], const int n_c2, string &attribute ) {
-//    
-//    bool inside = false ;
-//    for( int i=0 ; i<n_c2 && !inside; i++ ) {
-//        //strcpm devuelve 0 si son iguales
-//        if( strcmp(c1, c2[i] ) == 0 ) {
-//            inside = true ;
-//            //Usando & se copia el contenido de c2[i+1] directamente al string
-//            strcpy(&attribute[0], c2[i+1]) ;       //Guarda el atributo asociado a la flag
-//        }
-//    }
-//}
-//
-//
-//bool isIn(const string &cad, const char &ch) {
-//    
-//    bool isin = false ;
-//    
-//    for( int i=0 ; i<cad.length() && !isin ; i++ ) {
-//        if( cad[i] == ch )
-//            isin = true ;
-//    }
-//    
-//    return isin ;
-//}
-//Busca en la lista de comandos una flag, y si la encuentra le asigna al atributo
-//bool assignAttribute(const Command commands[], int &n_commands, const string &flag, string &attribute){
-//    unsigned short count_command  = 0;  //Por si se introduce más de una vez la misma flag
-//    for( int i=0 ; i < n_commands ; i++ ) {
-//        if( commands[i].flag == flag ) {
-//            attribute = commands[i].attribute ;
-//            count_command++ ;
-//        }
-//    }
-//    
-//    //Si el comando se repite
-//    if(count_command > 1)
-//        errorBreak( ERROR_ARGUMENTS ) ;
-//    
-//    if( count_command==0 )
-//        return false ;
-//    else
-//        return true ;   //Se ha contado una vez la flag
-//}
-//
-//bool assignAttribute(const Command commands[], int &n_commands, const string &flag, int &attribute){
-//    unsigned short count_command  = 0;  //Por si se introduce más de una vez la misma flag
-//    for( int i=0 ; i < n_commands ; i++ ) {
-//        if( commands[i].flag == flag ) {
-//            attribute = atoi(commands[i].attribute.c_str()) ;   //Transforma string a cstring para poder aplicar atoi
-//            count_command++ ;
-//        }
-//    }
-//    
-//    //Si el comando se repite
-//    if(count_command > 1)
-//        errorBreak( ERROR_ARGUMENTS ) ;
-//    
-//    if( count_command==0 )
-//        return false ;
-//    else
-//        return true ;   //Se ha contado una vez la flag
-//}
