@@ -7,11 +7,13 @@
 
 
 #include <iostream>
+#include <string>
 
 #include "language.h"
 #include "bag.h"
 #include "player.h"
-
+#include "move.h"
+#include "movelist.h"
 
 using namespace std;
 
@@ -26,7 +28,7 @@ using namespace std;
  * errors parsing the arguments to main() and, for the case of errors opening or 
  * reading/writing data, the name of the file thas has failed.
  */
-void errorBreak(int errorcode, const string & errorinfo);
+void errorBreak(int errorcode, const string & errorinfo="");
 
 /**
  * @brief Shows final data
@@ -44,12 +46,12 @@ void HallOfFame(const Language &l, int random, const Bag &b, const Player &p,
         const Movelist& accepted,const Movelist& rejected);
 
 string BuscaArgumento(string arg, char *args[], int nargs){
-    for(int i=0; i<nargc; i++){
+    for(int i=0; i<nargs; i++){
         if (args[i]==arg){
             return args[i+1];
         }
     }
-    return "er";
+    return "error";
 }
 
 
@@ -57,11 +59,11 @@ string BuscaArgumento(string arg, char *args[], int nargs){
  * @brief Main function. 
  * @return 
  */
-int main(int nargs, char * args[]) {
-    //1.
-    const string arg_ID = -l;
-    const string arg_playerfile = -p;
-    const string arg_random= -r;
+int main(int nargs, char **args) {
+    
+    const string arg_ID = "-l";
+    const string arg_playerfile = "-p";
+    const string arg_random= "-r";
     
     Bag bag;
     Player player;
@@ -75,8 +77,13 @@ int main(int nargs, char * args[]) {
     ///@warning: Complete the code
     /// ...
     
+    // 1. Busca el argumento -l
+    string lang = BuscaArgumento(arg_ID, args, nargs);
+    if( lang == "error" )
+        errorBreak( ERROR_ARGUMENT ) ;
+    
     //2.
-    string id = BuscaArgumento(arg_ID, *args[], nargs);
+    
     language.setLanguage(id);
     cout << "Caracteres permitidos:" << endl;
     cout << language.getLetterSet() << endl;
