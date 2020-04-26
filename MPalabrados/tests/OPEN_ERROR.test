@@ -1,4 +1,5 @@
 
-%%%CALL -l ES -r 100 -i data/OPEN_ERROR.data
+%%%CALL -l ES -r 100 -p data/OPEN_ERROR.data
+%%%VALGRIND
 %%%OUTPUT
 Error opening file data/OPEN_ERROR.data

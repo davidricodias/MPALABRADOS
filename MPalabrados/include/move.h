@@ -7,6 +7,9 @@
 #ifndef MOVE_H
 #define MOVE_H
 
+//Alumno1 apellidos11 Apellidos12 nombre1
+//Alumno2 apellidos21 Apellidos22 nombre2
+
 #include <iostream>
 #include "language.h"
 /**
@@ -19,15 +22,15 @@
 */
 class Move {
 private:
-	int row, column;	/// Coordinates of the first letter
+	int row, column;		/// Coordinates of the first letter
 	bool ishorizontal;	/// Horizontal or vertical
 	std::string letters;	/// Letters of the movement
-	int score;		/// Total value of movement according to the language chosen
+	int score;				/// Total value of movement according to the language chosen
 public:
 	/**
 	 * @brief Basic constructor e initializator
 	 */
-	Move() ;
+	Move();
 	/**
 	 * @brief Sets the main data of the class 
 	 * @param r row
@@ -35,22 +38,22 @@ public:
 	 * @param h 'H' horizontal or 'V' vertical
 	 * @param l letters
 	 */
-	void set(int &r, int &c, char &h, const std::string  &l) ;
+	void set(int r, int c, char h, const std::string  &l);
 	/**
 	 * @brief Sets the main data of the class 
 	 * @param r row
 	 */
-	void setRow(int &r) ;
+	void setRow(int r) ;
 	/**
 	 * @brief Sets the main data of the class 
 	 * @param c Column
 	 */
-	void setCol(int &c);
+	void setCol(int c);
 	/**
 	 * @brief Sets the main data of the class 
 	 * @param h 'H' horizontal or 'V' vertical
 	 */
-	void setHorizontal(char &h);
+	void setHorizontal(char h);
 	/**
 	 * @brief Sets the main data of the class 
 	 * @param l Letters
@@ -64,12 +67,12 @@ public:
 	 * @return The sum of individual values according to the language, or -1 if the 
 	 * word does not belong to the language.
 	 */
-	int findScore(const Language &l)const;
+	int findScore(const Language &l);
 	/**
 	 * @brief Sets the value of the movement which have been calculated elsewhere 
 	 * @param s The value of the movement
 	 */
-	void setScore(int &s);
+	void setScore(int s);
 	/**
 	 * @brief Query data stored in the class
 	 * @return The value stored
@@ -99,10 +102,10 @@ public:
 	/**
 	 * @brief Shows the values stored in the screen, except score 
 	 */
-	void print( std::ostream &os=std::cout) const;
+	void print( std::ostream &os) const;
 	/**
 	 * @brief Reads from keyboard the values of the class, except score 
 	 */
-	void read( std::istream &is=std::cin);
+	void read( std::istream &is);
 };
 #endif /* MOVE_H */

@@ -9,6 +9,9 @@
 #include <string>
 #include "language.h"
 
+//Alumno1 apellidos11 Apellidos12 nombre1
+//Alumno2 apellidos21 Apellidos22 nombre2
+
 #define MAXBAG 200		/// Max size of the bag of letters
 
 /**
