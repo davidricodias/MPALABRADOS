@@ -38,6 +38,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/bag.o \
 	${OBJECTDIR}/src/main.o \
 	${OBJECTDIR}/src/move.o \
+	${OBJECTDIR}/src/movelist.o \
 	${OBJECTDIR}/src/player.o
 
 
@@ -74,22 +75,27 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/mpalabrados: ${OBJECTFILES}
 ${OBJECTDIR}/src/bag.o: src/bag.cpp
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Iinclude -I../local/include -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/bag.o src/bag.cpp
+	$(COMPILE.cc) -g -Wall -s -Iinclude -I../local/include -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/bag.o src/bag.cpp
 
 ${OBJECTDIR}/src/main.o: src/main.cpp
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Iinclude -I../local/include -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/main.o src/main.cpp
+	$(COMPILE.cc) -g -Wall -s -Iinclude -I../local/include -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/main.o src/main.cpp
 
 ${OBJECTDIR}/src/move.o: src/move.cpp
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Iinclude -I../local/include -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/move.o src/move.cpp
+	$(COMPILE.cc) -g -Wall -s -Iinclude -I../local/include -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/move.o src/move.cpp
+
+${OBJECTDIR}/src/movelist.o: src/movelist.cpp
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Wall -s -Iinclude -I../local/include -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/movelist.o src/movelist.cpp
 
 ${OBJECTDIR}/src/player.o: src/player.cpp
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Iinclude -I../local/include -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/player.o src/player.cpp
+	$(COMPILE.cc) -g -Wall -s -Iinclude -I../local/include -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/player.o src/player.cpp
 
 # Subprojects
 .build-subprojects:

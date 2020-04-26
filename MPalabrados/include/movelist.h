@@ -5,6 +5,8 @@
  * @warning Review data types, consts and references
  */
 
+// Alumno José David Rico Días Jorge Marín Sánchez
+
 #ifndef MOVELIST_H
 #define MOVELIST_H
 
@@ -46,32 +48,31 @@ public:
 	 * @brief Constructor for @p n number of movements
 	 * @param nmov Number of movements to store
 	 */
-	Movelist(nmov);
+	Movelist(int nmov);
 
 	/**
 	 * @brief Copy constructor
 	 * @param orig The list of movements to be copied
 	 */
-	Movelist(orig); 
+	Movelist(const Movelist& orig); 
 
 	/**
 	 * @brief Destructor
 	 */
 	~Movelist();
         
-        /**
-	 * @brief Assign the content of the parameter  object to *this
+     /**
+	 * @brief Assign the content of the parameter object to *this
 	 * @param orig Right hand side of an assignment
 	 */
-        
-	void assign (const Movelist& orig); 
+	void assign(const Movelist& orig); 
 
 	/**
 	 * @brief Overloads the assignment operator
-	 * @param orig Right hand side of the assignement
-	 * @return this Left hand side of the assignement
-	 
-	operator=(orig); */
+	 * @param orig Right hand side of the assignment (Misspelled: assignement ;)
+	 * @return this Left hand side of the assignment (Misspelled: assignement ;)
+	 */
+	void operator=(Movelist& orig);
 
 	/**
 	 * @brief Query the set of movements stored
@@ -79,7 +80,7 @@ public:
 	 * @precond @p p must be in the interval [0, size()) otherwise, it throws an exception
 	 * @return A copy of the movement in the position p.
 	 */
-	 get(int p);
+	Move get(int p) const;
 
 	/**
 	 * @brief Inserts a new movement in the (already existing) position of the set of movements
@@ -87,49 +88,49 @@ public:
 	 * @precond @p p must be in the interval [0, size()) otherwise, it throws an exception
 	 * @param m The movement to insert
 	 */
-	set(p, m);
+	void set(int p, const Move& m);
 
 	/**
 	 * @brief Query the number of existing movements in the class 
 	 * @return The size of the set of movements
 	 */
-	inline size() { };
+	int inline size() { return nMove; }
 
 	/**
 	 * @brief Searches a movement in the set of recorded movements. Two movements are equal if all their data members coincide.
 	 * @param mov The movement to be seeked
 	 * @return The position of the movement in the set, @retval -1 when the movement is not found
 	 */
-	find(mov);
+	int find(const Move& mov);
 
 	/**
 	 * @brief Adds a copy of the movement at the end of the existing set, incrementing its size in one more movement
 	 * @param mov The new movement
 	 */
-	add(mov);
-	/**
-	 * @brief Remove the movement from the list and reduces the size in one less movement. If the specified movement
-	 * does not exist, the method does nothing 
-	 * @param mov The movement to be removed
-	 */
-	remove(mov);
+	void add(const Move& mov);
 	/**
 	 * @brief Remove the movement stored in the position p and reduces the size in one less movement.
 	 * @param p The position to be removed
 	 * @precond @p p must be in the interval [0, size()) otherwise, it throws an exception
 	 */
-	remove(p);
+	void remove(int p);
+        /**
+	 * @brief Remove the movement from the list and reduces the size in one less movement. If the specified movement
+	 * does not exist, the method does nothing 
+	 * @param mov The movement to be removed
+	 */
+	void remove(const Move& mov);
 	/**
-	 *	@brief Removes all the movements that contain a word that does not have at least 2 letters
+	 * @brief Removes all the movements that contain a word that does not have at least 2 letters
 	 * or that does not exist in the given language 
 	 * @param l The language 
 	 */
-	zip(l);
+	void zip(const Language& l);
 
 	/**
 	 * @brief Resets the set and leaves it empty 
 	 */
-   clear();
+        void clear();
 	/**
 	 * @brief Computes the whole score of the list of movements by adding the individual scores of each movement contained in the set
 	 * of movements. It does not need the language to compute the scores because this is done inside each movement. 
@@ -137,7 +138,7 @@ public:
 	 * the full list of movements will score -1.
 	 * @return The score of the full set of movements
 	 */
-	getScore();
+	int getScore();
 	/**
 	 * @brief Insert the data of the list of movements into an ostream (either cout or file)
 	 * @param os The ostream
