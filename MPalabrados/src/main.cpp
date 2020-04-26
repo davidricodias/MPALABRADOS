@@ -8,6 +8,10 @@
 
 #include <iostream>
 
+#include "language.h"
+#include "bag.h"
+#include "player.h"
+
 
 using namespace std;
 
@@ -39,12 +43,26 @@ void HallOfFame(const Language &l, int random, const Bag &b, const Player &p,
         const Movelist& original,const Movelist& legal,
         const Movelist& accepted,const Movelist& rejected);
 
+string BuscaArgumento(string arg, char *args[], int nargs){
+    for(int i=0; i<nargc; i++){
+        if (args[i]==arg){
+            return args[i+1];
+        }
+    }
+    return "er";
+}
+
 
 /**
  * @brief Main function. 
  * @return 
  */
 int main(int nargs, char * args[]) {
+    //1.
+    const string arg_ID = -l;
+    const string arg_playerfile = -p;
+    const string arg_random= -r;
+    
     Bag bag;
     Player player;
     Language language;
@@ -56,6 +74,48 @@ int main(int nargs, char * args[]) {
     /// ...
     ///@warning: Complete the code
     /// ...
+    
+    //2.
+    string id = BuscaArgumento(arg_ID, *args[], nargs);
+    language.setLanguage(id);
+    cout << "Caracteres permitidos:" << endl;
+    cout << language.getLetterSet() << endl;
+    
+    //3.
+    bag.define(id);
+    
+    //4.
+    player.add() //TO_DO
+    
+    //5.
+    string r_moves = BuscaArgumento(arg_player); // Movimientos leidos
+    ifstream fichero_data(r_moves);
+    if(fichero_data.is_open()){
+        movements.read(fichero_data);
+    }else{
+        cout << "Error: No se pudo abrir el archivo." << endl;
+    }
+
+    //6.
+    legalmovements = movements;
+    legalmovements.zip(language.getLanguage();
+    
+    //8.
+    int l_moves = legalmovements.size()
+    for(int i=0; i<l_moves; i++){
+        if(language.query(legalmovements.get(i).getLetters())){
+            // Añadir a la lista
+            acceptedmovements.add(legalmovements.get(i));
+            // Marcarla
+            // ¿?
+            // Calcular puntuación
+            // Mostrar en pantalla
+            cout << "Score: " << acceptedmovements.getScore(); << endl; // ¿Puntuación total o del movimiento?
+        }else{
+            rejectedmovements.add(legalmovements.get(i));
+        }
+    }
+    
 /*
 1. El main() recibe como parámetros obligatorios "-l <ID>" y
 "-p <playfile>" y como parámetro opcional "-r <random>" ,

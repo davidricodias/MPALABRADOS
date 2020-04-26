@@ -76,8 +76,7 @@ void Movelist::assign(const Movelist& orig)
 
 void Movelist::operator=(Movelist& orig)
 {
-	this->copy(orig) ;
-        return *this ;
+	orig.copy(*this) ;
 }
 
 Move Movelist::get(int p) const
