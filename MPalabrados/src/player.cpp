@@ -43,6 +43,7 @@ string Player::to_string() const {
     return letters;
 }
 
+
 bool Player::extract(const std::string &s) {
     bool res=true;
     char final[MAXPLAYER+1];

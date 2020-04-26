@@ -1,5 +1,5 @@
-
-%%%CALL -r 35 -i data/EN_35W3.data
+%%%CALL -r 100 -p data/ES_100_ERROR.data
+%%%VALGRIND
 %%%OUTPUT
 Error in call. Please use:
- -l <language>  [-r <randomnumber> -i <inputfile>]
+ -l <language> -p <playfile> [-r <randomnumber>]

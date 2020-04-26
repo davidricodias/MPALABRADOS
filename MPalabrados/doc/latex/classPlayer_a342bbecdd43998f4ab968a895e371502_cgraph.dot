@@ -1,9 +1,0 @@
-digraph "Player::isValid"
-{
-  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
-  node [fontname="Helvetica",fontsize="10",shape=record];
-  rankdir="LR";
-  Node3 [label="Player::isValid",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
-  Node3 -> Node4 [color="midnightblue",fontsize="10",style="solid"];
-  Node4 [label="Player::extract",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classPlayer.html#a4fccb524224366a9fc30ff16042686c1",tooltip="Remove the set of letters of the movement, including possible repetitions, from the set of stored let..."];
-}
