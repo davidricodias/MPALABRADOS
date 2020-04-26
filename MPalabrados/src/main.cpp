@@ -86,6 +86,8 @@ int main(int nargs, char **args) {
             case arg_random:
                 random = args[i];
                 break;
+            default:
+                errorBreak(1, "Lectura de parametros invalida");
         }
     }
     
@@ -110,10 +112,10 @@ int main(int nargs, char **args) {
 
     //6.
     legalmovements = movements;
-    legalmovements.zip(language.getLanguage();
+    legalmovements.zip(language.getLanguage());
     
     //8.
-    int l_moves = legalmovements.size()
+    int l_moves = legalmovements.size();
     for(int i=0; i<l_moves; i++){
         if(language.query(legalmovements.get(i).getLetters())){
             // Añadir a la lista
@@ -178,7 +180,7 @@ tos, en la apertura de ficheros o en la lectura de datos del fiche-
 ro, se debe usar la función errorBreak(...) para notificar el error
 y parar el programa.
 */
-    HallOfFame(language, Id, bag, player, 
+    HallOfFame(language, random, bag, player, 
             movements, legalmovements, acceptedmovements, rejectedmovements);
     return 0;
 }
