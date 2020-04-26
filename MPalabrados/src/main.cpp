@@ -45,15 +45,6 @@ void HallOfFame(const Language &l, int random, const Bag &b, const Player &p,
         const Movelist& original,const Movelist& legal,
         const Movelist& accepted,const Movelist& rejected);
 
-string BuscaArgumento(string arg, char *args[], int nargs){
-    for(int i=0; i<nargs; i++){
-        if (args[i]==arg){
-            return args[i+1];
-        }
-    }
-    return "error";
-}
-
 
 /**
  * @brief Main function. 
@@ -78,12 +69,27 @@ int main(int nargs, char **args) {
     /// ...
     
     // 1. Busca el argumento -l
-    string lang = BuscaArgumento(arg_ID, args, nargs);
+    /*string lang = BuscaArgumento(arg_ID, args, nargs);
     if( lang == "error" )
-        errorBreak( ERROR_ARGUMENT ) ;
+        errorBreak( ERROR_ARGUMENT ) ;*/
+    
+    string id, r_moves, random;
+    
+    for(int i=0; i<nargs; i+=2){ // Sumo 2 para saltarme el argumento y no el tipo de argumento
+        switch(args[i]){
+            case arg_ID:
+                id = args[i];
+                break;
+            case arg_playerfile:
+                r_moves = args[i];
+                break;
+            case arg_random:
+                random = args[i];
+                break;
+        }
+    }
     
     //2.
-    
     language.setLanguage(id);
     cout << "Caracteres permitidos:" << endl;
     cout << language.getLetterSet() << endl;
@@ -92,10 +98,9 @@ int main(int nargs, char **args) {
     bag.define(id);
     
     //4.
-    player.add() //TO_DO
+    player.add(bag.to_string());
     
     //5.
-    string r_moves = BuscaArgumento(arg_player); // Movimientos leidos
     ifstream fichero_data(r_moves);
     if(fichero_data.is_open()){
         movements.read(fichero_data);
