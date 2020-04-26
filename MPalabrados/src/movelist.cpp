@@ -166,7 +166,7 @@ void Movelist::remove(const Move& mov)
 
 void Movelist::zip(const Language& l)
 {
-    int count = 0 ; Move move_word ;
+    int count = 0 ; string move_word ;
     while(count<nMove) {
         move_word = moves[count].getLetters() ;
         

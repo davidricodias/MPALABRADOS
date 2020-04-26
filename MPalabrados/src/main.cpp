@@ -75,7 +75,7 @@ int main(int nargs, char **args) {
     
     string id, r_moves, random;
     
-    for(int i=0; i<nargs; i+=2){ // Sumo 2 para saltarme el argumento y no el tipo de argumento
+    for(int i=0; i<nargs; i++){ 
         switch(args[i]){
             case arg_ID:
                 id = args[i];
