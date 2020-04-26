@@ -180,15 +180,15 @@ tos, en la apertura de ficheros o en la lectura de datos del fiche-
 ro, se debe usar la función errorBreak(...) para notificar el error
 y parar el programa.
 */
-    HallOfFame(language, random, bag, player, 
+    HallOfFame(language, id, bag, player, 
             movements, legalmovements, acceptedmovements, rejectedmovements);
     return 0;
 }
 
-void HallOfFame(const Language &l, int random, const Bag &b, const Player &p, 
+void HallOfFame(const Language &l, const string id, const Bag &b, const Player &p, 
         const Movelist& original,const Movelist& legal,
         const Movelist& accepted,const Movelist& rejected) {
-    cout << endl << "%%%OUTPUT" << endl << "LANGUAGE: "<<l.getLanguage()<< " ID: " << random << endl;
+    cout << endl << "%%%OUTPUT" << endl << "LANGUAGE: "<<l.getLanguage()<< " ID: " << id << endl;
     cout << "BAG ("<<b.size()<<"): " << toUTF(b.to_string()) << endl;
     cout << "PLAYER (" <<p.size() << "): " << toUTF(p.to_string());
     cout << endl << endl << "ORIGINAL ("<<original.size()<<"): "<<endl; original.print(cout);
