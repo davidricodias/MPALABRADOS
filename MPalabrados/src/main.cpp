@@ -69,13 +69,7 @@ int main(int nargs, char **args) {
     ///@warning: Complete the code
     /// ...
     
-
-    
-    // 1. Busca el argumento -l
-    /*string lang = BuscaArgumento(arg_ID, args, nargs);
-    if( lang == "error" )
-        errorBreak( ERROR_ARGUMENT ) ;*/
-    
+    //1.
     string id, r_moves ;
     int random=-1 ;
     

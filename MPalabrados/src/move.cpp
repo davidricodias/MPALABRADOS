@@ -47,7 +47,7 @@ void Move::setScore(int s) {
 int Move::findScore(const Language &l) {
     if (l.query(getLetters()))  {
         score=0;
-        for (int let=0; let<getLetters().size(); let++){
+        for (int let=0; let < this->getLetters().length(); let++){
             score += l.getScore(getLetters()[let]);
         }
     } else{
