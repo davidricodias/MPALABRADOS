@@ -69,8 +69,8 @@ public:
 
 	/**
 	 * @brief Overloads the assignment operator
-	 * @param orig Right hand side of the assignment (Misspelled: assignement ;)
-	 * @return this Left hand side of the assignment (Misspelled: assignement ;)
+	 * @param orig Right hand side of the assignment
+	 * @return this Left hand side of the assignment
 	 */
 	void operator=(Movelist& orig);
 
@@ -94,14 +94,14 @@ public:
 	 * @brief Query the number of existing movements in the class 
 	 * @return The size of the set of movements
 	 */
-	int inline size() { return nMove; }
+	int inline size() const { return nMove; }
 
 	/**
 	 * @brief Searches a movement in the set of recorded movements. Two movements are equal if all their data members coincide.
 	 * @param mov The movement to be seeked
 	 * @return The position of the movement in the set, @retval -1 when the movement is not found
 	 */
-	int find(const Move& mov);
+	int find(const Move& mov) const;
 
 	/**
 	 * @brief Adds a copy of the movement at the end of the existing set, incrementing its size in one more movement
@@ -138,7 +138,7 @@ public:
 	 * the full list of movements will score -1.
 	 * @return The score of the full set of movements
 	 */
-	int getScore();
+	int getScore() const;
 	/**
 	 * @brief Insert the data of the list of movements into an ostream (either cout or file)
 	 * @param os The ostream

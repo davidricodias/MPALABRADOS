@@ -8,6 +8,7 @@
 
 #include <iostream>
 #include <string>
+#include <fstream>
 
 #include "language.h"
 #include "bag.h"
@@ -41,7 +42,7 @@ void errorBreak(int errorcode, const string & errorinfo="");
  * @param accepted
  * @param rejected
  */
-void HallOfFame(const Language &l, int random, const Bag &b, const Player &p, 
+void HallOfFame(const Language &l, const string id, const Bag &b, const Player &p, 
         const Movelist& original,const Movelist& legal,
         const Movelist& accepted,const Movelist& rejected);
 
@@ -73,23 +74,26 @@ int main(int nargs, char **args) {
     if( lang == "error" )
         errorBreak( ERROR_ARGUMENT ) ;*/
     
-    string id, r_moves, random;
+    string id, r_moves ;
+    int random=-1 ;
     
-    for(int i=0; i<nargs; i++){ 
-        switch(args[i]){
-            case arg_ID:
-                id = args[i];
-                break;
-            case arg_playerfile:
-                r_moves = args[i];
-                break;
-            case arg_random:
-                random = args[i];
-                break;
-            default:
-                errorBreak(1, "Lectura de parametros invalida");
+    for(int i=1; i<nargs; i+=2){ 
+        
+        string arg = args[i] ;
+        
+        if( arg == arg_ID)
+            id = args[i+1] ;
+        else if( arg==arg_playerfile ) {
+            r_moves = args[i+1];
+        } else if( arg==arg_random) {
+           random = stoi(args[i+1]); 
+        } else {
+            errorBreak(ERROR_ARGUMENTS, "Lectura de parametros inválida");
         }
-    }
+     }
+    
+    if( id=="" || r_moves=="")
+        errorBreak(ERROR_ARGUMENTS, "Lectura de parametros inválida");
     
     //2.
     language.setLanguage(id);
@@ -98,16 +102,19 @@ int main(int nargs, char **args) {
     
     //3.
     bag.define(id);
+    if( random >= 0)
+        bag.setRandom(random) ;
     
     //4.
     player.add(bag.to_string());
     
     //5.
-    ifstream fichero_data(r_moves);
-    if(fichero_data.is_open()){
-        movements.read(fichero_data);
+    ifstream ifile ;
+    ifile.open(r_moves) ;
+    if(ifile){
+        movements.read(ifile);
     }else{
-        cout << "Error: No se pudo abrir el archivo." << endl;
+        errorBreak(ERROR_OPEN, "Error reading from");
     }
 
     //6.
@@ -124,7 +131,7 @@ int main(int nargs, char **args) {
             // ¿?
             // Calcular puntuación
             // Mostrar en pantalla
-            cout << "Score: " << acceptedmovements.getScore(); << endl; // ¿Puntuación total o del movimiento?
+            cout << "Score: " << acceptedmovements.getScore() << endl; // ¿Puntuación total o del movimiento?
         }else{
             rejectedmovements.add(legalmovements.get(i));
         }

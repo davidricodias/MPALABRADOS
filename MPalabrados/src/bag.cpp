@@ -48,10 +48,10 @@ void Bag::setRandom(int mid) {
 void Bag::define(const Language &l) {
     string forletters = l.getLetterSet();
     nletters = 0;
-    for (int i = 0; i < forletters.size(); i++)
+    for (size_t i = 0; i < forletters.size(); i++)
         nletters += l.getFrequency(forletters[i]);  
     assert(nletters <= MAXBAG); // para comprobar que hay espacio en el vector, sino excepción!
-    for (int k = 0, i = 0; i < forletters.size(); i++)
+    for (size_t k = 0, i = 0; i < forletters.size(); i++)
         for (int j = 0; j < l.getFrequency(forletters[i]); j++)
             set(k++, forletters[i]);
     shuffleVector(letters, nletters, id);
@@ -72,7 +72,7 @@ string Bag::to_string() const  {
 void Bag::set(std::string s) {
     assert(s.size()<=MAXBAG);
     nletters = s.size();
-    for (int i=0;i<s.size(); i++)
+    for (size_t i=0;i<s.size(); i++)
         set(i,s[i]);
 }
 

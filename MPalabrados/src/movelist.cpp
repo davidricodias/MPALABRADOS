@@ -5,15 +5,15 @@
  * @warning Complete the code
  **/
 
-// Alumno
+// Alumno José David Rico Días Jorge Marín Sánchez
 
 #include <iostream>
 #include <ostream>
 #include <string>
+#include <assert.h>
 
 #include "movelist.h"
 #include "move.h"
-#include <stdexcept>
 
 using namespace std;
 
@@ -81,16 +81,15 @@ void Movelist::operator=(Movelist& orig)
 
 Move Movelist::get(int p) const
 {
-    if( !(0<=p && p < nMove) )
-        throw bad_alloc ;
+    assert( !(0<=p && p < nMove) ) ;
     
     return moves[p] ;
 }
 
 void Movelist::set(int p,const Move& m)
 {
-    if( !(0<=p && p < nMove) )
-        throw bad_alloc ;
+    assert( !(0<=p && p < nMove) ) ;
+        
     moves[p] = m ;
 }
 
@@ -100,7 +99,9 @@ int Movelist::find(const Move& mov) const
     int pos=0;
     
     for( ; pos < nMove && !found ; pos++ )
-        if( moves[pos]==mov )
+        if( moves[pos].getCol()==mov.getCol() && moves[pos].isHorizontal() == mov.isHorizontal()
+            && moves[pos].getLetters()==mov.getLetters() && moves[pos].getRow() == mov.getRow()
+            && moves[pos].getScore()==mov.getScore())
             found = true ;
     
     if(!found)
@@ -135,8 +136,7 @@ void Movelist::add(const Move& mov)
 
 void Movelist::remove(int p)
 {
-    if( !(0<=p && p < nMove) )
-        throw bad_alloc ;
+    assert( !(0<=p && p < nMove) ) ;
     
     nMove-- ;
     // Borra el movimiento en p sobreescribiendo
@@ -183,14 +183,14 @@ void Movelist::clear()
     deallocate() ;
 }
 
-void Movelist::getScore()
+int Movelist::getScore() const
 {
     int score_total = 0 ; 
     int score_tmp = 0 ;
     bool bad_score = false ;
     
     for(size_t i=0 ; i < nMove && !bad_score; ++i) {
-        score_tmp = moves[i].score() ;
+        score_tmp = moves[i].getScore() ;
         if( score_tmp != -1 )
             score_total += score_tmp ;
         else
@@ -222,7 +222,7 @@ bool Movelist::read(std::istream &is)
 {
     
     bool ok = true ;
-    size_t count = 0 ;
+    //size_t count = 0 ;
     
     Move in ;
     
@@ -232,7 +232,7 @@ bool Movelist::read(std::istream &is)
     if(is.eof())
         return !ok ;
     
-    while(in.letters != "_") {
+    while(in.getLetters() != "_") {
         
         this->add(in) ;
            
