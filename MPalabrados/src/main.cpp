@@ -56,7 +56,7 @@ int main(int nargs, char **args) {
     const string arg_ID = "-l";
     const string arg_playerfile = "-p";
     const string arg_random= "-r";
-    
+
     Bag bag;
     Player player;
     Language language;
@@ -68,6 +68,8 @@ int main(int nargs, char **args) {
     /// ...
     ///@warning: Complete the code
     /// ...
+    
+
     
     // 1. Busca el argumento -l
     /*string lang = BuscaArgumento(arg_ID, args, nargs);
@@ -87,40 +89,50 @@ int main(int nargs, char **args) {
             r_moves = args[i+1];
         } else if( arg==arg_random) {
            random = stoi(args[i+1]); 
+
         } else {
             errorBreak(ERROR_ARGUMENTS, "Lectura de parametros inválida");
         }
      }
     
+
+    
     if( id=="" || r_moves=="")
         errorBreak(ERROR_ARGUMENTS, "Lectura de parametros inválida");
+    
+
     
     //2.
     language.setLanguage(id);
     cout << "Caracteres permitidos:" << endl;
-    cout << language.getLetterSet() << endl;
+    cout << toUTF(language.getLetterSet()) << endl;
+    
     
     //3.
-    bag.define(id);
     if( random >= 0)
         bag.setRandom(random) ;
+    bag.define(id);
     
     //4.
-    player.add(bag.to_string());
+    player.add(bag.extract(7 - player.size()));
     
     //5.
     ifstream ifile ;
     ifile.open(r_moves) ;
     if(ifile){
-        movements.read(ifile);
+        if( !movements.read(ifile) )
+            errorBreak(ERROR_DATA, r_moves);
     }else{
-        errorBreak(ERROR_OPEN, "Error reading from");
+        errorBreak(ERROR_OPEN, r_moves);
     }
 
     //6.
+        cout << endl << endl << " TRAZA OK " << endl << endl ;
+
     legalmovements = movements;
+            
     legalmovements.zip(language.getLanguage());
-    
+
     //8.
     int l_moves = legalmovements.size();
     for(int i=0; i<l_moves; i++){

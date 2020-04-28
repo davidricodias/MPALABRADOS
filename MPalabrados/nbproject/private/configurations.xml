@@ -13,6 +13,8 @@
         <gdb_interceptlist>
           <gdbinterceptoptions gdb_all="false" gdb_unhandled="true" gdb_unexpected="true"/>
         </gdb_interceptlist>
+        <gdb_signals>
+        </gdb_signals>
         <gdb_options>
           <DebugOptions>
           </DebugOptions>
@@ -24,15 +26,16 @@
       </nativedebugger>
       <runprofile version="9">
         <runcommandpicklist>
-          <runcommandpicklistitem>"${OUTPUT_PATH}"</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH} -l ES"</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" -l ES</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" -l ES -r 50</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" -r 35 -l EN -b IEAIYWIEGQWOSTNCFNREEOTDOXCTVIAEHZEENIRGNSISGTAOALIEPMRHALIJNFUDYIBLAEANDROOVPDBEMEESLOATATOUUKRUR </runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" -r 35 -l EN -b IEAIYWIEGQWOSTNCFNREEOTDOXCTVIAEHZEENIRGNSISGTAOALIEPMRHALIJNFUDYIBLAEANDROOVPDBEMEESLOATATOUUKRUR</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" -r 12 -l ES -b SEJSGDCFGNTIDLNOBREAOOCSRDEEEEIOUOIMRDCLACNERPASHADINLAYLARXTÑIOOABEUUEMEAITAAEUEUATQHNVOSZAPSO</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}"</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" -r 2020 -l EN -p data/EMPTY.data</runcommandpicklistitem>
         </runcommandpicklist>
-        <runcommand>"${OUTPUT_PATH}" -r 12 -l ES -b SEJSGDCFGNTIDLNOBREAOOCSRDEEEEIOUOIMRDCLACNERPASHADINLAYLARXTÑIOOABEUUEMEAITAAEUEUATQHNVOSZAPSO</runcommand>
+        <runcommand>"${OUTPUT_PATH}" -r 2020 -l EN -p data/EMPTY.data</runcommand>
         <rundir></rundir>
         <buildfirst>true</buildfirst>
         <terminal-type>0</terminal-type>

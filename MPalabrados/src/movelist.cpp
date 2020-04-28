@@ -28,7 +28,7 @@ void Movelist::deallocate()
 {
     nMove = 0 ;
     delete [] moves ;
-    moves = 0 ;
+
 }
 
 void Movelist::copy(const Movelist& ml)
@@ -236,7 +236,7 @@ bool Movelist::read(std::istream &is)
         
         this->add(in) ;
            
-        in.read(is) ; 
+        in.read(is) ;
         
         if(is.eof())
             return !ok ;
