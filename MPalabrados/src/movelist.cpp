@@ -33,20 +33,12 @@ void Movelist::deallocate()
 }
 
 void Movelist::copy(const Movelist& ml){
-	// Si tienen distinta capacidad
-	if( nMove != ml.nMove ) {
-
-            // Puntero al objeto actual                
-            this->nMove = ml.nMove ;
-                
-            // Reservo memoria para la copia; moves apunta ahora a otro sector
-            allocate(nMove) ;
-	}
-	
-	// Copia los movimientos
-	for(int i=0 ; i < nMove ; ++i ) {
-		this->moves[i] = ml.moves[i] ;
-	}
+    deallocate();
+    allocate(ml.nMove);
+    
+    for(int i=0 ; i < nMove ; ++i ) {
+	this->moves[i] = ml.moves[i] ;
+    }
 }
 
 
@@ -114,7 +106,7 @@ int Movelist::find(const Move& mov) const
 
 void Movelist::add(const Move& mov) {
     int tam = nMove +1;
-    Move *aux = new Move;
+    Move *aux = new Move[tam];
     
     // Relleno aux
     for(int i =0;i<nMove;i++){

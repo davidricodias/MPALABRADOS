@@ -110,11 +110,15 @@ int main(int nargs, char **args) {
     
     
     //3.
-    if( random > 0){
+    if(external_bag != ""){
+        bag.set(normalizeWord(external_bag));
+    }else if(random>-1){
+        bag.define(id);
         bag.setRandom(random);
+    } else{
+        errorBreak(ERROR_ARGUMENTS, "Lectura de parametros inválida");
     }
-    bag.define(id);
-    bag.set(normalizeWord(external_bag));
+    
     
     //4.
     player.add(bag.extract(7 - player.size()));
@@ -132,12 +136,12 @@ int main(int nargs, char **args) {
     }
 
     //6.
-        cout << endl << endl << " TRAZA OK " << endl << endl ;
-
-    legalmovements = movements;
-            
+    cout << endl << endl << " TRAZA OK " << endl << endl ;    
+    
+    
+    legalmovements.assign(movements);
     legalmovements.zip(language.getLanguage());
-
+    cout << "legales"<<legalmovements.size() << endl;
     //8.
     int l_moves = legalmovements.size();
     for(int i=0; i<l_moves; i++){
@@ -162,7 +166,7 @@ int main(int nargs, char **args) {
 }
 
 void HallOfFame(const Language &l, const string id, const Bag &b, const Player &p, 
-        const Movelist& original,const Movelist& legal,
+        const Movelist &original,const Movelist& legal,
         const Movelist& accepted,const Movelist& rejected) {
     cout << endl << "%%%OUTPUT" << endl << "LANGUAGE: "<<l.getLanguage()<< " ID: " << id << endl;
     cout << "BAG ("<<b.size()<<"): " << toUTF(b.to_string()) << endl;
