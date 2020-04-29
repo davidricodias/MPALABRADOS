@@ -29,7 +29,6 @@ void Movelist::deallocate()
 {
     this->nMove = 0 ;
     delete[] this->moves ;
-    moves = 0 ;
 }
 
 void Movelist::copy(const Movelist& ml)
