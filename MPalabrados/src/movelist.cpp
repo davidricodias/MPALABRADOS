@@ -36,11 +36,13 @@ void Movelist::copy(const Movelist& ml)
 	// Si tienen distinta capacidad
 	if( nMove != ml.nMove ) {
 
-		this->nMove = ml.nMove ;
+
 		
 		// Como quiero copiar, borro los movimientos actuales
-		deallocate() ;
-	
+		this->deallocate() ;
+
+                this->nMove = ml.nMove ;
+                
 		// Reservo memoria para la copia
 		allocate(nMove) ;
 	}
