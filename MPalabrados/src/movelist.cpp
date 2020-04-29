@@ -36,20 +36,20 @@ void Movelist::copy(const Movelist& ml)
 	// Si tienen distinta capacidad
 	if( nMove != ml.nMove ) {
 
-            
-                Move *tmp = moves ;
+                // Puntero al objeto actual
+                Move* tmp = this->moves ;
 
                 this->nMove = ml.nMove ;
                 
-		// Reservo memoria para la copia
+		// Reservo memoria para la copia; moves apunta ahora a otro sector
 		allocate(nMove) ;
                 
-                delete[] tmp ;
+                delete tmp ;    
 	}
 	
 	// Copia los movimientos
-	for(size_t i=0 ; i < nMove ; ++i ) {
-		moves[i] = ml.moves[i] ;
+	for(int i=0 ; i < nMove ; ++i ) {
+		this->moves[i] = ml.moves[i] ;
 	}
 }
 
@@ -117,10 +117,9 @@ void Movelist::add(const Move& mov)
 {
     Movelist tmp(*this) ;  //Guarda el objeto de forma temporal
     
-    // Borra el objeto actual
-    this->deallocate() ;
+    Move *tmp = moves;             //Guarda el puntero al objeto actual
     
-    // Crea uno nuevo con 1 más de espacio
+
     this->allocate(tmp.nMove+1) ;   // Ahora this->nMove a aumentado en 1
 
     // OJO, no hay que usar copy, ya que eso hace que los 2 objetos sean iguales
