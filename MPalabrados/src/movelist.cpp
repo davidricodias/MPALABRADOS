@@ -39,6 +39,8 @@ void Movelist::copy(const Movelist& ml)
                 // Puntero al objeto actual
                 Move* tmp = this->moves ;
 
+                cout << endl << endl << tmp << " " << moves << endl << endl ;
+                
                 this->nMove = ml.nMove ;
                 
 		// Reservo memoria para la copia; moves apunta ahora a otro sector
@@ -54,7 +56,10 @@ void Movelist::copy(const Movelist& ml)
 }
 
 
-Movelist::Movelist():nMove(0) {}
+Movelist::Movelist()
+{
+    allocate(0) ;
+}
 
 Movelist::Movelist(int nmov): nMove(nmov)
 {
@@ -88,7 +93,7 @@ Move Movelist::get(int p) const
     return moves[p] ;
 }
 
-void Movelist::set(int p,const Move& m)
+void Movelist::set(int p, const Move& m)
 {
     assert( !(0<=p && p < nMove) ) ;
         
@@ -115,11 +120,8 @@ int Movelist::find(const Move& mov) const
 
 void Movelist::add(const Move& mov)
 {
-    Movelist tmp(*this) ;  //Guarda el objeto de forma temporal
+    Movelist tmp(*this) ;  // Guarda el objeto de forma temporal
     
-    Move *tmp = moves;             //Guarda el puntero al objeto actual
-    
-
     this->allocate(tmp.nMove+1) ;   // Ahora this->nMove a aumentado en 1
 
     // OJO, no hay que usar copy, ya que eso hace que los 2 objetos sean iguales
@@ -133,6 +135,7 @@ void Movelist::add(const Move& mov)
     // Añado el nuevo objeto
     this->moves[tmp.nMove] = mov ;
     
+    tmp.deallocate() ;
 }
 
 void Movelist::remove(int p)
@@ -147,7 +150,6 @@ void Movelist::remove(int p)
     // Ahora hay que redimensionar la memoria, olvidándonos del último valor
     Movelist tmp = *this ;
     
-    this->deallocate() ;
     this->allocate(nMove) ;
     
     // Copia desde tmp a *this
