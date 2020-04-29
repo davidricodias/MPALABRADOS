@@ -115,7 +115,7 @@ int Movelist::find(const Move& mov) const
 
 void Movelist::add(const Move& mov)
 {
-    Movelist tmp = *this ;  //Guarda el objeto de forma temporal
+    Movelist tmp(*this) ;  //Guarda el objeto de forma temporal
     
     // Borra el objeto actual
     this->deallocate() ;
@@ -127,7 +127,7 @@ void Movelist::add(const Move& mov)
     // Lo que buscamos es cambiar el objeto
     
     // Copio los movimientos de tmp al objeto actual
-    for( size_t i=0 ; i < tmp.nMove ; ++i ) {
+    for( int i=0 ; i < tmp.nMove ; ++i ) {
         this->moves[i] = tmp.moves[i] ;
     }
  
@@ -142,7 +142,7 @@ void Movelist::remove(int p)
     
     nMove-- ;
     // Borra el movimiento en p sobreescribiendo
-    for( size_t i=p ; i<nMove; ++i)
+    for( int i=p ; i<nMove; ++i)
         moves[i] = moves[i+1] ;
     
     // Ahora hay que redimensionar la memoria, olvidándonos del último valor
@@ -152,7 +152,7 @@ void Movelist::remove(int p)
     this->allocate(nMove) ;
     
     // Copia desde tmp a *this
-    for( size_t i=0 ; i < nMove ; ++i )
+    for( int i=0 ; i < nMove ; ++i )
         this->moves[i] = tmp.moves[i] ;
 }
 
@@ -191,7 +191,7 @@ int Movelist::getScore() const
     int score_tmp = 0 ;
     bool bad_score = false ;
     
-    for(size_t i=0 ; i < nMove && !bad_score; ++i) {
+    for(int i=0 ; i < nMove && !bad_score; ++i) {
         score_tmp = moves[i].getScore() ;
         if( score_tmp != -1 )
             score_total += score_tmp ;
@@ -208,7 +208,7 @@ int Movelist::getScore() const
 bool Movelist::print(std::ostream &os, bool scores) const
 {
     bool res=true;
-    for ( size_t i=0; i<size() && res; ++i ) {
+    for ( int i=0; i<size() && res; ++i ) {
         get(i).print(os);
         if (scores)
             os << " ("<<get(i).getScore()<<") - ";
@@ -237,9 +237,8 @@ bool Movelist::read(std::istream &is)
             return !ok ;
         
         this->add(in) ;
-           
+
         in.read(is) ;
-        
 
     }
     
