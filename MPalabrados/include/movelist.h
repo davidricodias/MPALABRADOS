@@ -20,7 +20,7 @@
  */
 class Movelist {
 private:
-	Move* moves;		/// Dynamic vector of movements
+	Move *moves;		/// Dynamic vector of movements
 	int nMove;		/// Number of recorded movements
 
 	/**
