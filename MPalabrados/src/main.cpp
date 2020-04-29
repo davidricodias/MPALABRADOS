@@ -117,8 +117,6 @@ int main(int nargs, char **args) {
         errorBreak(ERROR_ARGUMENTS, "Lectura de parametros inválida");
     }
 
-
-    
     //2.
     language.setLanguage(id);
     cout << "Caracteres permitidos:" << endl;
@@ -173,6 +171,7 @@ int main(int nargs, char **args) {
 
     HallOfFame(language, id, bag, player, 
             movements, legalmovements, acceptedmovements, rejectedmovements);
+    
     return 0;
 }
 

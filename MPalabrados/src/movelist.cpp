@@ -28,7 +28,7 @@ void Movelist::allocate(int n)
 void Movelist::deallocate()
 {
     this->nMove = 0 ;
-    delete [] this->moves ;
+    delete[] this->moves ;
     moves = 0 ;
 }
 
