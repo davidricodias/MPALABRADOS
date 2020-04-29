@@ -230,17 +230,16 @@ bool Movelist::read(std::istream &is)
     //Lectura anticipada
     in.read(is) ; 
     
-    if(is.eof())
-        return !ok ;
-    
     while(in.getLetters() != "_") {
+        
+        if(is.eof())
+            return !ok ;
         
         this->add(in) ;
            
         in.read(is) ;
         
-        if(is.eof())
-            return !ok ;
+
     }
     
     return ok ;

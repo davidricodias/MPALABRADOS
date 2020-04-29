@@ -21,7 +21,7 @@
 class Movelist {
 private:
 	Move* moves;		/// Dynamic vector of movements
-	int nMove;			/// Number of recorded movements
+	int nMove;		/// Number of recorded movements
 
 	/**
 	 * @brief Allocates memory
