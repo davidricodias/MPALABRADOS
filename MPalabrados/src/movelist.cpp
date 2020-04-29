@@ -29,7 +29,7 @@ void Movelist::deallocate()
 {
     nMove = 0 ;
     delete [] moves ;
-
+    moves = 0 ;
 }
 
 void Movelist::copy(const Movelist& ml)
@@ -37,7 +37,7 @@ void Movelist::copy(const Movelist& ml)
 	// Si tienen distinta capacidad
 	if( nMove != ml.nMove ) {
 
-		nMove = ml.nMove ;
+		this->nMove = ml.nMove ;
 		
 		// Como quiero copiar, borro los movimientos actuales
 		deallocate() ;
