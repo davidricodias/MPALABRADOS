@@ -70,48 +70,34 @@ int main(int nargs, char **args) {
     ///@warning: Complete the code
     /// ...
     
+    
     //1.
     string id, external_data, external_bag;
     int random=0;
     id = external_data = external_bag = "";
     
     for(int i=1; i<nargs; i++){
-        cout << i << " " << args[i] << endl;
         string arg = args[i] ;
         
         if( arg == arg_ID){
-            if((i+1)>=nargs){errorBreak(ERROR_ARGUMENTS,"");}
-            id = args[i++];
-            i++;
+            if((i)>=nargs){errorBreak(ERROR_ARGUMENTS,"");}
+            id = args[i+1];
             
         }else if( arg==arg_playerfile ) {
-            if((i+1)>=nargs){errorBreak(ERROR_ARGUMENTS,"");}
+            if((i)>=nargs){errorBreak(ERROR_ARGUMENTS,"");}
             external_data = args[i+1];
-            i++;
             
         } else if( arg==arg_random) {
-            if((i+1)>=nargs){errorBreak(ERROR_ARGUMENTS,"");}
+            if((i)>=nargs){errorBreak(ERROR_ARGUMENTS,"");}
            random = stoi(args[i+1]);
-           i++;
 
         } else if( arg==arg_bag) {
-            if((i+1)>=nargs){errorBreak(ERROR_ARGUMENTS,"");}
+            if((i)>=nargs){errorBreak(ERROR_ARGUMENTS,"");}
            external_bag = args[i+1];
            bag.set(external_bag);
-           i++;
         }
      }
     
-    
-    /// 
-    /// Debug only
-    /// 
-    ///  
-    id="ES" ;
-    external_data="ES_17W24.data";
-    
-    
-
     
     if( id=="" || external_data==""){
         errorBreak(ERROR_ARGUMENTS, "Lectura de parametros inválida");
@@ -136,7 +122,7 @@ int main(int nargs, char **args) {
     //5.
     ifstream ifile;
     if(external_data!=""){
-        ifile.open("data/" + external_data);   
+        ifile.open(external_data);   
         if(ifile){
             movements.read(ifile);
             cout << external_data << " leido." << endl;

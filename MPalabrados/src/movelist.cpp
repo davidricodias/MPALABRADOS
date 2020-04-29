@@ -19,34 +19,28 @@
 using namespace std;
 
 /// Private
-void Movelist::allocate(int n)
-{
-    nMove = n ;
+void Movelist::allocate(int n) {
+    nMove = n;
     moves = new Move[nMove] ;
 }
 
 void Movelist::deallocate()
 {
     this->nMove = 0 ;
-    delete[] this->moves ;
+    if(moves){
+        delete[] this->moves;
+    }
 }
 
-void Movelist::copy(const Movelist& ml)
-{
+void Movelist::copy(const Movelist& ml){
 	// Si tienen distinta capacidad
 	if( nMove != ml.nMove ) {
 
-                // Puntero al objeto actual
-                Move* tmp = this->moves ;
-
-                cout << endl << endl << tmp << " " << moves << endl << endl ;
+            // Puntero al objeto actual                
+            this->nMove = ml.nMove ;
                 
-                this->nMove = ml.nMove ;
-                
-		// Reservo memoria para la copia; moves apunta ahora a otro sector
-		allocate(nMove) ;
-                
-                delete tmp ;    
+            // Reservo memoria para la copia; moves apunta ahora a otro sector
+            allocate(nMove) ;
 	}
 	
 	// Copia los movimientos
@@ -118,8 +112,25 @@ int Movelist::find(const Move& mov) const
     
 }
 
-void Movelist::add(const Move& mov)
-{
+void Movelist::add(const Move& mov) {
+    int tam = nMove +1;
+    Move *aux = new Move;
+    
+    // Relleno aux
+    for(int i =0;i<nMove;i++){
+        aux[i] = moves[i];
+    }
+    aux[nMove] = mov;
+    
+    this->deallocate();
+    moves = aux;
+    nMove=tam;
+    cout << "Exito!" << endl;
+    
+    
+    
+    /*this->moves[nMove] = mov;
+    
     Movelist tmp(*this) ;  // Guarda el objeto de forma temporal
     
     this->allocate(tmp.nMove+1) ;   // Ahora this->nMove a aumentado en 1
@@ -135,7 +146,7 @@ void Movelist::add(const Move& mov)
     // Añado el nuevo objeto
     this->moves[tmp.nMove] = mov ;
     
-    tmp.deallocate() ;
+    tmp.deallocate() ;*/
 }
 
 void Movelist::remove(int p)
