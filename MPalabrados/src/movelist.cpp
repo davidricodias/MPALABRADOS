@@ -5,7 +5,8 @@
  * @warning Complete the code
  **/
 
-// Alumno José David Rico Días Jorge Marín Sánchez
+// Alumnos: José David Rico Días 
+//          Jorge Marín Sánchez
 
 #include <iostream>
 #include <ostream>
@@ -52,7 +53,7 @@ void Movelist::copy(const Movelist& ml)
 }
 
 
-Movelist::Movelist() {}
+Movelist::Movelist():nMove(0) {}
 
 Movelist::Movelist(int nmov): nMove(nmov)
 {

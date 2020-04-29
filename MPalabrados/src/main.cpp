@@ -56,6 +56,7 @@ int main(int nargs, char **args) {
     const string arg_ID = "-l";
     const string arg_playerfile = "-p";
     const string arg_random= "-r";
+    const string arg_bag= "-b";
 
     Bag bag;
     Player player;
@@ -70,30 +71,52 @@ int main(int nargs, char **args) {
     /// ...
     
     //1.
-    string id, r_moves ;
-    int random=-1 ;
+    string id, external_data, external_bag;
+    int random=0;
+    id = external_data = external_bag = "";
     
-    for(int i=1; i<nargs; i+=2){ 
-        
+    for(int i=1; i<nargs; i++){
+        cout << i << " " << args[i] << endl;
         string arg = args[i] ;
         
-        if( arg == arg_ID)
-            id = args[i+1] ;
-        else if( arg==arg_playerfile ) {
-            r_moves = args[i+1];
+        if( arg == arg_ID){
+            if((i+1)>=nargs){errorBreak(ERROR_ARGUMENTS,"");}
+            id = args[i++];
+            i++;
+            
+        }else if( arg==arg_playerfile ) {
+            if((i+1)>=nargs){errorBreak(ERROR_ARGUMENTS,"");}
+            external_data = args[i+1];
+            i++;
+            
         } else if( arg==arg_random) {
-           random = stoi(args[i+1]); 
+            if((i+1)>=nargs){errorBreak(ERROR_ARGUMENTS,"");}
+           random = stoi(args[i+1]);
+           i++;
 
-        } else {
-            errorBreak(ERROR_ARGUMENTS, "Lectura de parametros inválida");
+        } else if( arg==arg_bag) {
+            if((i+1)>=nargs){errorBreak(ERROR_ARGUMENTS,"");}
+           external_bag = args[i+1];
+           bag.set(external_bag);
+           i++;
         }
      }
     
+    
+    /// 
+    /// Debug only
+    /// 
+    ///  
+    /*id="ES";*/
+    external_data="ES_17W24.data";
+    
+    
 
     
-    if( id=="" || r_moves=="")
+    if( id=="" || external_data==""){
         errorBreak(ERROR_ARGUMENTS, "Lectura de parametros inválida");
-    
+    }
+
 
     
     //2.
@@ -103,21 +126,25 @@ int main(int nargs, char **args) {
     
     
     //3.
-    if( random >= 0)
-        bag.setRandom(random) ;
+    if( random > 0){
+        bag.setRandom(random);
+    }
     bag.define(id);
+    bag.set(normalizeWord(external_bag));
     
     //4.
     player.add(bag.extract(7 - player.size()));
     
     //5.
-    ifstream ifile ;
-    ifile.open(r_moves) ;
-    if(ifile){
-        if( !movements.read(ifile) )
-            errorBreak(ERROR_DATA, r_moves);
-    }else{
-        errorBreak(ERROR_OPEN, r_moves);
+    ifstream ifile;
+    if(external_data!=""){
+        ifile.open("data/" + external_data);   
+        if(ifile){
+            movements.read(ifile);
+            cout << external_data << " leido." << endl;
+        }else{
+            errorBreak(ERROR_OPEN, external_data);
+        }
     }
 
     //6.
@@ -143,56 +170,7 @@ int main(int nargs, char **args) {
         }
     }
     
-/*
-1. El main() recibe como parámetros obligatorios "-l <ID>" y
-"-p <playfile>" y como parámetro opcional "-r <random>" ,
-en cualquier orden entre los tres. En este caso, el parámetro
-"-p" hace referencia a una partida guardada, la cual, por aho-
-ra, sólo tiene los movimientos. Si se especifica "-r" se define
-el aleatorio con el número indicado, si no, no se define aleatorio.
- * 
-2. Crear una instancia de la clase Language con el anterior ID y
-mostrar el conjunto de caracteres permitido para ese lenguaje.
- * 
-3. Crear una instancia de la clase Bag, inicializar el generador de
-números aleatorios con el número aleatorio anterior, si es que
-se ha indicado, y definir su contenido en base al lenguaje que
-se ha declarado anteriormente.
- * 
-4. Crear una instancia de la clase Player y llenarla por comple-
-to con caracteres de la bolsa. Este objeto player deberá estar
-siempre ordenado de la A a la Z.
- * 
-5. Crear una instancia de la clase bf Movelist llamada original
-y leer todos los movimientos desde el fichero indicado en el
-parámetro -p usando el método read(...)
- * 
-6. Crear una instancia de Movelist llamada legal que contenga
-sólo los movimientos de original que están en el diccionario
-del lenguaje elegido. Usar, para ello, el método zip(...)
- * 
-7. Crear dos instancias adicionales de Movelist y llamarlas accepted
-y rejected
- * 
-8. Recorrer toda la lista de movimientos leı́da y, por cada uno de
-ellos.
-a) Si el movimiento está en el diccionario, añadir la palabra a
-la lista accepted , marcarla, calcular su puntuación, según
-el idioma, y mostrarlo en la pantalla.
-b) En otro caso añadirla a la lista rejected y marcarla.
-c) Todos estos mensajes en pantalla no afectan a la validación
-de la práctica, ası́ que el alumno puede implementarlas a
-su propio parecer.
- * 
-9. Terminar con la llamada a HallOfFame para visualizar los re-
-sultados. Esta llamada es la que se utilizará para validar los
-datos.
- * 
-10. Si en cualquier momento se presenta un error en los argumen-
-tos, en la apertura de ficheros o en la lectura de datos del fiche-
-ro, se debe usar la función errorBreak(...) para notificar el error
-y parar el programa.
-*/
+
     HallOfFame(language, id, bag, player, 
             movements, legalmovements, acceptedmovements, rejectedmovements);
     return 0;
@@ -215,7 +193,7 @@ void errorBreak(int errorcode, const string &errordata) {
     cerr << endl << "%%%OUTPUT" << endl;
     switch(errorcode) {
         case ERROR_ARGUMENTS:
-            cerr<<"Error in call. Please use:\n -l <language> -p <playfile> [-r <randomnumber>]"<<endl;
+            cerr<<"Error in call. Please use:\n -l <language> -p <playfile> [-r <randomnumber>] -b <bag>"<<endl;
             break;
         case ERROR_OPEN:
             cerr<<"Error opening file "<<errordata << endl;
