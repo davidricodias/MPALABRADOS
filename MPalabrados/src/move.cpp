@@ -16,14 +16,15 @@ using namespace std;
 Move::Move() {
         row = column = score = -1;
         letters="";
+        ishorizontal = true;
 }
 
 void Move::set(int r, int c, char h, const string & l) {
-    h = toupper(h);
     setRow(r);
     setCol(c);
     setHorizontal(h);
     setLetters(l);
+    //score = -1;
 }
 
 void Move::setRow(int r){
@@ -33,8 +34,8 @@ void Move::setCol(int c){
     column=c;
 }
 void Move::setHorizontal(char h){
-    h=toupper(h);
-    ishorizontal = (toupper(h)== 'H');
+    h = toupper(h);
+    ishorizontal = (h == 'H');
 }
 void Move::setLetters(const string &l){
     letters = normalizeWord(l);
@@ -47,7 +48,7 @@ void Move::setScore(int s) {
 int Move::findScore(const Language &l) {
     if (l.query(getLetters()))  {
         score=0;
-        for (int let=0; let < this->getLetters().length(); let++){
+        for (int let=0; let<getLetters().size(); let++){
             score += l.getScore(getLetters()[let]);
         }
     } else{
@@ -59,12 +60,7 @@ int Move::findScore(const Language &l) {
 int Move::getScore() const{
     return score;
 }
-//int Move::getScore(const Language &l) const{
-//    int score = 0;
-//    for (int i=0; i<letters.size(); i++)
-//        score += l.getScore(letters[i]);
-//    return score;
-//}
+
 
 int Move::getRow() const {
         return row;
@@ -89,7 +85,6 @@ void Move::read( std::istream &is) {
     int _row, _column;
     string _letters;
     is >> h >> _row >> _column  >> _letters;
-    _letters = normalizeWord(_letters);
     set(_row,_column, h, _letters);
 }
 

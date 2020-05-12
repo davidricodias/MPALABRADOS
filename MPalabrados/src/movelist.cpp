@@ -2,217 +2,181 @@
  * @file movelist.cpp
  * @author DECSAI
  * @note To be implemented by students
- * @warning Complete the code
- **/
-
-// Alumnos: José David Rico Días 
-//          Jorge Marín Sánchez
-
+ */
 #include <iostream>
-#include <ostream>
-#include <string>
-#include <assert.h>
-
-#include "movelist.h"
+#include <fstream>
+#include <cmath>
+#include <cassert>
 #include "move.h"
+#include "movelist.h"
 
 using namespace std;
 
-/// Private
-void Movelist::allocate(int n) {
-    nMove = n;
-    moves = new Move[nMove] ;
+Movelist::Movelist() {
+    initialize();
 }
 
-void Movelist::deallocate()
-{
-    this->nMove = 0 ;
-    if(moves){
-        delete[] this->moves;
-    }
-}
-
-void Movelist::copy(const Movelist& ml){
-    deallocate();
-    allocate(ml.nMove);
-    
-    for(int i=0 ; i < nMove ; ++i ) {
-	this->moves[i] = ml.moves[i] ;
-    }
-}
-
-
-Movelist::Movelist()
-{
-    allocate(0) ;
-}
-
-Movelist::Movelist(int nmov): nMove(nmov)
-{
-	allocate(nmov) ;
+Movelist::Movelist(int nmov)  {
+    initialize();
+    allocate(nmov);
 }
 
 Movelist::Movelist(const Movelist& orig) {
-	this->copy(orig) ;
+    initialize();
+    copy(orig);
 }
 
-Movelist::~Movelist()
-{
-	this->deallocate() ;
+Movelist::~Movelist() {
+    deallocate();
 }
 
-void Movelist::assign(const Movelist& orig)
-{
-	this->copy(orig) ;
-}
+void Movelist::assign(const Movelist& orig) {
 
-
-void Movelist::operator=(Movelist& orig)
-{
-	orig.copy(*this) ;
-}
-
-Move Movelist::get(int p) const
-{
-    assert( !(0<=p && p < nMove) ) ;
-    
-    return moves[p] ;
-}
-
-void Movelist::set(int p, const Move& m)
-{
-    assert( !(0<=p && p < nMove) ) ;
-        
-    moves[p] = m ;
-}
-
-int Movelist::find(const Move& mov) const
-{
-    bool found = false ;
-    int pos=0;
-    
-    for( ; pos < nMove && !found ; pos++ )
-        if( moves[pos].getCol()==mov.getCol() && moves[pos].isHorizontal() == mov.isHorizontal()
-            && moves[pos].getLetters()==mov.getLetters() && moves[pos].getRow() == mov.getRow()
-            && moves[pos].getScore()==mov.getScore())
-            found = true ;
-    
-    if(!found)
-        return -1 ;
-    
-    return pos ;
-    
-}
-
-void Movelist::add(const Move& mov) {
-    int tam = nMove +1;
-    Move *aux = new Move[tam];
-    
-    // Relleno aux
-    for(int i =0;i<nMove;i++){
-        aux[i] = moves[i];
-    }
-    aux[nMove] = mov;
-    
-    this->deallocate();
-    moves = aux;
-    nMove=tam;
-    cout << "Exito!" << endl;
-    
-    
-    
-    /*this->moves[nMove] = mov;
-    
-    Movelist tmp(*this) ;  // Guarda el objeto de forma temporal
-    
-    this->allocate(tmp.nMove+1) ;   // Ahora this->nMove a aumentado en 1
-
-    // OJO, no hay que usar copy, ya que eso hace que los 2 objetos sean iguales
-    // Lo que buscamos es cambiar el objeto
-    
-    // Copio los movimientos de tmp al objeto actual
-    for( int i=0 ; i < tmp.nMove ; ++i ) {
-        this->moves[i] = tmp.moves[i] ;
-    }
- 
-    // Añado el nuevo objeto
-    this->moves[tmp.nMove] = mov ;
-    
-    tmp.deallocate() ;*/
-}
-
-void Movelist::remove(int p)
-{
-    assert( !(0<=p && p < nMove) ) ;
-    
-    nMove-- ;
-    // Borra el movimiento en p sobreescribiendo
-    for( int i=p ; i<nMove; ++i)
-        moves[i] = moves[i+1] ;
-    
-    // Ahora hay que redimensionar la memoria, olvidándonos del último valor
-    Movelist tmp = *this ;
-    
-    this->allocate(nMove) ;
-    
-    // Copia desde tmp a *this
-    for( int i=0 ; i < nMove ; ++i )
-        this->moves[i] = tmp.moves[i] ;
-}
-
-void Movelist::remove(const Move& mov)
-{
-    // Si encuentra el movimiento, le pasa la posición a remove(int p)
-    int pos=find(mov) ;
-    if( pos>=0 ) {
-        this->remove(pos) ;
+    if (this != &orig) {
+        deallocate();
+        copy(orig);
     }
 }
 
+Movelist& Movelist::operator=(const Movelist& orig) {
+    if (this != &orig) {
+        deallocate();
+        copy(orig);
+    }
+    return *this;
+}
 
-void Movelist::zip(const Language& l)
-{
-    int count = 0 ; string move_word ;
-    while(count<nMove) {
-        move_word = moves[count].getLetters() ;
-        
-        // Si no tiene al menos 2 letras o no es válida, se borra
-        if( move_word.length() < 2 || !l.query(move_word) )
-            this->remove(moves[count]) ;
+
+Move Movelist::get(int p) const {    
+    assert (0 <= p && p < size());
+    return moves[p];
+}
+
+void Movelist::set(int p, const Move & m) {
+    assert (0 <= p && p < size());
+    moves[p] = m;
+}
+
+
+int Movelist::find(const Move& mov) const {
+   for (int i = 0; i < size(); i++) {
+        if (mov.getLetters() == get(i).getLetters()) { // OJO a completar posteriormetne
+            return i;
+        }
+    }
+    return -1;    
+}    
+
+void Movelist::add(const Move &mov) {
+    Movelist aux(size()+1);
+    for (int i=0; i<size(); i++)
+        aux.set(i,get(i));
+    aux.set(aux.size()-1, mov);
+    deallocate();
+    copy(aux);
+    
+    /*
+    allocate(this->nMove+1);
+    for (int i=0; i<size(); i++)
+        set(i, aux.get(i));*/
+    
+}
+
+void Movelist::remove(const Move &mov) {
+    int p = find(mov);
+    if (p>=0)
+        remove(p);
+}
+
+
+Movelist & Movelist::operator+=(const Move &m) {
+    this->add(m);
+    return *this;
+}
+
+
+void Movelist::clear() {
+    deallocate();
+}
+
+int Movelist::getScore() const {
+    int score=0;
+    for (int i=0; i<size() && score >=0; i++) {
+        if (get(i).getScore()>=0){
+            score += get(i).getScore();
+        } else {
+            score = -1;
+        }
+    }
+    return score;
+}
+void Movelist::remove(int p) {
+    assert (p >= 0 && p < size());
+    Movelist aux(size()-1);
+    for (int i=0, j=0; i<size(); i++)
+        if (i != p)
+            aux.set(j++,get(i));
+    (*this) = aux;
+//    allocate(this->nMove-1);
+//    for (int i=0; i<size(); i++)
+//        set(i, aux.get(i));
+}
+
+//void Movelist::zip(const Language &s)  {
+//    int pos=0;
+//    if (size()==0)
+//        return;
+//    do {
+//        cerr << "QUERY: "<<toUTF(get(pos).getLetters())<<endl;
+//        if (!s.query(get(pos).getLetters()))  {
+//            cerr << "REMOVE: "<<toUTF(get(pos).getLetters())<<endl;
+//            remove(pos);
+//        }
+//        else
+//            pos ++;
+//    } while (pos < size());
+//}
+
+void Movelist::zip(const Language &s)  {
+    for (int pos=0; pos<size();)  {
+        if (!s.query(get(pos).getLetters()))  {
+            remove(pos);
+        }
         else
-            count++ ;
+            pos ++;
     }
 }
 
-void Movelist::clear()
-{
-    deallocate() ;
-}
 
-int Movelist::getScore() const
-{
-    int score_total = 0 ; 
-    int score_tmp = 0 ;
-    bool bad_score = false ;
-    
-    for(int i=0 ; i < nMove && !bad_score; ++i) {
-        score_tmp = moves[i].getScore() ;
-        if( score_tmp != -1 )
-            score_total += score_tmp ;
-        else
-            bad_score = true ;
+//
+// Privados
+
+void Movelist::allocate(int n) {
+    //deallocate();
+    if (n > 0) {
+        nMove = n;
+        moves = new Move[nMove];
     }
-    
-    if( bad_score )
-        return -1 ;
-
-    return score_total ;
 }
 
-bool Movelist::print(std::ostream &os, bool scores) const
-{
+void Movelist::deallocate() {
+    //if (moves != nullptr) { not necessary 
+        delete[] moves;
+        initialize();
+    
+}
+
+void Movelist::copy(const Movelist& otro) {
+    allocate(otro.size());
+    for (int i = 0; i < otro.size(); ++i) {
+        set(i,otro.get(i)); 
+    }
+}
+
+
+bool Movelist::print(std::ostream &os, bool scores) const {
     bool res=true;
-    for ( int i=0; i<size() && res; ++i ) {
+    for (int i=0; i<size() && res; i++) {
         get(i).print(os);
         if (scores)
             os << " ("<<get(i).getScore()<<") - ";
@@ -224,27 +188,19 @@ bool Movelist::print(std::ostream &os, bool scores) const
     return res;
 }
 
-bool Movelist::read(std::istream &is)
-{
-    
-    bool ok = true ;
-    //size_t count = 0 ;
-    
-    Move in ;
-    
-    //Lectura anticipada
-    in.read(is) ; 
-    
-    while(in.getLetters() != "_") {
-        
-        if(is.eof())
-            return !ok ;
-        
-        this->add(in) ;
-
-        in.read(is) ;
-
+bool Movelist::read(std::istream &is) {
+    Move m;
+    bool fin = false;
+    clear();
+    m.read(is);
+    while (m.getLetters().size() > 1 && !fin ) { // && m.getLetters() != "_") {
+        if (is.eof())
+            fin = true;
+        else {
+            this->add(m);
+            m.read(is);
+        }
     }
     
-    return ok ;
+    return !fin;
 }

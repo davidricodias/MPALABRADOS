@@ -1,11 +1,9 @@
+
 /**
  * @file movelist.h
  * @author DECSAI
  * @note To be implemented by students
- * @warning Review data types, consts and references
  */
-
-// Alumno José David Rico Días Jorge Marín Sánchez
 
 #ifndef MOVELIST_H
 #define MOVELIST_H
@@ -16,12 +14,11 @@
 /**
  * @class Movelist
  * @brief Class used to store a sequence of single movements, where every movement is described in move.h
- * @warning Review data types, consts and references
  */
 class Movelist {
-private:
-	Move *moves;		/// Dynamic vector of movements
-	int nMove;		/// Number of recorded movements
+    private:
+	Move* moves;		/// Dynamic vector of movements
+	int nMove;			/// Number of recorded movements
 
 	/**
 	 * @brief Allocates memory
@@ -36,8 +33,14 @@ private:
 	 * @brief Copy an existing set of movements
 	 * @param ml The set of movements to be copied
 	 */
-	void copy(const Movelist& ml); // hacer que this-> sea un clon de ml
-
+	void copy(const Movelist& ml);
+        /**
+         * reset the component to initial values
+         */
+        void initialize(){  
+            moves = nullptr;
+            nMove = 0;
+        }
 public:
 	/**
 	 * @brief Basic constructor and initializer
@@ -59,20 +62,20 @@ public:
 	/**
 	 * @brief Destructor
 	 */
-	~Movelist();
-        
-     /**
-	 * @brief Assign the content of the parameter object to *this
-	 * @param orig Right hand side of an assignment
+	~Movelist(); 
+	/**
+	 * @brief Assign the content of the object parameters to this object
+	 * @param orig Right hand side of the assignement
+	 
 	 */
-	void assign(const Movelist& orig); 
-
+        
+	void assign (const Movelist& orig); 
 	/**
 	 * @brief Overloads the assignment operator
-	 * @param orig Right hand side of the assignment
-	 * @return this Left hand side of the assignment
+	 * @param orig Right hand side of the assignement
+	 * @return this Left hand side of the assignement
 	 */
-	void operator=(Movelist& orig);
+	Movelist& operator=(const Movelist& orig); 
 
 	/**
 	 * @brief Query the set of movements stored
@@ -88,49 +91,55 @@ public:
 	 * @precond @p p must be in the interval [0, size()) otherwise, it throws an exception
 	 * @param m The movement to insert
 	 */
-	void set(int p, const Move& m);
+	void set(int p, const Move & m);
 
 	/**
 	 * @brief Query the number of existing movements in the class 
 	 * @return The size of the set of movements
 	 */
-	int inline size() const { return nMove; }
+	inline int size() const { return nMove; };
 
 	/**
 	 * @brief Searches a movement in the set of recorded movements. Two movements are equal if all their data members coincide.
 	 * @param mov The movement to be seeked
 	 * @return The position of the movement in the set, @retval -1 when the movement is not found
 	 */
-	int find(const Move& mov) const;
+	int find(const Move &mov) const;
 
 	/**
 	 * @brief Adds a copy of the movement at the end of the existing set, incrementing its size in one more movement
 	 * @param mov The new movement
 	 */
-	void add(const Move& mov);
+	void add(const Move &mov);
+	/**
+	 * @brief Remove the movement from the list and reduces the size in one less movement. If the specified movement
+	 * does not exist, the method does nothing 
+	 * @param mov The movement to be removed
+	 */
+	void remove(const Move&mov);
 	/**
 	 * @brief Remove the movement stored in the position p and reduces the size in one less movement.
 	 * @param p The position to be removed
 	 * @precond @p p must be in the interval [0, size()) otherwise, it throws an exception
 	 */
 	void remove(int p);
-        /**
-	 * @brief Remove the movement from the list and reduces the size in one less movement. If the specified movement
-	 * does not exist, the method does nothing 
-	 * @param mov The movement to be removed
+	/**
+	 * @brief Overload the operator += It is equivalent to add a movement at the end of the set, increasing its size in one more movement
+	 * @param mov The new movement to be inserted
+	 * @return The left hand side of the operator
 	 */
-	void remove(const Move& mov);
+	Movelist & operator+=(const Move &mov);
 	/**
 	 * @brief Removes all the movements that contain a word that does not have at least 2 letters
 	 * or that does not exist in the given language 
 	 * @param l The language 
 	 */
-	void zip(const Language& l);
+	void zip(const Language &l);
 
 	/**
 	 * @brief Resets the set and leaves it empty 
 	 */
-        void clear();
+   void clear();
 	/**
 	 * @brief Computes the whole score of the list of movements by adding the individual scores of each movement contained in the set
 	 * of movements. It does not need the language to compute the scores because this is done inside each movement. 
@@ -139,6 +148,7 @@ public:
 	 * @return The score of the full set of movements
 	 */
 	int getScore() const;
+
 	/**
 	 * @brief Insert the data of the list of movements into an ostream (either cout or file)
 	 * @param os The ostream
@@ -153,7 +163,6 @@ public:
 	 * @return True if there was no problem reading data, false otherwise.
 	 */
 	bool read(std::istream &is);
-	
 };
 
 #endif
