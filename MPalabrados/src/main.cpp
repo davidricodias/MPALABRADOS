@@ -28,9 +28,9 @@ using namespace std;
  * by several symbolic constants: ERROR_ARGUMENTS, ERROR_OPEN y ERROR_DATA
  * @param errorinfo Additional information regarding the error: "" (empty string) for 
  * errors parsing the arguments to main() and, for the case of errors opening or 
- * reading/writing data, the name of the file thas has failed.
+ * reading/writing data, the name of the file that has failed.
  */
-void errorBreak(int errorcode, const string & errorinfo);
+void errorBreak(int errorcode, const string & errorinfo="");
 
 /**
  * @brief Shows final data
@@ -62,154 +62,192 @@ int main(int nargs, char *args[]) {
             acceptedmovements, /// Movements accepted in the game
             rejectedmovements; /// Movements not accepted in the game
     
-    string word, lang, result, ifilename, ofilename, goodmoves, badmoves; 
+    string word, lang, result, matchfilename, playfilename, savefilename, goodmoves, badmoves; 
     string external_bag;
     int random=-1;
-    ifstream ifile; ofstream ofile; 
+    ifstream matchfile, playfile; ofstream savefile; 
     istream *input; ostream *output;
-    int Id, nwords, nletters, score, scoreT;
+    int Id, nwords, nletters, score, scoreT, height, width;
 
-    nwords = nletters = score = scoreT = 0;
-    word = result = ifilename = ofilename = "";
+    // Clear
+    nwords = nletters = score = scoreT = width = height = 0;
+    word = result = matchfilename = playfilename = savefilename = "" ;
     goodmoves = badmoves = external_bag = "";
     
-    /*
-	1. El main() recibe como parámetro obligatorio "-l <ID>" y co-
-	mo parámetros opcionales "-i <file>" y "-r <random>" ,
-	en cualquier orden entre los tres. Si se especifica "-i" se leen
-	los datos desde ese fichero, si no, se leen desde el teclado. Si
-	se especifica "-r" se define el aleatorio con el número indica-
-	do, si no, no se define aleatorio.
-    */
-    
-    bool end=false;
     Language language;
+    
     /// Check arguments
-        
+
     string sarg;
-    for(int i=1; i<nargs; ) {
-        cout << i << " " << args[i] << endl;
+    for(int i=1; i < nargs; ) {
+        // cout << i << " " << args[i] << endl; ... Debugging
         sarg = args[i];
-        if (sarg=="-p"){
-            i++; 
+        if (sarg=="-p"){                // playfile
+            i++ ; 
             if (i>=nargs) errorBreak(ERROR_ARGUMENTS, "");
-                ifilename=args[i++];
-        } else if (sarg=="-i"){
-            i++; 
+                playfilename=args[i++];
+        } else if (sarg == "-save"){    // save
+            i++ ; 
             if (i>=nargs) errorBreak(ERROR_ARGUMENTS, "");
-                ifilename=args[i++];
-        } else if (sarg=="-o"){
-            i++; 
-            if (i>=nargs) errorBreak(ERROR_ARGUMENTS, "");
-                ofilename=args[i++];
-        }else if (sarg== "-l") {
-                i++; 
+                savefilename=args[i++];
+        } else if (sarg == "-l") {      // lang
+                i++ ; 
                 if (i>=nargs) errorBreak(ERROR_ARGUMENTS, "");
                 lang=args[i++];
-        } else if (sarg== "-r") {
+        } else if (sarg == "-r") {      // random
                 i++; 
                 if (i>=nargs) errorBreak(ERROR_ARGUMENTS, "");
                 Id = atoi(args[i++]);
-        }
-        else if (sarg== "-b") {
+        } else if (sarg == "-b") {      // bag
                 i++; 
                 if (i>=nargs) errorBreak(ERROR_ARGUMENTS, "");
                 external_bag = args[i++];
+        } else if (sarg == "-w") {      // width
+                i++; 
+                if (i>=nargs) errorBreak(ERROR_ARGUMENTS, "");
+                width = atoi(args[i++]);
+        } else if (sarg == "-h") {      // height
+                i++; 
+                if (i>=nargs) errorBreak(ERROR_ARGUMENTS, "");
+                height = atoi(args[i++]);
+        } else if (sarg == "-open") {   // open match
+                i++; 
+                if (i>=nargs) errorBreak(ERROR_ARGUMENTS, "");
+                matchfilename = args[i++];
         } else
             errorBreak(ERROR_ARGUMENTS, "");
     }
     
-    // Process arguments
-    if (ifilename=="")
-        errorBreak(ERROR_ARGUMENTS, "");
-    if (lang=="") {
-        errorBreak(ERROR_ARGUMENTS, "");
-    }
-    else {
-        language.setLanguage(lang);
-    }
-    cout << "LANGUAGE: "<<lang << endl;
-    cout << "ALLOWED LETTERS: " << toUTF(language.getLetterSet()) <<endl;
-    cout << "SEED: "<<Id<<endl;
-   
-    if (Id >=0)
-        bag.setRandom(Id);
-    if (external_bag != "")   // -b
-        bag.set(normalizeWord(external_bag));
-    else
-        bag.define(language);
-    cout << "BAG !! ("<<bag.size()<<") : "<<toUTF(bag.to_string())<< endl;
-    //return 0;
-    ifile.open(ifilename);
-    if (!ifile) {
-        errorBreak(ERROR_OPEN, ifilename);
-    }
-    input = &ifile;
-    cout << "Reading from "<<ifilename << endl;
+    // Check playing mode
+    bool start_new_game = lang != "" && width != 0 && height != 0 && playfilename != "" ;
+    bool continue_game = matchfilename != "" && playfilename != "" ;
     
-    if (!movements.read(*input)) {     // read full list of movements;
-        errorBreak(ERROR_DATA,ifilename);
-    }    
-    if (ofilename=="") {
-        output = &cout;
-    } else {
-        ofile.open(ofilename);
-        if (!ofile) {
-            errorBreak(ERROR_OPEN, ofilename);
-        }
-        output = &ofile;
-        cout << "Writing to "<<ofilename << endl;
-    }
-  
-    //cout << "BAG (" << Id << "-" << bag.size() << ") :" << toUTF(bag.to_string()) << endl;   
-    
-    //legalmovements = movements;
-    legalmovements.assign(movements);
-    
-    legalmovements.zip(language);
-    player.add(bag.extract(7-player.size()));
-    
-    for (int i=0; i<legalmovements.size(); i++)  {
-        cout << "PLAYER: "<<toUTF(player.to_string())<<endl;
-        move=legalmovements.get(i);
-        (*output) << "MOVEMENT: "; 
-        move.print(*output);
-        word = move.getLetters();
-
-        if (player.isValid(word)) {
-            if (language.query(word)) {
-                nwords++;
-                score = move.findScore(language);
-                move.setScore(score);
-                scoreT += score;
-                nletters += word.length();
-                goodmoves += word + " - ";
-                cout << " FOUND! " << move.getScore() << " points";
-                acceptedmovements.add(move);
-            } else {
-                cout << " NOT REGISTERED!";
-                rejectedmovements.add(move);
-            }
-            cout << endl << endl;
-            player.extract(word);
-            player.add(bag.extract(7 - player.size()));
-
-        } else {
-            cout << " INVALID!" << endl;
-            rejectedmovements.add(move);
-        }
-    }
+    // Note that, if user enters correct arguments to continue game, but also enters
+    // bad arguments to start a new game, it won't cause an error
+    if( start_new_game == continue_game )
+        errorBreak( ERROR_ARGUMENTS );
         
-    if (input->eof()) {  // salida por falta de datos
-            errorBreak(ERROR_DATA, ifilename);
+    // First mode
+    if( start_new_game ) {
+    
+        cout << "Starting new game..." ;
+    
+        
+        // Second mode    
+    } else {
+        cout << "Opening game file" ;
     }
-    if (ifilename!="")
-        ifile.close();
-    if (ofilename!="")
-        ofile.close();
-    HallOfFame(language, Id, bag, player, 
-            movements, legalmovements, acceptedmovements, rejectedmovements);
-  
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//    // | OLD CODE BELOW |    
+//    // Process arguments
+//    
+//    if (playfilename=="")
+//        errorBreak(ERROR_ARGUMENTS, "");
+//    
+//    
+//    if (lang=="") {
+//        errorBreak(ERROR_ARGUMENTS, "");
+//    }
+//    else {
+//        language.setLanguage(lang);
+//    }
+//    cout << "LANGUAGE: "<<lang << endl;
+//    cout << "ALLOWED LETTERS: " << toUTF(language.getLetterSet()) <<endl;
+//    cout << "SEED: "<<Id<<endl;
+//   
+//    if (Id >=0)
+//        bag.setRandom(Id);
+//    if (external_bag != "")   // -b
+//        bag.set(normalizeWord(external_bag));
+//    else
+//        bag.define(language);
+//    cout << "BAG !! ("<<bag.size()<<") : "<<toUTF(bag.to_string())<< endl;
+//    //return 0;
+//    ifile.open(ifilename);
+//    if (!ifile) {
+//        errorBreak(ERROR_OPEN, ifilename);
+//    }
+//    input = &ifile;
+//    cout << "Reading from "<<ifilename << endl;
+//    
+//    if (!movements.read(*input)) {     // read full list of movements;
+//        errorBreak(ERROR_DATA,ifilename);
+//    }    
+//    if (ofilename=="") {
+//        output = &cout;
+//    } else {
+//        ofile.open(ofilename);
+//        if (!ofile) {
+//            errorBreak(ERROR_OPEN, ofilename);
+//        }
+//        output = &ofile;
+//        cout << "Writing to "<<ofilename << endl;
+//    }
+//  
+//    //cout << "BAG (" << Id << "-" << bag.size() << ") :" << toUTF(bag.to_string()) << endl;   
+//    
+//    //legalmovements = movements;
+//    legalmovements.assign(movements);
+//    
+//    legalmovements.zip(language);
+//    player.add(bag.extract(7-player.size()));
+//    
+//    for (int i=0; i<legalmovements.size(); i++)  {
+//        cout << "PLAYER: "<<toUTF(player.to_string())<<endl;
+//        move=legalmovements.get(i);
+//        (*output) << "MOVEMENT: "; 
+//        move.print(*output);
+//        word = move.getLetters();
+//
+//        if (player.isValid(word)) {
+//            if (language.query(word)) {
+//                nwords++;
+//                score = move.findScore(language);
+//                move.setScore(score);
+//                scoreT += score;
+//                nletters += word.length();
+//                goodmoves += word + " - ";
+//                cout << " FOUND! " << move.getScore() << " points";
+//                acceptedmovements.add(move);
+//            } else {
+//                cout << " NOT REGISTERED!";
+//                rejectedmovements.add(move);
+//            }
+//            cout << endl << endl;
+//            player.extract(word);
+//            player.add(bag.extract(7 - player.size()));
+//
+//        } else {
+//            cout << " INVALID!" << endl;
+//            rejectedmovements.add(move);
+//        }
+//    }
+//        
+//    if (input->eof()) {  // salida por falta de datos
+//            errorBreak(ERROR_DATA, ifilename);
+//    }
+//    if (ifilename!="")
+//        ifile.close();
+//    if (ofilename!="")
+//        ofile.close();
+//    HallOfFame(language, Id, bag, player, 
+//            movements, legalmovements, acceptedmovements, rejectedmovements);
+
     return 0;
 }
 
@@ -226,17 +264,17 @@ void HallOfFame(const Language &l, int random, const Bag &b, const Player &p,
     cout << endl;
 }
 
-void errorBreak(int errorcode, const string &errordata) {
+void errorBreak(int errorcode, const string &errorinfo) {
     cerr << endl << "%%%OUTPUT" << endl;
     switch(errorcode) {
         case ERROR_ARGUMENTS:
             cerr<<"Error in call. Please use:\n -l <language> -p <playfile> [-r <randomnumber>]"<<endl;
             break;
         case ERROR_OPEN:
-            cerr<<"Error opening file "<<errordata << endl;
+            cerr<<"Error opening file "<<errorinfo << endl;
             break;
         case ERROR_DATA:
-            cerr<<"Data error in file "<<errordata << endl;
+            cerr<<"Data error in file "<<errorinfo << endl;
             break;
     }
     std::exit(1);
