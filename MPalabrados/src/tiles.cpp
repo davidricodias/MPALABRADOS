@@ -31,7 +31,11 @@ void Tiles::setSize(int r, int c){
 }
 
 Tiles&::operator=(const Tiles& orig){
-    // To_do igualar this a orig
+    if (this != &orig) {
+        deallocate();
+        copy(orig);
+    }
+    return *this;
 }
 
 int Tiles::getWidth()const{
@@ -64,13 +68,26 @@ bool read(std::istream &is){
 }
 
 void Tiles::allocate(int r, int c){
-    
+     if (r > 0 && c > 0) {
+        rows = r;
+        columns = c;
+        cell = new Tile[rows, columns];
+    }
 }
 
 void Tiles::deallocate(){
-    
+    delete[] cell;
+    initialize();
 }
 
 void Tiles::copy(Tiles t){
+    int tCol = t.getWidth();  
+    int tRows = t.getHeight();
+    allocate(tRows, tCol);
     
+    for (int i = 0; i < tRows; i++) {
+        for(int k = 0; k < tCol; k++ ){
+            set(i, k, t.get(i,k)); 
+        }
+    }
 }
