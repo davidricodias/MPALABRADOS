@@ -174,8 +174,6 @@ int main(int nargs, char * args[]) {
         // Open matchfile
         matchfile.open( matchfilename ) ;
         
-        
-        
         cout << endl << "Trying to open game file: " ;
         if( matchfile ) {
             
