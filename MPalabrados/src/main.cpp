@@ -155,7 +155,9 @@ int main(int nargs, char * args[]) {
     if( start_new_game ) {
     
         cout << endl << "Starting new game..." << endl;
-    
+        
+        // Asigno tamaño a la matriz del tablero
+        tile.setSize(height, width);
         
 
     // b) Continuar una partida existente. Para ello los parámetros
@@ -230,14 +232,13 @@ int main(int nargs, char * args[]) {
     
 
 // * 2. Crear una instancia de la clase Language con el ID indicado.
-
+    language.setLanguage(lang);
 
     
 // 3. Crear una instancia de la clase Bag, si es una partida nueva,
 //  inicializar la bolsa, en otro caso, cargarla directamente desde el
 //fichero .match
 
-    language.setLanguage(lang);
 
     if( external_bag != "")
         bag.set(normalizeWord(external_bag)) ;
@@ -246,7 +247,8 @@ int main(int nargs, char * args[]) {
     
 // * 4. Crear una instancia de la clase Player y inicializarla por com-
 //pleto con caracteres de la bolsa o bien leerla del fichero .match.
-//
+    Player.
+
 // * 5. Crear una instancia de la clase Tiles y dimensionarla según
 //los parámetros leı́dos, bien desde la lı́nea de comandos, bien
 //desde el fichero .match.
