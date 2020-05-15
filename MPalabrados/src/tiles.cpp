@@ -52,11 +52,12 @@ char Tiles::get(int r, int c)const{
 }
 
 void Tiles::set(int r, int c, char l){
-    cell[r,c] = l;
+    cell[r][c] = l;
 }
 
 void Tiles::add(const Move&m){
-    
+    set(m.getRow(), m.getCol(), m.getLetters())
+    m.getCol()
 }
 
 void Tiles::print(std::ostream &os)const{
