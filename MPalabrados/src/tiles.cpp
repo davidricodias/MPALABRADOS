@@ -18,7 +18,7 @@ Tiles::Tiles(int r, int c){
 }
 
 Tiles::Tiles(const Tiles & orig){
-    // To_do
+    *this = orig;
 }
 
 Tiles::~Tiles(){
@@ -90,4 +90,10 @@ void Tiles::copy(Tiles t){
             set(i, k, t.get(i,k)); 
         }
     }
+}
+
+void initialize(){
+    rows = 0;
+    columns = 0;
+    cell = nullptr;
 }
