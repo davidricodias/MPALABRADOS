@@ -139,7 +139,7 @@ public:
 	/**
 	 * @brief Resets the set and leaves it empty 
 	 */
-   void clear();
+                  void clear();
 	/**
 	 * @brief Computes the whole score of the list of movements by adding the individual scores of each movement contained in the set
 	 * of movements. It does not need the language to compute the scores because this is done inside each movement. 

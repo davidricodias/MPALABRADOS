@@ -300,7 +300,12 @@ int main(int nargs, char * args[]) {
     
 // * 10. Terminar mostrando el estado de la partida en pantalla o guardándo-
 //lo en disco según la presencia o no de -save.
-    
+    if(savefilename == ""){
+        output=&cout
+        tile.print();
+    }else{
+        output=&savefile
+    }
 //11. Si en cualquier momento se presenta un error en los argumen-
 //tos, en la apertura de ficheros o en la lectura de datos del fiche-
 //ro, se debe usar la función errorBreak(...) para notificar el error
