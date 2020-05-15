@@ -62,7 +62,19 @@ void Tiles::set(int r, int c, char l){
 
 // TODO
 void Tiles::add(const Move&m){
-    cout << "TODO" ;
+    int r = m.getRow() ;
+    int c = m.getCol() ;
+    int tam = m.getLetters().size();
+    char *letters = m.getLetters() ;
+    
+    if(m.isHorizontal())
+        for(int i=r ; i<tam ; ++i)
+            set(i, c, letters[i]) ;
+    else
+        for(int i=c ; i<tam ; ++i)
+            set(r, i, letters[i]) ;
+
+    
 }
 
 void Tiles::print(std::ostream &os)const{
