@@ -157,7 +157,10 @@ int main(int nargs, char * args[]) {
         cout << endl << "Starting new game..." << endl;
         
         // Asigno tamaño a la matriz del tablero
-        tile.setSize(height, width);
+        
+        // Añado la bolsa al player
+        
+        
         
 
     // b) Continuar una partida existente. Para ello los parámetros
@@ -236,8 +239,6 @@ int main(int nargs, char * args[]) {
 // 3. Crear una instancia de la clase Bag, si es una partida nueva,
 //  inicializar la bolsa, en otro caso, cargarla directamente desde el
 //fichero .match
-
-
     if( external_bag != "")
         bag.set(normalizeWord(external_bag)) ;
     else
@@ -245,23 +246,29 @@ int main(int nargs, char * args[]) {
     
 // * 4. Crear una instancia de la clase Player y inicializarla por com-
 //pleto con caracteres de la bolsa o bien leerla del fichero .match.
-    Player.
-
+    if(start_new_game){
+        player.add(bag.extract(7-player.size()));
+    } // En el caso de una partida cargada ya está hecho
+    
 // * 5. Crear una instancia de la clase Tiles y dimensionarla según
 //los parámetros leı́dos, bien desde la lı́nea de comandos, bien
 //desde el fichero .match.
-//
+    tile.setSize(height, width);
+    
 // * 6. Crear una instancia de la clase bf Movelist llamada original
 //y leer todos los movimientos desde el fichero indicado en el
 //parámetro -p usando operador sobrecargado >>
-//
+    playfilename >> movements;
+    
 // * 7. Crear una instancia de Movelist llamada legal que contenga
 //sólo los movimientos de original que están en el diccionario
 //del lenguaje elegido. Usar, para ello, el método zip(...)
-//
+    legalmovements = movements;
+    legalmovements.zip(lang);
+    
 // * 8. Crear dos instancias adicionales de Movelist y llamarlas accepted
 //y rejected
-//
+
 // * 9. Recorrer toda la lista de movimientos leı́da y, por cada uno de
 //ellos.
 //
@@ -272,11 +279,28 @@ int main(int nargs, char * args[]) {
 //Tiles creada anteriormente, ignorando aquellos caracteres
 //que caigan fuera de las dimensiones permitidas y sobrees-
 //cribiendo los caracteres que se crucen.
-//
+
+    for(int i =0; i<legalmovements.size(); i++){
+        if(legalmovements.get(i).findScore((lang)) != -1){
+            acceptedmovements.add(legalmovements.get(i));
+            score = legalmovements.get(i).findScore(lang);
+            
+            // Relleno tiles
+            for( int h = 1 ; h < height ; ++h ) {
+                for( int w = 1 ; w < width ; ++w ) {
+                    char tmp ;
+                    tile.add(legalmovements.get(i))
+                }
+            }
+        }else{
 //     * b) En otro caso añadirla a la lista rejected .
-//
+            rejectedmovements.add(legalmovements.get(i));
+        }
+    }
+    
 // * 10. Terminar mostrando el estado de la partida en pantalla o guardándo-
-//lo en disco según la presencia o no de -save .
+//lo en disco según la presencia o no de -save.
+    
 //11. Si en cualquier momento se presenta un error en los argumen-
 //tos, en la apertura de ficheros o en la lectura de datos del fiche-
 //ro, se debe usar la función errorBreak(...) para notificar el error
