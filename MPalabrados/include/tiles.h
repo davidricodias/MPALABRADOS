@@ -35,9 +35,9 @@ public:
      * @param orig The matrix to be copied
      */
     Tiles(const Tiles &orig);  
-	/**
-	 * @brief Basic destructor of the class 
-	 */
+    /**
+     * @brief Basic destructor of the class 
+     */
    ~Tiles(); 
 
 	// Basic methods
@@ -53,7 +53,7 @@ public:
      * @param orig Right hand side of the assignement
      * @return this Left hand side of the assignement
      */
-    Tiles& operator=(const Tiles& orig); // Operador asignación
+    Tiles& operator=(const Tiles& orig) ; // Operador asignación
     /**
      * @brief Query the number of columns
      * @return The number of columns
@@ -122,7 +122,7 @@ private:
      * @brief Copy data from another object
      * @param t The object to be copied
      */
-    void copy(Tiles &t) const;
+    void copy(const Tiles &t);
 
 };
 

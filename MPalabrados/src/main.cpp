@@ -152,17 +152,15 @@ int main(int nargs, char * args[]) {
 
     // First mode
 
-    if( start_new_game ) {
-    
-        cout << endl << "Starting new game..." << endl;
+    // Nada que hacer...
+    //if( start_new_game ) {
+    //
+    //    cout << endl << "Starting new game..." << endl;
+    //
+    //    // Asigno tamaño a la matriz del tablero
+    //
+    //    // Añado la bolsa al player
         
-        // Asigno tamaño a la matriz del tablero
-        
-        // Añado la bolsa al player
-        
-        
-        
-
     // b) Continuar una partida existente. Para ello los parámetros
     //de llamada serán
     //-open <matchfile> -p <playfile> [-save <matchfile>]
@@ -173,7 +171,7 @@ int main(int nargs, char * args[]) {
     
     // Second mode    
     // Reads metadata
-    } else {
+    if( continue_game ) {
         // Open matchfile
         matchfile.open( matchfilename ) ;
         
@@ -186,7 +184,7 @@ int main(int nargs, char * args[]) {
             //Check password
             matchfile >> word ;
             if( word != PASSWORD )
-                errorBreak(ERROR_OPEN, matchfilename) ;
+                errorBreak(ERROR_DATA, matchfilename) ;
             cout << endl << "\033[32mMatch file has password!\033[0m" << endl;
             
             // Load language
@@ -205,9 +203,9 @@ int main(int nargs, char * args[]) {
 
             for( int h = 1 ; h < height ; ++h ) {
                 for( int w = 1 ; w < width ; ++w ) {
-                    char tmp ;
+                    char* tmp = "";
                     matchfile >> tmp ;
-                    tile.set( h, w, toISO(tmp) ) ;
+                    tile.set( h, w, toISO(tmp).at(0) ) ;
                 }
             }
 
@@ -226,6 +224,8 @@ int main(int nargs, char * args[]) {
             
             matchfile >> external_bag ;
             
+            matchfile.close() ;
+            
         } else {
             errorBreak(ERROR_OPEN, matchfilename) ;
         }
@@ -239,6 +239,7 @@ int main(int nargs, char * args[]) {
 // 3. Crear una instancia de la clase Bag, si es una partida nueva,
 //  inicializar la bolsa, en otro caso, cargarla directamente desde el
 //fichero .match
+    bag.setRandom(random) ;
     if( external_bag != "")
         bag.set(normalizeWord(external_bag)) ;
     else
@@ -258,17 +259,34 @@ int main(int nargs, char * args[]) {
 // * 6. Crear una instancia de la clase bf Movelist llamada original
 //y leer todos los movimientos desde el fichero indicado en el
 //parámetro -p usando operador sobrecargado >>
-    playfilename >> movements;
+    
+    playfile.open( playfilename ) ;
+        
+        cout << endl << "Trying to open game file: " ;
+        if( playfile ) {
+            cout << "\033[32mOK\033[0m" ;
+            input = &playfile ;
+            
+            if( !movements.read(*input) )
+                errorBreak(ERROR_DATA, playfilename) ;
+            
+            playfile.close() ;
+            
+        } else {
+            errorBreak(ERROR_OPEN, playfilename) ;
+        }
     
 // * 7. Crear una instancia de Movelist llamada legal que contenga
 //sólo los movimientos de original que están en el diccionario
 //del lenguaje elegido. Usar, para ello, el método zip(...)
     legalmovements = movements;
-    legalmovements.zip(lang);
+    legalmovements.zip(language);
     
 // * 8. Crear dos instancias adicionales de Movelist y llamarlas accepted
 //y rejected
 
+// Done
+    
 // * 9. Recorrer toda la lista de movimientos leı́da y, por cada uno de
 //ellos.
 //
@@ -288,8 +306,12 @@ int main(int nargs, char * args[]) {
             // Relleno tiles
             for( int h = 1 ; h < height ; ++h ) {
                 for( int w = 1 ; w < width ; ++w ) {
-                    char tmp ;
-                    tile.add(legalmovements.get(i))
+                    //char tmp ;
+                    try{
+                        tile.add(legalmovements.get(i)) ;
+                    } catch( invalid_argument &e ) {
+                        cout << endl << "Escribir fuera de la matriz no está permitido: " << e.what() << endl ;
+                    }
                 }
             }
         }else{
@@ -300,23 +322,28 @@ int main(int nargs, char * args[]) {
     
 // * 10. Terminar mostrando el estado de la partida en pantalla o guardándo-
 //lo en disco según la presencia o no de -save.
-    if(savefilename == ""){
-        output=&cout
-        tile.print();
-    }else{
-        output=&savefile
+    if(savefilename == "")
+        output=&cout ;
+    else {
+        output=&savefile ;
+        savefile.open(savefilename) ;
+        if(savefile)
+            errorBreak(ERROR_OPEN, savefilename) ;
     }
+    *output << PASSWORD << '\n' ;
+    *output << lang << '\n' ;
+    *output << height << ' ' << width << '\n' ;
+    tile.print(*output) ;
+    *output << player.size() << ' ' << player.to_string() << '\n' ;
+    *output << bag.size() << ' ' << bag.to_string() << '\n' ;
+
 //11. Si en cualquier momento se presenta un error en los argumen-
 //tos, en la apertura de ficheros o en la lectura de datos del fiche-
 //ro, se debe usar la función errorBreak(...) para notificar el error
 //y parar el programa 
 // */
-    
-    
-    
-    
-    if (input->eof()) 
-            errorBreak(ERROR_DATA, matchfilename);
+  
+
     // Close files
     if (playfilename != "")
         playfile.close();
