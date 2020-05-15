@@ -68,7 +68,9 @@ int main(int nargs, char * args[]) {
     Movelist movements, /// Original list of movements
             legalmovements, /// Movements with legal words upon the dictionary
             acceptedmovements, /// Movements accepted in the game
-            rejectedmovements; /// Movements not accepted in the game
+            rejectedmovements; /// Movements not accepted in the game    
+    Tiles tile ;
+    
     
     string word, lang, result, matchfilename, playfilename, savefilename, goodmoves, badmoves; 
     string external_bag;
@@ -149,6 +151,7 @@ int main(int nargs, char * args[]) {
     //mismo formato (ver Sección ??).
 
     // First mode
+
     if( start_new_game ) {
     
         cout << endl << "Starting new game..." << endl;
@@ -162,27 +165,63 @@ int main(int nargs, char * args[]) {
     //se restaura el estado anterior de la partida, y un fichero
     //de movimientos. Opcionalmente, se podrá grabar la partida
     //final si se indica el parámetro -save comentado antes.        
+    
     // Second mode    
+    // Reads metadata
     } else {
         // Open matchfile
         matchfile.open( matchfilename ) ;
         
-        cout << endl << "Trying to open game file" << endl;
+        
+        
+        cout << endl << "Trying to open game file: " ;
         if( matchfile ) {
             
+            cout << "\033[32mOK\033[0m" ;
             cout << endl << "Checking match file" ;       
         
-            //Check passwonrd
+            //Check password
             matchfile >> word ;
             if( word != PASSWORD )
                 errorBreak(ERROR_OPEN, matchfilename) ;
-            cout << endl << "Match file has password!" << endl;
+            cout << endl << "\033[32mMatch file has password!\033[0m" << endl;
             
-            // Save language
+            // Load language
+            cout << endl << "Reading language " ;
             matchfile >> lang ;
-            
-            // Save height and width
+            cout << lang << endl ;
+
+            // Load height and width
+            cout << endl << "Reading height and width " ;
             matchfile >> height >> width ;
+            cout << height << " " << width << endl ;
+            
+            tile.setSize( height, width ) ;
+            
+            // Load tile
+
+            for( int h = 1 ; h < height ; ++h ) {
+                for( int w = 1 ; w < width ; ++w ) {
+                    char tmp ;
+                    matchfile >> tmp ;
+                    tile.set( h, w, toISO(tmp) ) ;
+                }
+            }
+
+            // Load player
+            
+            player.clear() ;
+            
+            // Note: in matchfiles player size is saved, btw it does nothing
+            int tmp_int ; string tmp_string ;
+            matchfile >> tmp_int ;
+            matchfile >> tmp_string ;
+            player.add( toISO(tmp_string) ) ;
+            
+            // Load bag
+            matchfile >> tmp_int ;
+            
+            matchfile >> external_bag ;
             
         } else {
             errorBreak(ERROR_OPEN, matchfilename) ;
@@ -192,15 +231,15 @@ int main(int nargs, char * args[]) {
 
 // * 2. Crear una instancia de la clase Language con el ID indicado.
 
-    language.setLanguage(lang);
+
     
 // 3. Crear una instancia de la clase Bag, si es una partida nueva,
 //  inicializar la bolsa, en otro caso, cargarla directamente desde el
 //fichero .match
 
+    language.setLanguage(lang);
 
-
-    if( matchfilename != "" )
+    if( external_bag != "")
         bag.set(normalizeWord(external_bag)) ;
     else
         bag.define(language) ;
@@ -307,20 +346,6 @@ void errorBreak(int errorcode, const string &errordata) {
 // * @return 
 // */
 //int main(int nargs, char *args[]) {
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 ////    // | OLD CODE BELOW |    
 ////    // Process arguments
