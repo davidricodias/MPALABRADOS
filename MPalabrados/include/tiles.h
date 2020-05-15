@@ -20,9 +20,9 @@
 */
 class Tiles {
 public:
-	/**
-	 * @brief Basic constructor and initializer 
-	 */
+    /**
+     * @brief Basic constructor and initializer 
+     */
    Tiles();
     /**
      * @brief Basic constructor and initializer for @p r rows and @p c columns
@@ -34,7 +34,7 @@ public:
      * @brief Copy constructor
      * @param orig The matrix to be copied
      */
-    Tiles(const Tiles & orig);  
+    Tiles(const Tiles &orig);  
 	/**
 	 * @brief Basic destructor of the class 
 	 */
@@ -104,7 +104,7 @@ public:
     bool read(std::istream &is);
 
 private:
-    char ** cell; /// Dynamic 2D Matrix. Choosing another implementation is up to the student
+    char **cell; /// Dynamic 2D Matrix. Choosing another implementation is up to the student
     int columns, /// Number of columns
     rows; /// Number of rows
 
@@ -122,7 +122,7 @@ private:
      * @brief Copy data from another object
      * @param t The object to be copied
      */
-    void copy( Tiles  t) const;
+    void copy(Tiles &t) const;
 
 };
 
