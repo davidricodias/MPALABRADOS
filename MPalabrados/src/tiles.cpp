@@ -60,7 +60,7 @@ void Tiles::set(int r, int c, char l){
     cell[r-1][c-1] = l;
 }
 
-// TODO
+
 void Tiles::add(const Move&m){
     int r = m.getRow() ;
     int c = m.getCol() ;
