@@ -1,0 +1,3 @@
+Test #3 [tests//EMPTY_1.test] valgrind --leak-check=full  dist/Debug/GNU-Linux/futurompalabrados5  -open data/ES_2020_155_A.match -p data/EMPTY.data
+Test #5 [tests//EN_EU_2020_U2.test]   valgrind --leak-check=full  dist/Debug/GNU-Linux/futurompalabrados5 dist/Debug/GNU-Linux/futurompalabrados5  -l EN -r 2020 -w 10 -h 5 -p data/EU_2020_UNSORTED.data -b ABRRTUXISIIEOCEVTTEPMOEASIIOTVDONDNRLNRZTUIRLEAIORAAGTIUEFHECAEAAMNAGDGYEHLIEJBSOWDWNQSPULEFOYEKNO
+T
