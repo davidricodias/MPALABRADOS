@@ -1,4 +1,3 @@
-
 %%%CALL -l ES -r 100 -p data/ES_100_ERROR.data -w 1 -h 15 
 %%%VALGRIND
 %%%OUTPUT

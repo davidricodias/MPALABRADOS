@@ -11,6 +11,8 @@
 #include "move.h"
 #include "language.h"
 
+#define PASSWORD "MPALABRADOS-V1"
+
 /**
  * @class Movelist
  * @brief Class used to store a sequence of single movements, where every movement is described in move.h
@@ -117,6 +119,7 @@ public:
 	 * @param mov The movement to be removed
 	 */
 	void remove(const Move&mov);
+        void remove2(int);
 	/**
 	 * @brief Remove the movement stored in the position p and reduces the size in one less movement.
 	 * @param p The position to be removed
@@ -139,7 +142,7 @@ public:
 	/**
 	 * @brief Resets the set and leaves it empty 
 	 */
-                  void clear();
+   void clear();
 	/**
 	 * @brief Computes the whole score of the list of movements by adding the individual scores of each movement contained in the set
 	 * of movements. It does not need the language to compute the scores because this is done inside each movement. 
@@ -163,7 +166,39 @@ public:
 	 * @return True if there was no problem reading data, false otherwise.
 	 */
 	bool read(std::istream &is);
+        
+        friend std::ostream & operator<<(std::ostream & os, const Movelist & s);
+	friend std::istream & operator>>(std::istream & os, Movelist & s);
+        
+        /**
+         * @brief Save the content of the object to a file, in a specific format (see details in the documentation of the project)
+         * @param filename, a cstring with the name of the file for writing on it. 
+         * @return ok if the saving process is ok.
+         */
+        bool save(const char *filename) const;
+        
+        /**
+         * @brief Load the content of a file of movements to the object when the format is correct (see details in the documentation of the project)
+         * @param filename a cstring with the name of the file from where to read.
+         * @return ok if the reading process is ok.
+         */
+        bool loadFile(const char *filename);
 };
 
+/**
+ * @brief Overload of the insertion operator
+ * @param os Output stream (cout)
+ * @param m The class to be inserted in the stream
+ * @return The output stream (cout)
+ */
+//std::ostream & operator<<(std::ostream & os, const Movelist & i);
+
+/**
+ * @brief Overload of the extraction operator
+ * @param os Input stream (cin)
+ * @param m The class to be extracted from the stream
+ * @return The input stream (cin)
+ */
+//std::istream & operator>>(std::istream & is, Movelist & i);
 #endif
 

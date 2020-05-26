@@ -67,7 +67,7 @@ public:
 	 * @return The sum of individual values according to the language, or -1 if the 
 	 * word does not belong to the language.
 	 */
-	int findScore(const Language &l);
+	int findScore(const Language &l) const;
 	/**
 	 * @brief Sets the value of the movement which have been calculated elsewhere 
 	 * @param s The value of the movement
@@ -107,5 +107,23 @@ public:
 	 * @brief Reads from keyboard the values of the class, except score 
 	 */
 	void read( std::istream &is);
+        friend std::ostream& operator<<(std::ostream& os, const Move & m);
+	friend std::istream& operator>>(std::istream& is, Move & m);	
 };
+
+
+/**
+ * @brief Overload of the insertion operator
+ * @param os Output stream (cout)
+ * @param m The class to be inserted in the stream
+ * @return The output stream (cout)
+ */
+//std::ostream& operator<<(std::ostream& os, const Move & m);
+/**
+ * @brief Overload of the extraction operator
+ * @param os Input stream (cin)
+ * @param m The class to be extracted from the stream
+ * @return The input stream (cin)
+ */
+//std::istream& operator>>(std::istream& is, Move & m);
 #endif /* MOVE_H */
