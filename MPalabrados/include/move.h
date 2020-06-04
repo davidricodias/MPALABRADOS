@@ -7,11 +7,12 @@
 #ifndef MOVE_H
 #define MOVE_H
 
-//Alumno1 apellidos11 Apellidos12 nombre1
-//Alumno2 apellidos21 Apellidos22 nombre2
+// José David Rico Días
+// Jorge Marín Sánchez
 
 #include <iostream>
 #include "language.h"
+#include <string>
 /**
  * @class Move
  * @brief Class to represent both a single movement, which might not be
@@ -107,8 +108,10 @@ public:
 	 * @brief Reads from keyboard the values of the class, except score 
 	 */
 	void read( std::istream &is);
+       
         friend std::ostream& operator<<(std::ostream& os, const Move & m);
-	friend std::istream& operator>>(std::istream& is, Move & m);	
+	
+        friend std::istream& operator>>(std::istream& is, Move & m);	
 };
 
 

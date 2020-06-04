@@ -139,11 +139,7 @@ int main(int nargs, char *args[]) {
     string sarg;
     for(int arg=1; arg<nargs; ) {
         sarg = args[arg];
-        if (sarg=="-p"){
-            arg++; 
-            if (arg>=nargs) errorBreak(ERROR_ARGUMENTS, "");
-                fileplay=args[arg++];
-        }else if (sarg=="-open"){
+        if (sarg=="-open"){
             arg++; 
             if (arg>=nargs) errorBreak(ERROR_ARGUMENTS, "");
                 ifilematch=args[arg++];
