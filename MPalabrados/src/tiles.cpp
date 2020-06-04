@@ -102,6 +102,63 @@ bool Tiles::read(std::istream &is){
     }
 }
 
+Move Tiles::findMaxWord(int r, int c, bool hrz) const{
+    if(hrz){
+        
+        // Vamos a desplazarnos por la fila hasta el inicio
+        int k=c;
+        while(get(r,k-1)!=EMPTY || k!=0){
+               k--;
+        }
+        
+        // En este punto k es la posición donde comienza la palabra
+        int j = 0;
+        // Calculo el número de letras que tiene este movimiento
+        while(get(r,k+j)!=EMPTY || j<getWidth()){
+            j++;
+        }
+
+        char *letras;
+        letras = new char [j];
+
+        // Relleno el vector con las letras del movimiento
+        for(int i=0; i<j; i++){
+            letras[i] = get(r,k+i);
+        }
+
+        Move move;
+        move.set(r,k,'H',letras);
+
+    }else{
+        // Vamos a desplazarnos por la columna hasta el inicio
+        int k=r;
+        while(get(k-1,c)!=EMPTY || k!=0){
+            k--;
+        }
+        
+        // En este punto k es la posición donde comienza la palabra
+        int j = 0;
+        // Calculo el número de letras que tiene este movimiento
+        while(get(k+j,c)!=EMPTY || j<getHeight()){
+            j++;
+        }
+
+        char *letras;
+        letras = new char [j];
+
+        // Relleno el vector con las letras del movimiento
+        for(int i=0; i<j; i++){
+            letras[i] = get(k+i,c);
+        }
+
+        Move move;
+        move.set(k,c,'V',letras);
+    }
+    
+    return move;
+    
+}
+
 /// Privados
 
 void Tiles::allocate(int r, int c) {
@@ -135,3 +192,5 @@ void Tiles::copy(const Tiles& otro) {
         }
     }
 }
+
+
