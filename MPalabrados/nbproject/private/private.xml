@@ -7,8 +7,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/jdrd/NetBeansProjects/MPALABRADOS/MPalabrados/include/tiles.h</file>
-            <file>file:/home/jdrd/NetBeansProjects/MPALABRADOS/MPalabrados/src/main.cpp</file>
+            <file>file:/home/jorge/Escritorio/UGR/MP/Practicas/MAPALABRADOS/MPALABRADOS/MPalabrados/include/tiles.h</file>
+            <file>file:/home/jorge/Escritorio/UGR/MP/Practicas/MAPALABRADOS/MPALABRADOS/MPalabrados/include/move.h</file>
+            <file>file:/home/jorge/Escritorio/UGR/MP/Practicas/MAPALABRADOS/MPALABRADOS/MPalabrados/include/movelist.h</file>
+            <file>file:/home/jorge/Escritorio/UGR/MP/Practicas/MAPALABRADOS/MPALABRADOS/MPalabrados/src/movelist.cpp</file>
+            <file>file:/home/jorge/Escritorio/UGR/MP/Practicas/MAPALABRADOS/MPALABRADOS/MPalabrados/src/tiles.cpp</file>
         </group>
     </open-files>
 </project-private>

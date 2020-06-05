@@ -6,6 +6,7 @@
 #include <iostream>
 #include <fstream>
 #include <cassert>
+#include <string>
 #include "tiles.h"
 
 using namespace std;
@@ -103,6 +104,7 @@ bool Tiles::read(std::istream &is){
 }
 
 Move Tiles::findMaxWord(int r, int c, bool hrz) const{
+    Move current_move;
     if(hrz){
         
         // Vamos a desplazarnos por la fila hasta el inicio
@@ -151,12 +153,47 @@ Move Tiles::findMaxWord(int r, int c, bool hrz) const{
             letras[i] = get(k+i,c);
         }
 
-        Move move;
-        move.set(k,c,'V',letras);
+        
+        current_move.set(k,c,'V',letras);
     }
     
-    return move;
+    return current_move;
     
+}
+
+Movelist Tiles::findCrosswords(const Move &m, const Language &l) const{
+    Movelist current_movelist;
+    
+    // Primero recorremos la matriz por columnas
+    // Hado un doble for para buscar en todas las casillas de una columna por si
+    // hubiera más de una palabra en una columna. Lo mismo haré más adelante 
+    // para las filas
+    for (int i=0; i<getWidth(); i++){
+        for(int j=0; j<getHeight(); j++){
+            if(get(j,i)!=EMPTY){
+                Move current_move;
+                current_move = findMaxWord(j,i,false);
+                current_movelist.add(current_move);
+                j += current_move.getLetters().size();
+            }
+        }
+    }
+    
+    // Ahora recorremos por filas
+    for (int i=0; i<getHeight(); i++){
+        for(int j=0; j<getWidth(); j++){
+            if(get(i,j)!=EMPTY){
+                Move current_move;
+                current_move = findMaxWord(i,j,true);
+                current_movelist.add(current_move);
+                j += current_move.getLetters().size();
+            }
+        }
+    }
+    
+    current_movelist.zip(l);
+    
+    return current_movelist;
 }
 
 /// Privados
