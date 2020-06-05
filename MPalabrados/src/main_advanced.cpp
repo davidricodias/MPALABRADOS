@@ -117,37 +117,20 @@ int main(int nargs, char * args[]) {
 
 		if(!ifile)
 			errorBreak(ERROR_OPEN, ifilename);
-		
-		// Temp variable to read data
-		string data;
-
-		ifile >> data;
-		
-		// Check password
-		if(!ifile)
-			errorBreak(ERROR_DATA, ifilematch);
-		if(word!=PASSWORD)
-			errorBreak(ERROR_DATA), ifilematch);
-		
-		ifile >> score;
-		ifile >> lang;
-		if(!ifile)
-			errorBreak(ERROR_DATA, ifilematch);
-		game.language.setLanguage(lang);
-
-		ifile >> game.tiles;
-		height = game.tiles.getHeight();
-		width = game.tiles.getHeight();
 	
+		ifile >> game;
+	}
 	
 	
 	
 	// Game's main loop 
     // 1) First set the size of the window according to the size (rows & columns) of
     // the new Tiles
+	game.setWindowSize();
 
     while (!end)  {
         // 2) Given the inner data members, it pretty-prints the screen
+		game.doPaint();
 
         // 3) Reads the movement from cin
         cin >> move;
@@ -175,6 +158,8 @@ int main(int nargs, char * args[]) {
     // End of game
     // Save file or print screen
  
+	if(ofilename != ""){
+		:
     return 0;
 }
 
