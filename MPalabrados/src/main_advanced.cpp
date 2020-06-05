@@ -30,8 +30,8 @@ using namespace std;
 #define GENERAL_ERROR 4
 #define PASSWORD "MPALABRADOS-V2"
 
-// Alumno1: apellidos nombre
-// Alumno2: apellidos nombre
+// Alumno1: Rico Días José David 
+// Alumno2: Marín Sánchez Jorge
 
 /**
  * @brief Reports an important error and exits the program
@@ -55,15 +55,94 @@ int main(int nargs, char * args[]) {
     string lang="",ifilematch="", ofilematch="", word;
     ifstream ifile; ofstream ofile;
     bool end=false;
-	 char c;
+	char c;
     
     /// Check arguments
-
+	// Igual que en la práctica anterior. Copy-paste
+    string sarg;
+    for(int arg=1; arg<nargs; ) {
+        sarg = args[arg];
+        if (sarg=="-open"){
+            arg++; 
+            if (arg>=nargs) errorBreak(ERROR_ARGUMENTS, "");
+                ifilematch=args[arg++];
+        }else if (sarg=="-save"){
+            arg++; 
+            if (arg>=nargs) errorBreak(ERROR_ARGUMENTS, "");
+                ofilematch=args[arg++];
+        }else if (sarg== "-l") {
+                arg++; 
+                if (arg>=nargs) errorBreak(ERROR_ARGUMENTS, "");
+                lang=args[arg++];
+        } else if (sarg== "-r") {
+                arg++; 
+                if (arg>=nargs) errorBreak(ERROR_ARGUMENTS, "");
+                Id = atoi(args[arg++]);
+        } else if (sarg== "-b") {
+                arg++; 
+                if (arg>=nargs) errorBreak(ERROR_ARGUMENTS, "");
+                external_bag = args[arg++];
+        }else if (sarg== "-w") {
+                arg++; 
+                if (arg>=nargs) errorBreak(ERROR_ARGUMENTS, "");
+                width = atoi(args[arg++]);
+        } else if (sarg== "-h") {
+                arg++; 
+                if (arg>=nargs) errorBreak(ERROR_ARGUMENTS, "");
+                height = atoi(args[arg++]);
+        }  else
+            errorBreak(ERROR_ARGUMENTS, "");
+ 
     // Process arguments
+	if(!((lang=="" && width<=0 && height<=0 && ofilename!="") || (lang!="" && width>0 && height>0 && ofilename==""))
+	errorBreak(ERROR_ARGUMENTS, "");
 
     /// load data from file, if asked to in arguments
+	if(ifilematch == ""){
+		game.language.setLanguage(lang);
+		
+		if(Id>0){
+			game.bag.setRandom(Id);
+		}
+		
+		if(external_bag != 0){
+			game.bag.set(toISO(external_bag));
+		} else {
+			game.bag.define(language);
+		}
+		game.tiles.setSize(height, width);
+	// Reads file
+	} else { 
+    	ifile.open(ifilematch);
 
-    // Game's main loop 
+		if(!ifile)
+			errorBreak(ERROR_OPEN, ifilename);
+		
+		// Temp variable to read data
+		string data;
+
+		ifile >> data;
+		
+		// Check password
+		if(!ifile)
+			errorBreak(ERROR_DATA, ifilematch);
+		if(word!=PASSWORD)
+			errorBreak(ERROR_DATA), ifilematch);
+		
+		ifile >> score;
+		ifile >> lang;
+		if(!ifile)
+			errorBreak(ERROR_DATA, ifilematch);
+		game.language.setLanguage(lang);
+
+		ifile >> game.tiles;
+		height = game.tiles.getHeight();
+		width = game.tiles.getHeight();
+	
+	
+	
+	
+	// Game's main loop 
     // 1) First set the size of the window according to the size (rows & columns) of
     // the new Tiles
 
