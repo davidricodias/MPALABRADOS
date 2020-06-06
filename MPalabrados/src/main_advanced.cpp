@@ -52,7 +52,7 @@ int main(int nargs, char * args[]) {
     Move move;
     Game game;
     int w=-1, h=-1, wait=0;
-    string lang="",ifilematch="", ofilematch="", word;
+    string lang="",ifilematch="", ofilematch="", word, external_bag="";
     ifstream ifile; ofstream ofile;
     bool end=false;
 	char c;
@@ -77,7 +77,7 @@ int main(int nargs, char * args[]) {
         } else if (sarg== "-r") {
                 arg++; 
                 if (arg>=nargs) errorBreak(ERROR_ARGUMENTS, "");
-                Id = atoi(args[arg++]);
+                game.random = atoi(args[arg++]);
         } else if (sarg== "-b") {
                 arg++; 
                 if (arg>=nargs) errorBreak(ERROR_ARGUMENTS, "");
@@ -101,32 +101,31 @@ int main(int nargs, char * args[]) {
 	if(ifilematch == ""){
 		game.language.setLanguage(lang);
 		
-		if(Id>0){
-			game.bag.setRandom(Id);
+		if(game.random>0){
+			game.bag.setRandom(game.random);
 		}
-		
-		if(external_bag != 0){
+		if(external_bag != ""){
 			game.bag.set(toISO(external_bag));
 		} else {
-			game.bag.define(language);
+			game.bag.define(game.language);
 		}
 		game.tiles.setSize(height, width);
+
 	// Reads file
 	} else { 
     	ifile.open(ifilematch);
 
 		if(!ifile)
 			errorBreak(ERROR_OPEN, ifilename);
-	
 		ifile >> game;
 	}
 	
-	
-	
-	// Game's main loop 
     // 1) First set the size of the window according to the size (rows & columns) of
     // the new Tiles
 	game.setWindowSize();
+
+	// Añade la primeras posibles 7 letras
+	game.player.add(game.bag.extract(7-game.player.size()));
 
     while (!end)  {
         // 2) Given the inner data members, it pretty-prints the screen
@@ -138,20 +137,28 @@ int main(int nargs, char * args[]) {
         if (word=="_") {
             end=true;
         // Checks whether the movement is valid accoring to the letters in player    
+		if(game.player.isValid(word) && language.query(word){
             // Finds all the crosswords produced by move
             game.crosswords = game.tiles.findCrosswords(move,game.language);
             //Checks that the crosswords are valid, that is either has a positive score
             //      or produces at least a cross with other existin letters
             // If valid, computes the score and adds it
+			if( ){
                 score +=move.getScore();
                 cout << "Scored "<<move.getScore()<<" points"<<endl; 
                 // Show crosswords found
-            // If it is a bad crosswords
+				gam:e.showCrosswords();
+           } else {
+			// If it is a bad crosswords
                 cout << "Bad crosswords found"<<endl;
                 // Show crosswords found
+				game.showCrosswords();
+			}
+		} else {
             // If not valid w.r.t. player
                 cout <<"Infeasible word"<<endl;
-            // Waits for the next move
+           	}
+		   // Waits for the next move
                 cout << "Press [yY] to continue:";
 		  cin >> c;
     }
@@ -159,7 +166,11 @@ int main(int nargs, char * args[]) {
     // Save file or print screen
  
 	if(ofilename != ""){
-		:
+		ofilematch << game;
+	} else {
+		cout << game;
+	}
+
     return 0;
 }
 

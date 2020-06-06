@@ -131,7 +131,7 @@ int main(int nargs, char *args[]) {
 	se especifica "-r" se define el aleatorio con el número indica-
 	do, si no, no se define aleatorio.
     */
-    
+
     bool end=false;
     Language language;
     /// Check arguments
@@ -170,7 +170,6 @@ int main(int nargs, char *args[]) {
         }  else
             errorBreak(ERROR_ARGUMENTS, "");
     }
-  
      // Process arguments
     if  ((fileplay=="") || (lang=="" && ifilematch=="") ||( ifilematch=="" &&  (width <0 ||  height <0)))
         errorBreak(ERROR_ARGUMENTS, "");
