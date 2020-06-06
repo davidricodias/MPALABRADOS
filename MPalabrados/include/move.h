@@ -13,6 +13,14 @@
 #include <iostream>
 #include "language.h"
 #include <string>
+
+#define UNKNOWN -1
+#define BOARD_OVERFLOW -2
+#define NONEXISTENT_WORD -3
+#define INFEASIBLE_WORD -4
+#define NOT_FREE -5
+#define MISSING_CROSSWORDS -6
+
 /**
  * @class Move
  * @brief Class to represent both a single movement, which might not be

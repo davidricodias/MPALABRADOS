@@ -7,7 +7,7 @@
 #ifndef TILES_H
 #define TILES_H
 #include <iostream>
-#include "move.h"
+#include "move.h" // Se incluyen las constantes de UNKNOWN, ...
 #include "movelist.h"
 
 #define EMPTY '.'
