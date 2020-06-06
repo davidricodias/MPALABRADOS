@@ -134,25 +134,32 @@ int main(int nargs, char * args[]) {
         // 3) Reads the movement from cin
         cin >> move;
         word = move.getLetters();
-        if (word=="_") {
+        if (word=="_") 
             end=true;
         // Checks whether the movement is valid accoring to the letters in player    
-		if(game.player.isValid(word) && language.query(word){
+		if(game.player.isValid(word)){
             // Finds all the crosswords produced by move
             game.crosswords = game.tiles.findCrosswords(move,game.language);
             //Checks that the crosswords are valid, that is either has a positive score
             //      or produces at least a cross with other existin letters
             // If valid, computes the score and adds it
-			if( ){
+			
+			bool is_crossword_valid = true;
+			for(int i=0; i<game.crosswords.size(); ++i){
+				if(game.crosswords.get(i).
+			if(is_crossword_valid){
                 score +=move.getScore();
                 cout << "Scored "<<move.getScore()<<" points"<<endl; 
                 // Show crosswords found
-				gam:e.showCrosswords();
-           } else {
+				game.showCrosswords();
+           	} else {
 			// If it is a bad crosswords
                 cout << "Bad crosswords found"<<endl;
                 // Show crosswords found
 				game.showCrosswords();
+				if(doBadCrosswords("Cruce no válido, ¿Seguir jugando?"))
+					end=true;
+
 			}
 		} else {
             // If not valid w.r.t. player
@@ -161,6 +168,8 @@ int main(int nargs, char * args[]) {
 		   // Waits for the next move
                 cout << "Press [yY] to continue:";
 		  cin >> c;
+		  if(c != 'y' && c != 'Y')
+		  	end=true;
     }
     // End of game
     // Save file or print screen
