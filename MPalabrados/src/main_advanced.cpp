@@ -58,7 +58,7 @@ int main(int nargs, char * args[]) {
 	char c;
     
     /// Check arguments
-	// Igual que en la práctica anterior. Copy-paste
+    // Igual que en la práctica anterior. Copy-paste
     string sarg;
     for(int arg=1; arg<nargs; ) {
         sarg = args[arg];
@@ -85,17 +85,17 @@ int main(int nargs, char * args[]) {
         }else if (sarg== "-w") {
                 arg++; 
                 if (arg>=nargs) errorBreak(ERROR_ARGUMENTS, "");
-                width = atoi(args[arg++]);
+                w = atoi(args[arg++]);
         } else if (sarg== "-h") {
                 arg++; 
                 if (arg>=nargs) errorBreak(ERROR_ARGUMENTS, "");
-                height = atoi(args[arg++]);
+                h = atoi(args[arg++]);
         }  else
             errorBreak(ERROR_ARGUMENTS, "");
- 
+    }
     // Process arguments
-	if(!((lang=="" && width<=0 && height<=0 && ofilename!="") || (lang!="" && width>0 && height>0 && ofilename==""))
-	errorBreak(ERROR_ARGUMENTS, "");
+	if(!((lang=="" && w<=0 && h<=0 && ofilematch!="") || (lang!="" && w>0 && h>0 && ofilematch=="")))
+            errorBreak(ERROR_ARGUMENTS, "");
 
     /// load data from file, if asked to in arguments
 	if(ifilematch == ""){
@@ -109,14 +109,14 @@ int main(int nargs, char * args[]) {
 		} else {
 			game.bag.define(game.language);
 		}
-		game.tiles.setSize(height, width);
+		game.tiles.setSize(h, w);
 
 	// Reads file
 	} else { 
     	ifile.open(ifilematch);
 
 		if(!ifile)
-			errorBreak(ERROR_OPEN, ifilename);
+			errorBreak(ERROR_OPEN, ifilematch);
 		ifile >> game;
 	}
 	
@@ -137,88 +137,91 @@ int main(int nargs, char * args[]) {
         if (word=="_") 
             end=true;
         // Checks whether the movement is valid accoring to the letters in player    
-		if(game.player.isValid(word) && !end){
+	if(game.player.isValid(word) && !end){
             // Finds all the crosswords produced by move
             game.crosswords = game.tiles.findCrosswords(move,game.language);
             //Checks that the crosswords are valid, that is either has a positive score
             //      or produces at least a cross with other existin letters
             // If valid, computes the score and adds it
 
-			// Comprueba si alguno de los cruces no es válido, y añade información del fallo
-			string reason_invalid_crossword;
-			bool is_crossword_valid = true;
-			
-			for(int i=0; i<crosswords.size() && is_crossword_valid; ++i){
-				int score = crosswords.get(i).getScore();
-				if(score < 0){
-					is_crossword_valid = false;
-					switch (score){
-						case -1:
-							reason_invalid_crossword = "UNKNOWN";
-							break;
-						case -2:
-							reason_invalid_crossword = "BOARD OVERFLOW";
-							break;
-						case -3:
-							reason_invalid_crossword = "NONEXISTENT_WORD";
-							break;
-						case -4:
-							reason_invalid_crossword = "INFEASIBLE_WORD";
-							break;
-						case -5:
-							reason_invalid_crossword = "NOT FREE";
-							break;
-						case -6:
-							reason_invalid_crossword = "MISSING CROSSWORDS";
-						break;
-					}
-				}
-			}
+            // Comprueba si alguno de los cruces no es válido, y añade información del fallo
+            string reason_invalid_crossword;
+            bool is_crossword_valid = true;
 
-			if(is_crossword_valid){
+            for(int i=0; i<game.crosswords.size() && is_crossword_valid; ++i){
+                    int crossword_score = game.crosswords.get(i).getScore();
+                    if(crossword_score < 0){
+                            is_crossword_valid = false;
+                            switch (crossword_score){
+                                    case -1:
+                                            reason_invalid_crossword = "UNKNOWN";
+                                            break;
+                                    case -2:
+                                            reason_invalid_crossword = "BOARD OVERFLOW";
+                                            break;
+                                    case -3:
+                                            reason_invalid_crossword = "NONEXISTENT_WORD";
+                                            break;
+                                    case -4:
+                                            reason_invalid_crossword = "INFEASIBLE_WORD";
+                                            break;
+                                    case -5:
+                                            reason_invalid_crossword = "NOT FREE";
+                                            break;
+                                    case -6:
+                                            reason_invalid_crossword = "MISSING CROSSWORDS";
+                                    break;
+                            }
+                    }
+            }
+
+            if(is_crossword_valid){
                 // Show crosswords found
-				game.showCrosswords();
-				if(doConfirmCrosswords("Cruce válido, ¿Quieres añadirlo?")){
-					
-					// Reconfigura player
-					game.player.extract(word);
-					game.player.add(game.bag.extract(7-game.player.size()));
+                game.showCrosswords();
+                if(game.doConfirmCrosswords("Cruce válido, ¿Quieres añadirlo?")){
 
-					// Añade el movimiento aceptado
-					game.acceptedmovements.add(move);
-                	game.score +=move.getScore();
+                        // Reconfigura player
+                        game.player.extract(word);
+                        game.player.add(game.bag.extract(7-game.player.size()));
 
-					// Añade el move al tiles
-					game.tiles.add(move);
-                	cout << "Scored " << move.getScore() << " points" << endl; 
-				}
-           	} else {
-			// If it is a bad crosswords
+                        // Añade el movimiento aceptado
+                        game.acceptedmovements.add(move);
+                        game.score +=move.getScore();
+
+                        // Añade el move al tiles
+                        game.tiles.add(move);
+                        cout << "Scored " << move.getScore() << " points" << endl; 
+                }
+            } else {
+                // If it is a bad crosswords
                 cout << "Bad crosswords found: " << reason_invalid_crossword << endl;
-				game.rejectedmovements.add(move);
+                game.rejectedmovements.add(move);
                 // Show crosswords found
-				game.showCrosswords();
-				if(doBadCrosswords("Cruce no válido, ¿Seguir jugando?"))
-					end=true;
-			}
-		} else {
+                game.showCrosswords();
+                if(game.doBadCrosswords("Cruce no válido, ¿Seguir jugando?"))
+                        end=true;
+            }
+        } else {
             // If not valid w.r.t. player
-                cout <<"Infeasible word"<<endl;
-           	}
-		   // Waits for the next move
-                cout << "Press [yY] to continue:";
-		  cin >> c;
-		  if(c != 'y' && c != 'Y')
-		  	end=true;
+            cout <<"Infeasible word"<<endl;
+        }
+    
+        // Waits for the next move
+        cout << "Press [yY] to continue:";
+        setCursorOn();
+        cin >> c;
+        setCursorOff();
+        if(c != 'y' && c != 'Y')
+            end=true;
     }
+        
     // End of game
     // Save file or print screen
- 
-	if(ofilename != ""){
-		ofilematch << game;
-	} else {
-		cout << game;
-	}
+    if(ofilematch != ""){
+            ofile << game;
+    } else {
+            cout << game;
+    }
 
     return 0;
 }
@@ -242,9 +245,9 @@ ostream & operator<<(ostream & os, const Game & game)  {
 	os << PASSWORD << endl;
 	os << game.score << endl;
 	os << game.language.getLanguage() << endl;
-	os << tiles;
-	os << player.size() << " " << toUTF(player.to_string()) << endl;
-	os << bag.size() << " " << toUTF(bag.to_string()) << endl;
+	os << game.tiles;
+	os << game.player.size() << " " << toUTF(game.player.to_string()) << endl;
+	os << game.bag.size() << " " << toUTF(game.bag.to_string()) << endl;
 	
 	return os;
 }
@@ -278,7 +281,7 @@ istream & operator>>(istream & is, Game &game) {
 	is >> data_int;
 	if(!is)
 		errorBreak(ERROR_DATA, "");
-	if(n>0){
+	if(data_int>0){
 		is >> data_str;
 		game.player.add(toISO(data_str));
 	}
@@ -287,14 +290,12 @@ istream & operator>>(istream & is, Game &game) {
 	is >> data_int;
 	if(!is)
 		errorBreak(ERROR_DATA, "");
-	if(n>0){
+	if(data_int>0){
 		is >> data_str;
 		game.bag.set(toISO(data_str));
 	}
 
 	return is;
-}
-
 }
 
 void errorBreak(int errorcode, const string &errordata) {

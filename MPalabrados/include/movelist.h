@@ -11,8 +11,6 @@
 #include "move.h"
 #include "language.h"
 
-#define PASSWORD "MPALABRADOS-V1"
-
 /**
  * @class Movelist
  * @brief Class used to store a sequence of single movements, where every movement is described in move.h

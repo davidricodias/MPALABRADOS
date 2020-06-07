@@ -10,6 +10,8 @@
 #include "move.h"
 #include "movelist.h"
 
+#define PASSWORD "MPALABRADOS-V2"
+
 using namespace std;
 //
 // Private
