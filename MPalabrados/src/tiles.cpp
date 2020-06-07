@@ -69,7 +69,7 @@ int Tiles::getHeight() const {
 }
 
 char Tiles::get(int r, int c) const  {
-    assert (cell != nullptr && r >=0 && r<=getHeight() && 0<=c && c <= getWidth());
+    assert (cell != nullptr && r >=0 && r<=getHeight() && c>=0 && c <= getWidth());
     return cell[r][c];
 }
 
