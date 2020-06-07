@@ -128,8 +128,9 @@ Move Tiles::findMaxWord(int r, int c, bool hrz) const{
             letras[i] = get(r,k+i);
         }
 
-        Move move;
-        move.set(r,k,'H',letras);
+        current_move.set(r,k,'H',letras);
+
+		delete [] letras;
 
     }else{
         // Vamos a desplazarnos por la columna hasta el inicio
@@ -155,6 +156,8 @@ Move Tiles::findMaxWord(int r, int c, bool hrz) const{
 
         
         current_move.set(k,c,'V',letras);
+
+		delete [] letras;
     }
     
     return current_move;
