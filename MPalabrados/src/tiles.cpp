@@ -172,12 +172,11 @@ Movelist Tiles::findCrosswords(const Move &m, const Language &l) const{
     int m_row = m.getRow();
     int m_col_end = m_col + m.getLetters().size();
     int m_row_end = m_row + m.getLetters().size();
-    int count; // contador de cruces
  
     
     Move current_move;
     // Regla 3: Cruce intermedio
-    current_move = findCrosswords(m, l);
+    current_move = findMaxWord(m_row, m_col, m.isHorizontal());
     current_move.findScore(l);
     
     // Regla 2:

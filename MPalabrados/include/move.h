@@ -126,7 +126,6 @@ public:
         * @param orig Right hand side of the assignement
         * @return this Left hand side of the assignement
         */
-        Move& operator=(const Move& orig) ; // Operador asignación
 };
 
 

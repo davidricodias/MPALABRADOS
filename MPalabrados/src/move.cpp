@@ -110,16 +110,6 @@ std::istream& operator>>(std::istream& is, Move & m) {
     return is;
 }
 
-Move & Move::operator=(const Move &orig) {
-    if (this != &orig) {
-        row = orig.getRow();
-        column = orig.getCol();
-        ishorizontal = orig.isHorizontal();
-        letters = orig.getLetters();
-    }
-    return *this;
-}
 
-    // Privados
 
     
