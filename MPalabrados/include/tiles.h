@@ -134,6 +134,11 @@ public:
      */
     Movelist findCrosswords(const Move &m, const Language &l) const;
 
+	// Friend functions
+
+	friend std::ostream & operator<<(std::ostream & os, const Tiles & tiles);
+	friend std::istream & operator>>(std::istream & is, Tiles & tiles);
+
 private:
     char **cell; /// Dynamic 2D Matrix. Choosing another implementation is up to the student
     int columns, /// Number of columns
@@ -156,6 +161,11 @@ private:
     void copy(const Tiles &t);
 
 };
+
+std::ostream & operator<<(std::ostream & os, const Tiles & tiles);
+
+std::istream & operator>>(std::istream & is, Tiles & tiles);
+
 
 
 #endif /* TILES_H */

@@ -137,29 +137,69 @@ int main(int nargs, char * args[]) {
         if (word=="_") 
             end=true;
         // Checks whether the movement is valid accoring to the letters in player    
-		if(game.player.isValid(word)){
+		if(game.player.isValid(word) && !end){
             // Finds all the crosswords produced by move
             game.crosswords = game.tiles.findCrosswords(move,game.language);
             //Checks that the crosswords are valid, that is either has a positive score
             //      or produces at least a cross with other existin letters
             // If valid, computes the score and adds it
-			
+
+			// Comprueba si alguno de los cruces no es válido, y añade información del fallo
+			string reason_invalid_crossword;
 			bool is_crossword_valid = true;
-			for(int i=0; i<game.crosswords.size(); ++i){
-				if(game.crosswords.get(i).
+			
+			for(int i=0; i<crosswords.size() && is_crossword_valid; ++i){
+				int score = crosswords.get(i).getScore();
+				if(score < 0){
+					is_crossword_valid = false;
+					switch (score){
+						case -1:
+							reason_invalid_crossword = "UNKNOWN";
+							break;
+						case -2:
+							reason_invalid_crossword = "BOARD OVERFLOW";
+							break;
+						case -3:
+							reason_invalid_crossword = "NONEXISTENT_WORD";
+							break;
+						case -4:
+							reason_invalid_crossword = "INFEASIBLE_WORD";
+							break;
+						case -5:
+							reason_invalid_crossword = "NOT FREE";
+							break;
+						case -6:
+							reason_invalid_crossword = "MISSING CROSSWORDS";
+						break;
+					}
+				}
+			}
+
 			if(is_crossword_valid){
-                score +=move.getScore();
-                cout << "Scored "<<move.getScore()<<" points"<<endl; 
                 // Show crosswords found
 				game.showCrosswords();
+				if(doConfirmCrosswords("Cruce válido, ¿Quieres añadirlo?")){
+					
+					// Reconfigura player
+					game.player.extract(word);
+					game.player.add(game.bag.extract(7-game.player.size()));
+
+					// Añade el movimiento aceptado
+					game.acceptedmovements.add(move);
+                	game.score +=move.getScore();
+
+					// Añade el move al tiles
+					game.tiles.add(move);
+                	cout << "Scored " << move.getScore() << " points" << endl; 
+				}
            	} else {
 			// If it is a bad crosswords
-                cout << "Bad crosswords found"<<endl;
+                cout << "Bad crosswords found: " << reason_invalid_crossword << endl;
+				game.rejectedmovements.add(move);
                 // Show crosswords found
 				game.showCrosswords();
 				if(doBadCrosswords("Cruce no válido, ¿Seguir jugando?"))
 					end=true;
-
 			}
 		} else {
             // If not valid w.r.t. player
@@ -183,12 +223,78 @@ int main(int nargs, char * args[]) {
     return 0;
 }
 
+
+// Operadores >> y >> de Tiles
+
+ostream & operator<<(ostream & os, const Tiles & tiles){
+	tiles.print(os);
+	return os;
+}
+
+istream & operator>>(istream & is, Tiles & tiles){
+	tiles.read(is);
+	return is;
+}
+
+// Operadores >> y << de Game
+
 ostream & operator<<(ostream & os, const Game & game)  {
-    // To implement
+	os << PASSWORD << endl;
+	os << game.score << endl;
+	os << game.language.getLanguage() << endl;
+	os << tiles;
+	os << player.size() << " " << toUTF(player.to_string()) << endl;
+	os << bag.size() << " " << toUTF(bag.to_string()) << endl;
+	
+	return os;
 }
 
 istream & operator>>(istream & is, Game &game) {
-    // To implement
+	string data_str;	// Variable auxiliar
+	int data_int;
+	is >> data_str;
+	if(!is)
+		errorBreak(ERROR_DATA, "");
+	if(data_str != PASSWORD)
+		errorBreak(ERROR_DATA, "");
+	
+	// Read score
+	is >> data_int;
+	if(!is)
+		errorBreak(ERROR_DATA, "");
+	game.score = data_int;
+	
+	// Read language
+	is >> data_str;
+	if(!is)
+		errorBreak(ERROR_DATA, "");
+	game.language.setLanguage(data_str);
+	// Read tile
+	is >> game.tiles;
+	if(!is)
+		errorBreak(ERROR_DATA, "");
+	
+	// Read player
+	is >> data_int;
+	if(!is)
+		errorBreak(ERROR_DATA, "");
+	if(n>0){
+		is >> data_str;
+		game.player.add(toISO(data_str));
+	}
+	
+	// Read bag
+	is >> data_int;
+	if(!is)
+		errorBreak(ERROR_DATA, "");
+	if(n>0){
+		is >> data_str;
+		game.bag.set(toISO(data_str));
+	}
+
+	return is;
+}
+
 }
 
 void errorBreak(int errorcode, const string &errordata) {
