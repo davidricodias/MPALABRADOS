@@ -178,9 +178,9 @@ Movelist Tiles::findCrosswords(const Move &m, const Language &l) const{
     
     // Regla 6: Se sale de la matriz
         // Exeso de tamaño en horizontal
-    bool exec_H = (m.isHorizontal(() && m_col + m.getLetters().size()) > this->getWidth());
+    bool exec_H = (m.isHorizontal() && (m_col + m.getLetters().size()) > this->getWidth());
         // Exeso de tamaño en vertical
-    bool exec_V = (!m.isHorizontal(() && m_col + m.getLetters().size()) > this->getHeight());
+    bool exec_V = (!m.isHorizontal() && (m_col + m.getLetters().size()) > this->getHeight());
     
     if(exec_H || exec_V){
         m.setScore(-2); // -2 indica BOARD_OVERFLOW
@@ -289,18 +289,18 @@ Movelist Tiles::findCrosswords(const Move &m, const Language &l) const{
                 current_movelist.add(m);
                 return current_movelist;
             }else{ //Regla 4: Cruce multiple
-                current_move.setScore(current_move.findScore());
+                current_move.setScore(current_move.findScore(l));
                 current_movelist.add(current_move);
             }
         }
     }
     
     // Regla 3: Cruce intermedio
-    m = findCrosswords(*m, *l);
+    m = findCrosswords(m, l);
     
     // Regla 2:
     if(l.query(m.getLetters())){
-        current_movelist(m);
+        current_movelist.add(m);
     }
     
         
