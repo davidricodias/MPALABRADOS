@@ -209,7 +209,7 @@ Movelist Tiles::findCrosswords(const Move &m, const Language &l) const{
     // Regla 9: No hay cruces    
     } else if(current_move.isHorizontal()){
         // Compruebo si hay letras antes o después del movimiento para ver si complementa otra letra
-        if((this->get(m_row, m_col-1) == EMPTY) && (this->get(m_row, m_col_end+1) == EMPTY)){
+        if((get(m_row, m_col-1) == EMPTY) && (get(m_row, m_col_end+1) == EMPTY)){
             // Si no hay letras a los laterales recorro todas las letras del movimiento buscando
             // letras encima o abajo
             int i=0;
@@ -242,7 +242,7 @@ Movelist Tiles::findCrosswords(const Move &m, const Language &l) const{
         
     } else if(!m.isHorizontal()){
         // Compruebo si hay letras antes o después del movimiento para ver si complementa otra letra
-        if((this->get(m_row-1, m_col) == EMPTY) && (this->get(m_row+1, m_col_end) == EMPTY)){
+        if((get(m_row-1, m_col) == EMPTY) && (get(m_row+1, m_col_end) == EMPTY)){
             // Si no hay letras a los laterales recorro todas las letras del movimiento buscando
             // letras encima o abajo
             int i=0;
