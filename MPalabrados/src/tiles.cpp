@@ -277,8 +277,9 @@ Movelist Tiles::findCrosswords(const Move &m, const Language &l) const{
                 m.setScore(-3); // -3 indica NONEXISTENT_WORD
                 current_movelist.add(m);
                 return current_movelist;
-            }else{ // Regla 2
-                current_movelist.add(m);
+            }else{ //Regla 4: Cruce multiple
+                current_move.setScore(current_move.findScore());
+                current_movelist.add(current_move);
             }
             
         }else{
@@ -287,20 +288,20 @@ Movelist Tiles::findCrosswords(const Move &m, const Language &l) const{
                 m.setScore(-3); // -3 indica NONEXISTENT_WORD
                 current_movelist.add(m);
                 return current_movelist;
-            }else{ //Regla 2
-                current_movelist.add(m);
+            }else{ //Regla 4: Cruce multiple
+                current_move.setScore(current_move.findScore());
+                current_movelist.add(current_move);
             }
         }
     }
     
     // Regla 3: Cruce intermedio
-    Movelist aux;
-    for(int i=0; i<m.getLetters().size(); i++){
-        if(get(m_row, m_col+i)!=EMPTY){
-            
-        }
-    }
+    m = findCrosswords(*m, *l);
     
+    // Regla 2:
+    if(l.query(m.getLetters())){
+        current_movelist(m);
+    }
     
         
     return current_movelist;
