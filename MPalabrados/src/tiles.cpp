@@ -209,9 +209,25 @@ Movelist Tiles::findCrosswords(const Move &m, const Language &l) const{
             while((get(m_row+1, m_col+i)==EMPTY) && (get(m_row-1, m_col+i)==EMPTY)){
                 i++;
                 if(m_row+1 > m_row_end){
-                    m.setScore(-6); // -6 indica MISSING_CROSSWORDS
-                    current_movelist.add(m);
-                    return current_movelist;
+                    
+                    // Regla 1: inicio de partida
+                    bool vacio = false; // nos indicará si la matriz está vacia
+                    for(int i=0; i<getWidth(); i++){
+                        for(int j=0; j<getHeight(); i+=2){
+                            if(get(i,j)!=EMPTY){
+                                vacio=true;
+                                break;
+                            }
+                        }
+                    }
+                    
+                    if(vacio){
+                        m.setScore(m.findScore(l));
+                    }else{
+                        m.setScore(-6); // -6 indica MISSING_CROSSWORDS
+                        current_movelist.add(m);
+                        return current_movelist;
+                    }
                     break;
                 }
             }
@@ -226,14 +242,29 @@ Movelist Tiles::findCrosswords(const Move &m, const Language &l) const{
             while((get(m_row+i, m_col+1)==EMPTY) && (get(m_row-i, m_col+1)==EMPTY)){
                 i++;
                 if(m_col+1 > m_col_end){
-                    m.setScore(-6); // -6 indica MISSING_CROSSWORDS
-                    current_movelist.add(m);
-                    return current_movelist;
+                    
+                    // Regla 1: inicio de partida
+                    bool vacio = false; // nos indicará si la matriz está vacia
+                    for(int i=0; i<getWidth(); i++){
+                        for(int j=0; j<getHeight(); i+=2){
+                            if(get(i,j)!=EMPTY){
+                                vacio=true;
+                                break;
+                            }
+                        }
+                    }
+                    
+                    if(vacio){
+                        m.setScore(m.findScore(l));
+                    }else{
+                        m.setScore(-6); // -6 indica MISSING_CROSSWORDS
+                        current_movelist.add(m);
+                        return current_movelist;
+                    }
                     break;
                 }
             }
         }
-        
     } 
     
     
@@ -246,7 +277,8 @@ Movelist Tiles::findCrosswords(const Move &m, const Language &l) const{
                 m.setScore(-3); // -3 indica NONEXISTENT_WORD
                 current_movelist.add(m);
                 return current_movelist;
-
+            }else{ // Regla 2
+                current_movelist.add(m);
             }
             
         }else{
@@ -255,7 +287,17 @@ Movelist Tiles::findCrosswords(const Move &m, const Language &l) const{
                 m.setScore(-3); // -3 indica NONEXISTENT_WORD
                 current_movelist.add(m);
                 return current_movelist;
+            }else{ //Regla 2
+                current_movelist.add(m);
             }
+        }
+    }
+    
+    // Regla 3: Cruce intermedio
+    Movelist aux;
+    for(int i=0; i<m.getLetters().size(); i++){
+        if(get(m_row, m_col+i)!=EMPTY){
+            
         }
     }
     
