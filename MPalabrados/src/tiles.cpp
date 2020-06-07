@@ -162,37 +162,102 @@ Move Tiles::findMaxWord(int r, int c, bool hrz) const{
 }
 
 Movelist Tiles::findCrosswords(const Move &m, const Language &l) const{
+    
     Movelist current_movelist;
+    // Guardo las posiciones donde comienza el movimiento y donde terminaría
+    int m_col = m.getCol();
+    int m_row = m.getRow();
+    int m_col_end = m_col + m.getLetters().size();
+    int m_row_end = m_row + m.getLetters().size();
+    int count; // contador de cruces
     
-    // Primero recorremos la matriz por columnas
-    // Hado un doble for para buscar en todas las casillas de una columna por si
-    // hubiera más de una palabra en una columna. Lo mismo haré más adelante 
-    // para las filas
-    for (int i=0; i<getWidth(); i++){
-        for(int j=0; j<getHeight(); j++){
-            if(get(j,i)!=EMPTY){
-                Move current_move;
-                current_move = findMaxWord(j,i,false);
-                current_movelist.add(current_move);
-                j += current_move.getLetters().size();
+       
+    
+    // Regla 6: Se sale de la matriz
+        // Exeso de tamaño en horizontal
+    bool exec_H = (m.isHorizontal(() && m_col + m.getLetters().size()) > this->getWidth());
+        // Exeso de tamaño en vertical
+    bool exec_V = (!m.isHorizontal(() && m_col + m.getLetters().size()) > this->getHeight());
+    
+    if(exec_H || exec_V){
+        m.setScore(-2); // -2 indica BOARD_OVERFLOW
+        current_movelist.add(m);
+        return current_movelist;
+        
+    // Regla 8: La palabra no existe en el lenguaje
+    } else if(!l.query(m.getLetters())){
+        m.setScore(-3); // -3 indica NONEXISTENT_WORD
+        current_movelist.add(m);
+        return current_movelist;
+        
+    // Regla 10: Primera casilla ocupada
+    } else if(get(m_row, m_col)!=EMPTY){
+        m.setScore(-5); // -5 indica NOT_FREE
+        current_movelist.add(m);
+        return current_movelist;
+           
+    // Regla 9: No hay cruces    
+    } else if(m.isHorizontal()){
+        // Compruebo si hay letras antes o después del movimiento para ver si complementa otra letra
+        if((this->get(m_row, m_col-1) == EMPTY) && (this->get(m_row, m_col_end+1) == EMPTY)){
+            // Si no hay letras a los laterales recorro todas las letras del movimiento buscando
+            // letras encima o abajo
+            int i=0;
+            while((get(m_row+1, m_col+i)==EMPTY) && (get(m_row-1, m_col+i)==EMPTY)){
+                i++;
+                if(m_row+1 > m_row_end){
+                    m.setScore(-6); // -6 indica MISSING_CROSSWORDS
+                    current_movelist.add(m);
+                    return current_movelist;
+                    break;
+                }
+            }
+        }
+        
+    } else if(!m.isHorizontal()){
+        // Compruebo si hay letras antes o después del movimiento para ver si complementa otra letra
+        if((this->get(m_row-1, m_col) == EMPTY) && (this->get(m_row+1, m_col_end) == EMPTY)){
+            // Si no hay letras a los laterales recorro todas las letras del movimiento buscando
+            // letras encima o abajo
+            int i=0;
+            while((get(m_row+i, m_col+1)==EMPTY) && (get(m_row-i, m_col+1)==EMPTY)){
+                i++;
+                if(m_col+1 > m_col_end){
+                    m.setScore(-6); // -6 indica MISSING_CROSSWORDS
+                    current_movelist.add(m);
+                    return current_movelist;
+                    break;
+                }
+            }
+        }
+        
+    } 
+    
+    
+    // Regla 11: Algún cruce no válido
+    Move current_move;
+    for(int i=0; i<m.getLetters().size(); i++){
+        if(m.isHorizontal()){
+            current_move = findMaxWord(m_row, m_col+i, !m.isHorizontal());
+            if(!l.query(current_move.getLetters())){
+                m.setScore(-3); // -3 indica NONEXISTENT_WORD
+                current_movelist.add(m);
+                return current_movelist;
+
+            }
+            
+        }else{
+            current_move = findMaxWord(m_row+i, m_col, !m.isHorizontal());
+            if(!l.query(current_move.getLetters())){
+                m.setScore(-3); // -3 indica NONEXISTENT_WORD
+                current_movelist.add(m);
+                return current_movelist;
             }
         }
     }
     
-    // Ahora recorremos por filas
-    for (int i=0; i<getHeight(); i++){
-        for(int j=0; j<getWidth(); j++){
-            if(get(i,j)!=EMPTY){
-                Move current_move;
-                current_move = findMaxWord(i,j,true);
-                current_movelist.add(current_move);
-                j += current_move.getLetters().size();
-            }
-        }
-    }
     
-    current_movelist.zip(l);
-    
+        
     return current_movelist;
 }
 
