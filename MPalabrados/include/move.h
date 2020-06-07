@@ -119,7 +119,14 @@ public:
        
         friend std::ostream& operator<<(std::ostream& os, const Move & m);
 	
-        friend std::istream& operator>>(std::istream& is, Move & m);	
+        friend std::istream& operator>>(std::istream& is, Move & m);
+
+        /**
+        * @brief Overloads the assignment operator
+        * @param orig Right hand side of the assignement
+        * @return this Left hand side of the assignement
+        */
+        Move& operator=(const Move& orig) ; // Operador asignación
 };
 
 

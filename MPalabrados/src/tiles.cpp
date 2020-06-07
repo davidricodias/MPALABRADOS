@@ -173,9 +173,17 @@ Movelist Tiles::findCrosswords(const Move &m, const Language &l) const{
     int m_col_end = m_col + m.getLetters().size();
     int m_row_end = m_row + m.getLetters().size();
     int count; // contador de cruces
+ 
     
-       
+    Move current_move;
+    // Regla 3: Cruce intermedio
+    current_move = findCrosswords(m, l);
+    current_move.findScore(l);
     
+    // Regla 2:
+    if(l.query(current_move.getLetters())){
+        current_movelist.add(m);
+    }
     // Regla 6: Se sale de la matriz
         // Exeso de tamaño en horizontal
     bool exec_H = (m.isHorizontal() && (m_col + m.getLetters().size()) > this->getWidth());
@@ -183,24 +191,24 @@ Movelist Tiles::findCrosswords(const Move &m, const Language &l) const{
     bool exec_V = (!m.isHorizontal() && (m_col + m.getLetters().size()) > this->getHeight());
     
     if(exec_H || exec_V){
-        m.setScore(-2); // -2 indica BOARD_OVERFLOW
-        current_movelist.add(m);
+        current_move.setScore(-2); // -2 indica BOARD_OVERFLOW
+        current_movelist.add(current_move);
         return current_movelist;
         
     // Regla 8: La palabra no existe en el lenguaje
-    } else if(!l.query(m.getLetters())){
-        m.setScore(-3); // -3 indica NONEXISTENT_WORD
-        current_movelist.add(m);
+    } else if(!l.query(current_move.getLetters())){
+        current_move.setScore(-3); // -3 indica NONEXISTENT_WORD
+        current_movelist.add(current_move);
         return current_movelist;
         
     // Regla 10: Primera casilla ocupada
     } else if(get(m_row, m_col)!=EMPTY){
-        m.setScore(-5); // -5 indica NOT_FREE
-        current_movelist.add(m);
+        current_move.setScore(-5); // -5 indica NOT_FREE
+        current_movelist.add(current_move);
         return current_movelist;
            
     // Regla 9: No hay cruces    
-    } else if(m.isHorizontal()){
+    } else if(current_move.isHorizontal()){
         // Compruebo si hay letras antes o después del movimiento para ver si complementa otra letra
         if((this->get(m_row, m_col-1) == EMPTY) && (this->get(m_row, m_col_end+1) == EMPTY)){
             // Si no hay letras a los laterales recorro todas las letras del movimiento buscando
@@ -211,21 +219,21 @@ Movelist Tiles::findCrosswords(const Move &m, const Language &l) const{
                 if(m_row+1 > m_row_end){
                     
                     // Regla 1: inicio de partida
-                    bool vacio = false; // nos indicará si la matriz está vacia
+                    bool vacio = true; // nos indicará si la matriz está vacia
                     for(int i=0; i<getWidth(); i++){
                         for(int j=0; j<getHeight(); i+=2){
                             if(get(i,j)!=EMPTY){
-                                vacio=true;
+                                vacio=false;
                                 break;
                             }
                         }
                     }
                     
                     if(vacio){
-                        m.setScore(m.findScore(l));
+                        current_move.setScore(m.findScore(l));
                     }else{
-                        m.setScore(-6); // -6 indica MISSING_CROSSWORDS
-                        current_movelist.add(m);
+                        current_move.setScore(-6); // -6 indica MISSING_CROSSWORDS
+                        current_movelist.add(current_move);
                         return current_movelist;
                     }
                     break;
@@ -244,20 +252,20 @@ Movelist Tiles::findCrosswords(const Move &m, const Language &l) const{
                 if(m_col+1 > m_col_end){
                     
                     // Regla 1: inicio de partida
-                    bool vacio = false; // nos indicará si la matriz está vacia
+                    bool vacio = true; // nos indicará si la matriz está vacia
                     for(int i=0; i<getWidth(); i++){
                         for(int j=0; j<getHeight(); i+=2){
                             if(get(i,j)!=EMPTY){
-                                vacio=true;
+                                vacio=false;
                                 break;
                             }
                         }
                     }
                     
                     if(vacio){
-                        m.setScore(m.findScore(l));
+                        current_move.setScore(current_move.findScore(l));
                     }else{
-                        m.setScore(-6); // -6 indica MISSING_CROSSWORDS
+                        current_move.setScore(-6); // -6 indica MISSING_CROSSWORDS
                         current_movelist.add(m);
                         return current_movelist;
                     }
@@ -269,38 +277,30 @@ Movelist Tiles::findCrosswords(const Move &m, const Language &l) const{
     
     
     // Regla 11: Algún cruce no válido
-    Move current_move;
     for(int i=0; i<m.getLetters().size(); i++){
+        Move aux_move;
         if(m.isHorizontal()){
-            current_move = findMaxWord(m_row, m_col+i, !m.isHorizontal());
-            if(!l.query(current_move.getLetters())){
-                m.setScore(-3); // -3 indica NONEXISTENT_WORD
-                current_movelist.add(m);
+            aux_move = findMaxWord(m_row, m_col+i, !m.isHorizontal());
+            if(!l.query(aux_move.getLetters())){
+                aux_move.setScore(-3); // -3 indica NONEXISTENT_WORD
+                current_movelist.add(aux_move);
                 return current_movelist;
             }else{ //Regla 4: Cruce multiple
-                current_move.setScore(current_move.findScore());
-                current_movelist.add(current_move);
+                aux_move.setScore(current_move.findScore(l));
+                current_movelist.add(aux_move);
             }
             
         }else{
-            current_move = findMaxWord(m_row+i, m_col, !m.isHorizontal());
-            if(!l.query(current_move.getLetters())){
-                m.setScore(-3); // -3 indica NONEXISTENT_WORD
-                current_movelist.add(m);
+            aux_move = findMaxWord(m_row+i, m_col, !m.isHorizontal());
+            if(!l.query(aux_move.getLetters())){
+                aux_move.setScore(-3); // -3 indica NONEXISTENT_WORD
+                current_movelist.add(aux_move);
                 return current_movelist;
             }else{ //Regla 4: Cruce multiple
-                current_move.setScore(current_move.findScore(l));
-                current_movelist.add(current_move);
+                aux_move.setScore(aux_move.findScore(l));
+                current_movelist.add(aux_move);
             }
         }
-    }
-    
-    // Regla 3: Cruce intermedio
-    m = findCrosswords(m, l);
-    
-    // Regla 2:
-    if(l.query(m.getLetters())){
-        current_movelist.add(m);
     }
     
         
