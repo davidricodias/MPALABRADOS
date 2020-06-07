@@ -185,9 +185,9 @@ Movelist Tiles::findCrosswords(const Move &m, const Language &l) const{
     }
     // Regla 6: Se sale de la matriz
         // Exeso de tamaño en horizontal
-    bool exec_H = (m.isHorizontal() && (m_col + m.getLetters().size()) > this->getWidth());
+    bool exec_H = m.isHorizontal() && (m_col + m.getLetters().size()) > this->getWidth();
         // Exeso de tamaño en vertical
-    bool exec_V = (!m.isHorizontal() && (m_col + m.getLetters().size()) > this->getHeight());
+    bool exec_V = !m.isHorizontal() && (m_col + m.getLetters().size()) > this->getHeight();
     
     if(exec_H || exec_V){
         current_move.setScore(-2); // -2 indica BOARD_OVERFLOW
