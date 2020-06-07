@@ -36,11 +36,12 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 # Object Files
 OBJECTFILES= \
 	${OBJECTDIR}/src/bag.o \
-	${OBJECTDIR}/src/main.o \
+	${OBJECTDIR}/src/main_advanced.o \
 	${OBJECTDIR}/src/move.o \
 	${OBJECTDIR}/src/movelist.o \
 	${OBJECTDIR}/src/player.o \
-	${OBJECTDIR}/src/tiles.o
+	${OBJECTDIR}/src/tiles.o \
+	${OBJECTDIR}/src/window.o
 
 
 # C Compiler Flags
@@ -72,10 +73,10 @@ ${OBJECTDIR}/src/bag.o: src/bag.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/bag.o src/bag.cpp
 
-${OBJECTDIR}/src/main.o: src/main.cpp
+${OBJECTDIR}/src/main_advanced.o: src/main_advanced.cpp
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/main.o src/main.cpp
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/main_advanced.o src/main_advanced.cpp
 
 ${OBJECTDIR}/src/move.o: src/move.cpp
 	${MKDIR} -p ${OBJECTDIR}/src
@@ -96,6 +97,11 @@ ${OBJECTDIR}/src/tiles.o: src/tiles.cpp
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/tiles.o src/tiles.cpp
+
+${OBJECTDIR}/src/window.o: src/window.cpp
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/window.o src/window.cpp
 
 # Subprojects
 .build-subprojects:
