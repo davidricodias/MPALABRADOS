@@ -5,6 +5,8 @@
  * key functions prototipes to guide the implementation
  */
 
+
+
 #include <string>
 #include <cassert>
 #include <iostream>
@@ -17,15 +19,20 @@
 #include "move.h"
 #include "movelist.h"
 #include "tiles.h"
-//#include "AnsiTerminal.h"
-
+#include "window.h"
+#include "AnsiTerminal.h"
 using namespace std;
 
 
 #define ERROR_ARGUMENTS 1
 #define ERROR_OPEN 2
 #define ERROR_DATA 3
-#define PASSWORD "MPALABRADOS-V1"
+#define GENERAL_ERROR 4
+#define PASSWORD "MPALABRADOS-V2"
+
+// Alumno1: Rico Días José David 
+// Alumno2: Marín Sánchez Jorge
+
 /**
  * @brief Reports an important error and exits the program
  * @param errorcode An integer representing the error detected, which is represented
@@ -36,106 +43,22 @@ using namespace std;
  */
 void errorBreak(int errorcode, const string & errorinfo);
 
-/**
- * @brief Shows final data
- * @param l
- * @param b
- * @param p
- * @param tiles
- * @param score
- * @param original
- * @param legal
- * @param accepted
- * @param rejected
- * @param os
- * @param release
- */
-void HallOfFame(const Language &l, const Bag &b, const Player &p, const Tiles & tiles, int score, const Movelist& original, const Movelist& legal, const Movelist& accepted, const Movelist& rejected, ostream * os, bool release);
-
-void showOutput(const Language &l, int score, const Bag &b, const Player &p, const Tiles & tiles, ostream *os);
-
-
-void loadMatch(const string & ifilematch, int &score, Language &language, int &h, int &w, Tiles & tiles, Player &player, Bag &bag){
-    ifstream ifile;
-    string word, lang;
-    int n;
-    
-    ifile.open(ifilematch);
-        if (!ifile)
-            errorBreak(ERROR_OPEN,ifilematch);
-        ifile >> word;
-        if (!ifile)
-            errorBreak(ERROR_DATA,ifilematch);
-        if (word != PASSWORD)
-            errorBreak(ERROR_DATA,ifilematch);
-        ifile >> score;
-        ifile >> lang;
-        if (!ifile)
-            errorBreak(ERROR_DATA,ifilematch);
-        language.setLanguage(lang);
-        tiles.read(ifile);
-        h = tiles.getHeight();
-        w = tiles.getWidth();
-        
-        ifile >> n;
-        if (n>0) {
-            ifile >> word;
-            player.add(toISO(word));
-        }
-        ifile >> n;
-        if (n>0) {
-            ifile >> word;
-            bag.set(toISO(word));
-        }
-        ifile.close();
- //               tiles.print(cout);
-                
-    }
-
 
 /**
  * @brief Main function. 
  * @return 
  */
-int main(int nargs, char *args[]) {
-
-    Bag bag; 
-    Player player;
+int main(int nargs, char * args[]) {
     Move move;
-    Movelist originalmovements, /// Original list of movements
-            legalmovements, /// Movements with legal words upon the dictionary
-            acceptedmovements, /// Movements accepted in the game
-            rejectedmovements; /// Movements not accepted in the game
-    Tiles tiles;
-    int width = -1, height = -1;
-    
-    
-    string word, lang, result, fileplay, ifilematch, ofilematch, goodmoves, badmoves; 
-    string external_bag;
-    ifstream ifile;
-    ofstream ofile;
-    istream *input;
-    ostream *output;
-    int Id, nwords, nletters, score, scoreT;
-    
-
-    nwords = nletters = score = scoreT = 0;
-    word = result = fileplay =ifilematch = ofilematch = "";
-    goodmoves = badmoves = external_bag = "";
-    
-    /*
-	1. El main() recibe como parámetro obligatorio "-l <ID>" y co-
-	mo parámetros opcionales "-i <file>" y "-r <random>" ,
-	en cualquier orden entre los tres. Si se especifica "-i" se leen
-	los datos desde ese fichero, si no, se leen desde el teclado. Si
-	se especifica "-r" se define el aleatorio con el número indica-
-	do, si no, no se define aleatorio.
-    */
-
+    Game game;
+    int w=-1, h=-1, wait=0;
+    string lang="",ifilematch="", ofilematch="", word, external_bag="";
+    ifstream ifile; ofstream ofile;
     bool end=false;
-    Language language;
+	char c;
+    
     /// Check arguments
-        
+    // Igual que en la práctica anterior. Copy-paste
     string sarg;
     for(int arg=1; arg<nargs; ) {
         sarg = args[arg];
@@ -154,7 +77,7 @@ int main(int nargs, char *args[]) {
         } else if (sarg== "-r") {
                 arg++; 
                 if (arg>=nargs) errorBreak(ERROR_ARGUMENTS, "");
-                Id = atoi(args[arg++]);
+                game.random = atoi(args[arg++]);
         } else if (sarg== "-b") {
                 arg++; 
                 if (arg>=nargs) errorBreak(ERROR_ARGUMENTS, "");
@@ -162,134 +85,216 @@ int main(int nargs, char *args[]) {
         }else if (sarg== "-w") {
                 arg++; 
                 if (arg>=nargs) errorBreak(ERROR_ARGUMENTS, "");
-                width = atoi(args[arg++]);
+                w = atoi(args[arg++]);
         } else if (sarg== "-h") {
                 arg++; 
                 if (arg>=nargs) errorBreak(ERROR_ARGUMENTS, "");
-                height = atoi(args[arg++]);
+                h = atoi(args[arg++]);
         }  else
             errorBreak(ERROR_ARGUMENTS, "");
     }
-     // Process arguments
-    if  ((fileplay=="") || (lang=="" && ifilematch=="") ||( ifilematch=="" &&  (width <0 ||  height <0)))
-        errorBreak(ERROR_ARGUMENTS, "");
- 
-    // load parameters
-    if (ifilematch == "") { // game from scratch 
-        language.setLanguage(lang);
-        if (Id >= 0)
-            bag.setRandom(Id);
-        if (external_bag != "")
-            bag.set(toISO(external_bag)); //codification 1byte for each
-        else
-            bag.define(language);
-        cout << "!!!!!!!!!!!!!!BAG " << toUTF(bag.to_string()) << endl; // codification to see Ñ as nice character
-        tiles.setSize(height,width);
-      
-    }
-    else  // game from previous match
-       loadMatch(ifilematch,score,language, height, width, tiles, player, bag);
+    // Process arguments
+	if(!((lang=="" && w<=0 && h<=0 && ofilematch!="") || (lang!="" && w>0 && h>0 && ofilematch=="")))
+            errorBreak(ERROR_ARGUMENTS, "");
 
-    // once the main objects are inicialized
-    
-    cout << "LANGUAGE: "<<language.getLanguage() << endl;
-    cout << "ALLOWED LETTERS: " << toUTF(language.getLetterSet()) <<endl;
-    cout << "PLAYER: " << toUTF(player.to_string()) << endl;
-    cout << "BAG: " << toUTF(bag.to_string())<< endl;
-    //cout << "SEED: "<<Id<<endl;
-    
-    ifile.open(fileplay);
-    if (!ifile)
-        errorBreak(ERROR_OPEN, fileplay);
+    /// load data from file, if asked to in arguments
+	if(ifilematch == ""){
+		game.language.setLanguage(lang);
+		
+		if(game.random>0){
+			game.bag.setRandom(game.random);
+		}
+		if(external_bag != ""){
+			game.bag.set(toISO(external_bag));
+		} else {
+			game.bag.define(game.language);
+		}
+		game.tiles.setSize(h, w);
 
-    //movements.read(ifile); //ifile >> movements;
-    ifile >> originalmovements;
-  
-    cout << originalmovements ; //movements.print(cout);
+	// Reads file
+	} else { 
+    	ifile.open(ifilematch);
 
-    if ((!ifile) || ifile.eof())
-        errorBreak(ERROR_DATA, fileplay);
-    ifile.close();
+		if(!ifile)
+			errorBreak(ERROR_OPEN, ifilematch);
+		ifile >> game;
+	}
+	
+    // 1) First set the size of the window according to the size (rows & columns) of
+    // the new Tiles
+	game.setWindowSize();
 
-    legalmovements = originalmovements;
-    legalmovements.zip(language);
-    player.add(bag.extract(7-player.size()));  // fill player when necessary
-    bool fin = false;
-    for (int i = 0; i < legalmovements.size() && !fin; i++) {
-        move = legalmovements.get(i);
-        HallOfFame(language, bag, player, tiles, score, originalmovements, legalmovements, acceptedmovements, rejectedmovements, &cout, false);
+	// Añade la primeras posibles 7 letras
+	game.player.add(game.bag.extract(7-game.player.size()));
+
+    while (!end)  {
+        // 2) Given the inner data members, it pretty-prints the screen
+	game.doPaint();
+
+        // 3) Reads the movement from cin
+        cin >> move;
         word = move.getLetters();
-        if (player.isValid(word) && language.query(word)) {
-            player.extract(word);
-            player.add(bag.extract(7 - player.size()));
-            move.setScore(move.findScore(language));
-            acceptedmovements.add(move);
-            tiles.add(move);
-        } else
-            rejectedmovements.add(move);
+        if (word=="_") 
+            end=true;
+        // Checks whether the movement is valid accoring to the letters in player    
+	if(game.player.isValid(word) && !end){
+            // Finds all the crosswords produced by move
+            game.crosswords = game.tiles.findCrosswords(move,game.language);
+            //Checks that the crosswords are valid, that is either has a positive score
+            //      or produces at least a cross with other existin letters
+            // If valid, computes the score and adds it
+            // Comprueba si alguno de los cruces no es válido, y añade información del fallo
+            string reason_invalid_crossword;
+            bool is_crossword_valid = true;
 
-    }
-    ostream *os = &cout;
-    if (ofilematch!="")  {
-        ofile.open(ofilematch);    
-        if (!ofile)
-            errorBreak(ERROR_OPEN,ofilematch);
-        os = &ofile;
-    }
-    HallOfFame(language, bag, player, tiles, score, originalmovements, legalmovements, acceptedmovements, rejectedmovements, os,true);
+            for(int i=0; i<game.crosswords.size() && is_crossword_valid; ++i){
+                    int crossword_score = game.crosswords.get(i).getScore();
+                    if(crossword_score < 0){
+                            is_crossword_valid = false;
+                            switch (crossword_score){
+                                    case -1:
+                                            reason_invalid_crossword = "UNKNOWN";
+                                            break;
+                                    case -2:
+                                            reason_invalid_crossword = "BOARD OVERFLOW";
+                                            break;
+                                    case -3:
+                                            reason_invalid_crossword = "NONEXISTENT_WORD";
+                                            break;
+                                    case -4:
+                                            reason_invalid_crossword = "INFEASIBLE_WORD";
+                                            break;
+                                    case -5:
+                                            reason_invalid_crossword = "NOT FREE";
+                                            break;
+                                    case -6:
+                                            reason_invalid_crossword = "MISSING CROSSWORDS";
+                                    break;
+                            }
+                    }
+            }
+
+            if(is_crossword_valid){
+                // Show crosswords found
+                game.showCrosswords();
+                if(game.doConfirmCrosswords("Cruce válido, ¿Quieres añadirlo?")){
+
+                        // Reconfigura player
+                        game.player.extract(word);
+                        game.player.add(game.bag.extract(7-game.player.size()));
+
+                        // Añade el movimiento aceptado
+                        game.acceptedmovements.add(move);
+                        game.score +=move.getScore();
+
+                        // Añade el move al tiles
+                        game.tiles.add(move);
+                        cout << "Scored " << move.getScore() << " points" << endl; 
+                }
+            } else {
+                // If it is a bad crosswords
+                cout << "Bad crosswords found: " << reason_invalid_crossword << endl;
+                game.rejectedmovements.add(move);
+                // Show crosswords found
+                game.showCrosswords();
+                if(game.doBadCrosswords("Cruce no válido, ¿Seguir jugando?"))
+                        end=true;
+            }
+        } else {
+            // If not valid w.r.t. player
+            cout <<"Infeasible word"<<endl;
+        }
     
-    if (ifile.eof()) {  // salida por falta de datos
-            errorBreak(ERROR_DATA, fileplay);
+        // Waits for the next move
+        cout << "Press [yY] to continue:";
+        setCursorOn();
+        cin >> c;
+        setCursorOff();
+        if(c != 'y' && c != 'Y')
+            end=true;
     }
-    if (fileplay!="")
-        ifile.close();
-    if (ofilematch!="")
-        ofile.close();
+        
+    // End of game
+    // Save file or print screen
+    if(ofilematch != ""){
+            ofile << game;
+    } else {
+            cout << game;
+    }
 
-  
     return 0;
 }
-void showOutput(const Language &l, int score, const Bag &b, const Player &p, const Tiles & tiles, ostream * os){
-   
-        (*os) << score  << endl;
-        (*os) << l.getLanguage() << endl;
-        //    (*os) << tiles.getHeight()<<" "<<tiles.getWidth()<<endl;
-        tiles.print((*os));
-        (*os) << p.size() << " " << toUTF(p.to_string()) << endl;
-        (*os) << b.size() << " " << toUTF(b.to_string()) << endl;
+
+
+// Operadores >> y >> de Tiles
+
+ostream & operator<<(ostream & os, const Tiles & tiles){
+	tiles.print(os);
+	return os;
 }
 
-void HallOfFame(const Language &l, const Bag &b, const Player &p, const Tiles & tiles, int score, const Movelist& original, const Movelist& legal, const Movelist& accepted, const Movelist& rejected, ostream *os, bool release = false) {
-    char ch;
-    //cout<< "tecla  " ;cin >> ch;
-    if (!release) { // debug mode
-        (*os) << endl << "%%%SALIDA" << endl;
-        (*os) << score + accepted.getScore() << endl;
-        (*os) << "LANGUAGE: " << l.getLanguage() << endl;
-        (*os) << "BAG (" << b.size() << "): " << toUTF(b.to_string()) << endl;
-        (*os) << "PLAYER (" << p.size() << "): " << toUTF(p.to_string()) << endl;
-        tiles.print(((*os)));
-        (*os) << "TILES: " << endl;
-        (*os) << endl << endl << "ORIGINAL (" << original.size() << "): " << endl;
-        (*os) << original.print(cout);
-        (*os) << endl << endl << "LEGAL (" << legal.size() << "): " << endl;
-        (*os) << legal; //legal.print(cout);
-        (*os) << endl << endl << "ACCEPTED (" << accepted.size() << ") SCORE " << accepted.getScore() << ": " << endl;
-        (*os) << accepted; // accepted.print(cout);
-        (*os) << endl << endl << "REJECTED (" << rejected.size() << "): " << endl;
-        (*os) << rejected; //rejected.print(cout);
-        (*os) << endl;
-    } else { // release mode, the last print by screen & opcionally by file
-        int scoreT = score + accepted.getScore();
-        if (os != &cout){
-            (*os) << PASSWORD << endl;
-            showOutput(l, scoreT, b, p, tiles, os);
-        }
-        else {
-            cout << endl << "%%%OUTPUT" << endl;
-            showOutput(l, scoreT, b, p, tiles, os);
-        }
-    }
+istream & operator>>(istream & is, Tiles & tiles){
+	tiles.read(is);
+	return is;
+}
+
+// Operadores >> y << de Game
+
+ostream & operator<<(ostream & os, const Game & game)  {
+	os << PASSWORD << endl;
+	os << game.score << endl;
+	os << game.language.getLanguage() << endl;
+	os << game.tiles;
+	os << game.player.size() << " " << toUTF(game.player.to_string()) << endl;
+	os << game.bag.size() << " " << toUTF(game.bag.to_string()) << endl;
+	
+	return os;
+}
+
+istream & operator>>(istream & is, Game &game) {
+	string data_str;	// Variable auxiliar
+	int data_int;
+	is >> data_str;
+	if(!is)
+		errorBreak(ERROR_DATA, "");
+	if(data_str != PASSWORD)
+		errorBreak(ERROR_DATA, "");
+	
+	// Read score
+	is >> data_int;
+	if(!is)
+		errorBreak(ERROR_DATA, "");
+	game.score = data_int;
+	
+	// Read language
+	is >> data_str;
+	if(!is)
+		errorBreak(ERROR_DATA, "");
+	game.language.setLanguage(data_str);
+	// Read tile
+	is >> game.tiles;
+	if(!is)
+		errorBreak(ERROR_DATA, "");
+	
+	// Read player
+	is >> data_int;
+	if(!is)
+		errorBreak(ERROR_DATA, "");
+	if(data_int>0){
+		is >> data_str;
+		game.player.add(toISO(data_str));
+	}
+	
+	// Read bag
+	is >> data_int;
+	if(!is)
+		errorBreak(ERROR_DATA, "");
+	if(data_int>0){
+		is >> data_str;
+		game.bag.set(toISO(data_str));
+	}
+
+	return is;
 }
 
 void errorBreak(int errorcode, const string &errordata) {
@@ -297,14 +302,17 @@ void errorBreak(int errorcode, const string &errordata) {
     switch(errorcode) {
         case ERROR_ARGUMENTS:
             cerr<<"Error in call. Please use either:"<<endl;
-            cerr<< "-l <language> -w <width> -h <height> -p <playfile> [-b <bag> -r <randomnumber> -save <matchfile>]"<<endl;
-            cerr<< "-open <matchfile> -p <playfile> [-save <matchfile>]"<<endl;            
+            cerr<< "-l <language> -w <width> -h <height> [-r <randomnumber> -save <matchfile>]"<<endl;
+            cerr<< "-open <matchfile> [-save <matchfile>]"<<endl;            
             break;
         case ERROR_OPEN:
             cerr<<"Error opening file "<<errordata << endl;
             break;
         case ERROR_DATA:
             cerr<<"Data error in file "<<errordata << endl;
+            break;
+        case GENERAL_ERROR:
+            cerr<<"Error: "<<errordata << endl;
             break;
     }
     std::exit(1);
